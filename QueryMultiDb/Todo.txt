@@ -1,0 +1,38 @@
+﻿
+Todo
+====
+
+
+Fix
+---
+
+*) Corriger les problemes de dates dans les colonnes.
+
+*) Corriger les problemes de type de données, quand la données en SQL est du texte qui contient un nombre.
+Dans ce cas, excel fait un avertissement "Nombre stocké sous forme de texte".
+
+*) Supprimer les indication de valeur par defaut en ligne de commande, la librairie les ajoutent deja.
+
+*) Ajouter des tests.
+
+
+Feature
+-------
+
+*) Ajouter une option "Appuyer sur une touche pour commencer..."
+
+*) Ajouter une option "Appuyer sur une touche pour quitter..."
+
+*) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
+
+
+Other
+-----
+
+*) Vérifier le comportement quand commandtimeout est inferrieur au temps necessaire.
+
+*) Problème *mystérieux*. Lorsque executer en ligne de commande (dans powershell ou cmd.exe), ou dans visual studio sans l'option "Enable the Visual Studio hosting process",
+il est impossible de se connecter à un serveur SQL sur un autre domaine en utilisant les informations stoquées dans le "Credential Manager" avec l'outil "cmdkey.exe".
+Pourtant cela fonctionne bien dans Visual Studio lorsque l'option "Enable the Visual Studio hosting process" est activée. De même, cela fonctione aussi dans ssms.
+Impossible de comprendre pourquoi, ni de trouver comment résoudre le problème. Il faut donc garder ce point pour documenter le problème, ou bien documenter la solution.
+La command "runas" n'a pas aidé non plus.
