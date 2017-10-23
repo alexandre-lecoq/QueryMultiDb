@@ -11,8 +11,6 @@ Fix
 *) Corriger les problemes de type de données, quand la données en SQL est du texte qui contient un nombre.
 Dans ce cas, excel fait un avertissement "Nombre stocké sous forme de texte".
 
-*) Supprimer les indication de valeur par defaut en ligne de commande, la librairie les ajoutent deja.
-
 *) Ajouter des tests.
 
 
