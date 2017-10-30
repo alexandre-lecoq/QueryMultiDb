@@ -6,6 +6,11 @@ namespace QueryMultiDb
     /// <summary>
     /// Represents a low memory comsumption table storage.
     /// </summary>
+    /// <remarks>
+    /// We use are own classes because there is a *huge* memory overhead associated to <see cref="System.Data.DataTable"/> instances.
+    /// <see cref="System.Data.DataTable"/> instances can use three to seven times more memory than our simple <see cref="Table"/> instance.
+    /// This is important SQL queries can get several gigabytes of data from the database, making the overhead hard to bear.
+    /// </remarks>
     public struct Table : IEquatable<Table>
     {
         public TableColumn[] Columns { get; }
