@@ -23,6 +23,10 @@ Feature
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
 
+*) Display NULLs in excel file instead of empty cell, except if a switch parameter disables that.
+
+*) Possibilité d'ajouter des colonnes extra par chaque base de données via le fichier de cibles.
+
 
 Other
 -----
