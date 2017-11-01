@@ -114,7 +114,7 @@ namespace QueryMultiDb
 
             return logTable;
         }
-
+        
         private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName = null)
         {
             var sheetPart = spreadSheet.WorkbookPart.AddNewPart<WorksheetPart>();
@@ -123,7 +123,7 @@ namespace QueryMultiDb
 
             var sheets = spreadSheet.WorkbookPart.Workbook.GetFirstChild<Sheets>();
             var relationshipId = spreadSheet.WorkbookPart.GetIdOfPart(sheetPart);
-
+            
             uint sheetId = 1;
 
             if (sheets.Elements<Sheet>().Any())
@@ -159,12 +159,7 @@ namespace QueryMultiDb
 
                 for (var columnIndex = 0; columnIndex < table.Columns.Length; columnIndex++)
                 {
-                    var cell = new Cell
-                    {
-                        DataType = GetExcelCellDataType(tableRow.ItemArray[columnIndex].GetType()),
-                        CellValue = new CellValue(GetExcelCellString(tableRow.ItemArray[columnIndex]))
-                    };
-
+                    var cell = GetExcelCell(tableRow.ItemArray[columnIndex]);
                     newRow.AppendChild(cell);
                 }
 
@@ -178,7 +173,7 @@ namespace QueryMultiDb
             tableParts1.Append(tablePart1);
             sheetPart.Worksheet.Append(tableParts1);
         }
-
+        
         private static void GenerateTablePartContent(TableDefinitionPart part, TableColumn[] columns, int rowCount, WorkbookPart workBookPart)
         {
             var rangeReference = GetXlsRangeReference(0, 1, columns.Length - 1, rowCount + 1);
@@ -244,39 +239,76 @@ namespace QueryMultiDb
 
             return r;
         }
-
-        private static EnumValue<CellValues> GetExcelCellDataType(Type dataType)
+        
+        private static Cell GetExcelCell(object item)
         {
-            if (dataType == typeof(bool))
+            var type = item.GetType();
+
+            if (type == typeof(bool))
             {
-                // CellValues.String and not CellValues.Boolean because we ouput the boolean as a string value.
-                return CellValues.String;
+                return GetExcelCellAsBoolean(item);
             }
 
-            if (dataType == typeof(int) || dataType == typeof(long) || dataType == typeof(short))
+            if (type == typeof(int) || type == typeof(long) || type == typeof(short))
             {
-                return CellValues.Number; 
+                return GetExcelCellAsInteger(item);
             }
 
-            if (dataType == typeof(DateTime))
+            if (type == typeof(DateTime))
             {
-                // Works in Office 2010+ with "s" formated datetime.
-                return CellValues.Date;
+                return GetExcelCellAsDateTime(item);
             }
 
-            return CellValues.String;
+            return GetExcelCellAsDefault(item);
         }
 
-        private static string GetExcelCellString(object tableRowItem)
+        private static Cell GetExcelCellAsDefault(object item)
         {
-            if (tableRowItem is DateTime)
+            var cell = new Cell
             {
-                var dateTime = (DateTime) tableRowItem;
+                DataType = CellValues.String,
+                CellValue = new CellValue(item.ToString())
+            };
 
-                return dateTime.ToString("s");
-            }
+            return cell;
+        }
 
-            return tableRowItem.ToString();
+        private static Cell GetExcelCellAsDateTime(object item)
+        {
+            var dateTime = (DateTime) item;
+
+            var cell = new Cell
+            {
+                // Works in Office 2010+ with "s" formated datetime.
+                DataType = CellValues.Date,
+                CellValue = new CellValue(dateTime.ToString("s"))
+                //CellValue = new CellValue(dateTime.ToOADate().ToString(CultureInfo.InvariantCulture))
+            };
+
+            return cell;
+        }
+
+        private static Cell GetExcelCellAsInteger(object item)
+        {
+            var cell = new Cell
+            {
+                DataType = CellValues.Number,
+                CellValue = new CellValue(item.ToString())
+            };
+
+            return cell;
+        }
+
+        private static Cell GetExcelCellAsBoolean(object item)
+        {
+            var cell = new Cell
+            {
+                // XXX : CellValues.String and not CellValues.Boolean because we ouput the boolean as a string value.
+                DataType = CellValues.String,
+                CellValue = new CellValue(item.ToString())
+            };
+
+            return cell;
         }
     }
 }
