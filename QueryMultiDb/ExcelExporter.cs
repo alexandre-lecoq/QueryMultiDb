@@ -4,6 +4,7 @@ using System.Linq;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+
 // ReSharper disable PossiblyMistakenUseOfParamsMethod
 
 namespace QueryMultiDb
@@ -24,6 +25,10 @@ namespace QueryMultiDb
                 Logger.Instance.Info($"Created excel file {destination}");
                 var workbookPart = spreadSheet.AddWorkbookPart();
 
+                var wbsp = spreadSheet.WorkbookPart.AddNewPart<WorkbookStylesPart>();
+                wbsp.Stylesheet = CreateStylesheet();
+                wbsp.Stylesheet.Save();
+                
                 spreadSheet.WorkbookPart.Workbook = new Workbook
                 {
                     Sheets = new Sheets()
@@ -42,7 +47,144 @@ namespace QueryMultiDb
                 AddSheet(spreadSheet, parameterTable, "Parameters");
             }
 
+            //FixShit(destination);
+
             Logger.Instance.Info("Excel file closed after generation.");
+        }
+        
+        private static Stylesheet CreateStylesheet()
+        {
+            var stylesheet = new Stylesheet();
+
+            var fonts = new Fonts(
+                new Font
+                {
+                    FontName = new FontName
+                    {
+                        Val = "Calibri"
+                    },
+                    FontSize = new FontSize
+                    {
+                        Val = 11
+                    }
+                }
+            );
+
+            fonts.Count = (uint)fonts.ChildElements.Count;
+
+            var fills = new Fills(
+                new Fill
+                {
+                    PatternFill = new PatternFill
+                    {
+                        PatternType = PatternValues.None
+                    }
+                },
+
+                new Fill
+                {
+                    PatternFill = new PatternFill
+                    {
+                        PatternType = PatternValues.Gray125
+                    }
+                }
+            );
+
+            fills.Count = (uint)fills.ChildElements.Count;
+
+            var borders = new Borders(
+                new Border
+                {
+                    LeftBorder = new LeftBorder(),
+                    RightBorder = new RightBorder(),
+                    TopBorder = new TopBorder(),
+                    BottomBorder = new BottomBorder(),
+                    DiagonalBorder = new DiagonalBorder()
+                }
+            );
+
+            borders.Count = (uint)borders.ChildElements.Count;
+
+            var cellStyleFormats = new CellStyleFormats(
+                new CellFormat
+                {
+                    NumberFormatId = 0,
+                    FontId = 0,
+                    FillId = 0,
+                    BorderId = 0
+                }
+            );
+
+            cellStyleFormats.Count = (uint)cellStyleFormats.ChildElements.Count;
+
+            var numberingFormats = new NumberingFormats(
+                new NumberingFormat
+                {
+                    NumberFormatId = 164u,
+                    FormatCode = "yyyy/mm/dd hh:mm:ss.000"
+                }
+            );
+
+            numberingFormats.Count = (uint)numberingFormats.ChildElements.Count;
+
+            var cellFormats = new CellFormats(
+                new CellFormat
+                {
+                    NumberFormatId = 0,
+                    FontId = 0,
+                    FillId = 0,
+                    BorderId = 0,
+                    FormatId = 0
+                },
+                new CellFormat
+                {
+                    NumberFormatId = 164u,
+                    FontId = 0,
+                    FillId = 0,
+                    BorderId = 0,
+                    FormatId = 0,
+                    ApplyNumberFormat = true
+                }
+            );
+
+            cellFormats.Count = (uint)cellFormats.ChildElements.Count;
+
+            stylesheet.Append(numberingFormats);
+            stylesheet.Append(fonts);
+            stylesheet.Append(fills);
+            stylesheet.Append(borders);
+            stylesheet.Append(cellStyleFormats);
+            stylesheet.Append(cellFormats);
+
+            var cellStyles = new CellStyles(
+                new CellStyle
+                {
+                    Name = "Normal",
+                    FormatId = 0,
+                    BuiltinId = 0
+                }
+            );
+
+            cellStyles.Count = (uint)cellStyles.ChildElements.Count;
+            stylesheet.Append(cellStyles);
+
+            var differentialFormats = new DifferentialFormats
+            {
+                Count = 0
+            };
+
+            stylesheet.Append(differentialFormats);
+
+            var tableStyles = new TableStyles
+            {
+                Count = 0,
+                DefaultTableStyle = "TableStyleMedium2",
+                DefaultPivotStyle = "PivotStyleLight16"
+            };
+
+            stylesheet.Append(tableStyles);
+
+            return stylesheet;
         }
 
         private static Table ParametersToTable(Parameters parameters)
@@ -281,8 +423,8 @@ namespace QueryMultiDb
             {
                 // Works in Office 2010+ with "s" formated datetime.
                 DataType = CellValues.Date,
-                CellValue = new CellValue(dateTime.ToString("s"))
-                //CellValue = new CellValue(dateTime.ToOADate().ToString(CultureInfo.InvariantCulture))
+                CellValue = new CellValue(dateTime.ToString("s")),
+                StyleIndex = 1
             };
 
             return cell;

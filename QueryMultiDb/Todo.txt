@@ -6,8 +6,6 @@ Todo
 Fix
 ---
 
-*) Corriger les problemes de dates dans les colonnes.
-
 *) Corriger les problemes de type de données, quand la données en SQL est du texte qui contient un nombre.
 Dans ce cas, excel fait un avertissement "Nombre stocké sous forme de texte".
 
@@ -27,9 +25,13 @@ Feature
 
 *) Possibilité d'ajouter des colonnes extra par chaque base de données via le fichier de cibles.
 
+*) Ajuster la largeur des colonnes dans le fichier Excel.
+
 
 Other
 -----
+
+*) Vérifier l'affichage des millisecondes dans le fichier excel.
 
 *) Vérifier le comportement quand commandtimeout est inferrieur au temps necessaire.
 
