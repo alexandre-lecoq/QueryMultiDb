@@ -30,6 +30,10 @@ namespace QueryMultiDb
         public bool IncludeIP { get; set; }
 
         public bool Quiet { get; set; }
+        
+        public bool StartKeyPress { get; set; }
+
+        public bool StopKeyPress { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
@@ -149,6 +153,8 @@ namespace QueryMultiDb
             Parallelism = parsedResult.Parallelism;
             IncludeIP = parsedResult.IncludeIP;
             Quiet = parsedResult.Quiet;
+            StartKeyPress = parsedResult.StartKeyPress;
+            StopKeyPress = parsedResult.StopKeyPress;
 
             ThrowIfInvalidParameter();
         }

@@ -206,7 +206,9 @@ namespace QueryMultiDb
                 CreateParameterRow("Sequential", parameters.Sequential),
                 CreateParameterRow("Parallelism", parameters.Parallelism),
                 CreateParameterRow("IncludeIP", parameters.IncludeIP),
-                CreateParameterRow("Quiet", parameters.Quiet)
+                CreateParameterRow("Quiet", parameters.Quiet),
+                CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
+                CreateParameterRow("StopKeyPress", parameters.StopKeyPress)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows);

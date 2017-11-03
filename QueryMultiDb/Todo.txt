@@ -15,10 +15,6 @@ Dans ce cas, excel fait un avertissement "Nombre stocké sous forme de texte".
 Feature
 -------
 
-*) Ajouter une option "Appuyer sur une touche pour commencer..."
-
-*) Ajouter une option "Appuyer sur une touche pour quitter..."
-
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
 
 *) Display NULLs in excel file instead of empty cell, except if a switch parameter disables that.

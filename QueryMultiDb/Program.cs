@@ -25,6 +25,12 @@ namespace QueryMultiDb
                 var parsedResult = (Parsed<CommandLineParameters>) parserResult;
                 Parameters.Instance = new Parameters(parsedResult.Value);
 
+                if (Parameters.Instance.StartKeyPress)
+                {
+                    Console.WriteLine("Press a key to start...");
+                    Console.ReadKey();
+                }
+
                 if (Parameters.Instance.Debug)
                 {
                     Logger.Instance.Info("Debug mode is active.");
@@ -39,6 +45,14 @@ namespace QueryMultiDb
                 Logger.Instance.Error("Fatal error.", exp);
 
                 return -2;
+            }
+            finally
+            {
+                if (Parameters.Instance.StopKeyPress)
+                {
+                    Console.WriteLine("Press a key to stop...");
+                    Console.ReadKey();
+                }
             }
         }
 

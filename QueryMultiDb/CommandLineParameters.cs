@@ -48,5 +48,11 @@ namespace QueryMultiDb
 
         [Option(HelpText = "Do not output information messages to console.", Default = true)]
         public bool Quiet { get; set; }
+
+        [Option(HelpText = "Wait for a key press to start.", Default = false)]
+        public bool StartKeyPress { get; set; }
+
+        [Option(HelpText = "Wait for a key press to stop.", Default = false)]
+        public bool StopKeyPress { get; set; }
     }
 }
