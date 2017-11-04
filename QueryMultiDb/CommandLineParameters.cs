@@ -54,5 +54,8 @@ namespace QueryMultiDb
 
         [Option(HelpText = "Wait for a key press to stop.", Default = false)]
         public bool StopKeyPress { get; set; }
+
+        [Option(HelpText = "Hides NULL values by displaying them as empty.", Default = false)]
+        public bool HideNulls { get; set; }
     }
 }

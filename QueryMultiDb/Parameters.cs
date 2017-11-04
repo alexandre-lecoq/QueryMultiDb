@@ -35,6 +35,8 @@ namespace QueryMultiDb
 
         public bool StopKeyPress { get; set; }
 
+        public bool HideNulls { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
         {
@@ -155,6 +157,7 @@ namespace QueryMultiDb
             Quiet = parsedResult.Quiet;
             StartKeyPress = parsedResult.StartKeyPress;
             StopKeyPress = parsedResult.StopKeyPress;
+            HideNulls = parsedResult.HideNulls;
 
             ThrowIfInvalidParameter();
         }

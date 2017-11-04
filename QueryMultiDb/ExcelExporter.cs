@@ -67,6 +67,25 @@ namespace QueryMultiDb
                     {
                         Val = 11
                     }
+                },
+                new Font
+                {
+                    FontName = new FontName
+                    {
+                        Val = "Calibri"
+                    },
+                    FontSize = new FontSize
+                    {
+                        Val = 11
+                    },
+                    Italic = new Italic(),
+                    Color = new Color
+                    {
+                        Rgb = new HexBinaryValue()
+                        {
+                            Value = "FF7F7F7F"
+                        } 
+                    }
                 }
             );
 
@@ -144,6 +163,14 @@ namespace QueryMultiDb
                     BorderId = 0,
                     FormatId = 0,
                     ApplyNumberFormat = true
+                },
+                new CellFormat
+                {
+                    NumberFormatId = 0,
+                    FontId = 1,
+                    FillId = 0,
+                    BorderId = 0,
+                    FormatId = 0
                 }
             );
 
@@ -208,7 +235,8 @@ namespace QueryMultiDb
                 CreateParameterRow("IncludeIP", parameters.IncludeIP),
                 CreateParameterRow("Quiet", parameters.Quiet),
                 CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
-                CreateParameterRow("StopKeyPress", parameters.StopKeyPress)
+                CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
+                CreateParameterRow("HideNulls", parameters.HideNulls)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows);
@@ -403,6 +431,11 @@ namespace QueryMultiDb
                 return GetExcelCellAsDateTime(item);
             }
 
+            if (type == typeof(DBNull))
+            {
+                return GetExcelCellAsNull(item);
+            }
+
             return GetExcelCellAsDefault(item);
         }
 
@@ -412,6 +445,20 @@ namespace QueryMultiDb
             {
                 DataType = CellValues.String,
                 CellValue = new CellValue(item.ToString())
+            };
+
+            return cell;
+        }
+
+        private static Cell GetExcelCellAsNull(object item)
+        {
+            var text = Parameters.Instance.HideNulls ? string.Empty : "NULL";
+
+            var cell = new Cell
+            {
+                DataType = CellValues.String,
+                CellValue = new CellValue(text),
+                StyleIndex = 2
             };
 
             return cell;
