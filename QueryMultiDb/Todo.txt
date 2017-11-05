@@ -22,8 +22,6 @@ Feature
 Other
 -----
 
-*) Verifier erreur de syntaxe vs table inexistante dans requete SQL.
-
 *) Vérifier l'affichage des millisecondes dans le fichier excel.
 
 *) Vérifier le comportement quand commandtimeout est inferrieur au temps necessaire.
