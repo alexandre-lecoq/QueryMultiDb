@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using System;
+using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
 
@@ -22,7 +23,10 @@ namespace QueryMultiDb
 
         public IPAddress Resolve(string hostName)
         {
-            // XXX : check null or white
+            if (string.IsNullOrWhiteSpace(hostName))
+            {
+                throw new ArgumentNullException(nameof(hostName), "Argument cannot be null or empty or whitespaces.");
+            }
 
             var ipAdress = _ipAddressCache.GetOrAdd(hostName, InternalResolve);
             
