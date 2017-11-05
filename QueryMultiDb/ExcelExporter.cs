@@ -28,7 +28,7 @@ namespace QueryMultiDb
                 var wbsp = spreadSheet.WorkbookPart.AddNewPart<WorkbookStylesPart>();
                 wbsp.Stylesheet = CreateStylesheet();
                 wbsp.Stylesheet.Save();
-                
+
                 spreadSheet.WorkbookPart.Workbook = new Workbook
                 {
                     Sheets = new Sheets()
@@ -47,11 +47,9 @@ namespace QueryMultiDb
                 AddSheet(spreadSheet, parameterTable, "Parameters");
             }
 
-            //FixShit(destination);
-
             Logger.Instance.Info("Excel file closed after generation.");
         }
-        
+
         private static Stylesheet CreateStylesheet()
         {
             var stylesheet = new Stylesheet();
@@ -84,12 +82,12 @@ namespace QueryMultiDb
                         Rgb = new HexBinaryValue()
                         {
                             Value = "FF7F7F7F"
-                        } 
+                        }
                     }
                 }
             );
 
-            fonts.Count = (uint)fonts.ChildElements.Count;
+            fonts.Count = (uint) fonts.ChildElements.Count;
 
             var fills = new Fills(
                 new Fill
@@ -109,7 +107,7 @@ namespace QueryMultiDb
                 }
             );
 
-            fills.Count = (uint)fills.ChildElements.Count;
+            fills.Count = (uint) fills.ChildElements.Count;
 
             var borders = new Borders(
                 new Border
@@ -122,7 +120,7 @@ namespace QueryMultiDb
                 }
             );
 
-            borders.Count = (uint)borders.ChildElements.Count;
+            borders.Count = (uint) borders.ChildElements.Count;
 
             var cellStyleFormats = new CellStyleFormats(
                 new CellFormat
@@ -134,7 +132,7 @@ namespace QueryMultiDb
                 }
             );
 
-            cellStyleFormats.Count = (uint)cellStyleFormats.ChildElements.Count;
+            cellStyleFormats.Count = (uint) cellStyleFormats.ChildElements.Count;
 
             var numberingFormats = new NumberingFormats(
                 new NumberingFormat
@@ -144,7 +142,7 @@ namespace QueryMultiDb
                 }
             );
 
-            numberingFormats.Count = (uint)numberingFormats.ChildElements.Count;
+            numberingFormats.Count = (uint) numberingFormats.ChildElements.Count;
 
             var cellFormats = new CellFormats(
                 new CellFormat
@@ -174,7 +172,7 @@ namespace QueryMultiDb
                 }
             );
 
-            cellFormats.Count = (uint)cellFormats.ChildElements.Count;
+            cellFormats.Count = (uint) cellFormats.ChildElements.Count;
 
             stylesheet.Append(numberingFormats);
             stylesheet.Append(fonts);
@@ -192,7 +190,7 @@ namespace QueryMultiDb
                 }
             );
 
-            cellStyles.Count = (uint)cellStyles.ChildElements.Count;
+            cellStyles.Count = (uint) cellStyles.ChildElements.Count;
             stylesheet.Append(cellStyles);
 
             var differentialFormats = new DifferentialFormats
@@ -286,7 +284,7 @@ namespace QueryMultiDb
 
             return logTable;
         }
-        
+
         private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName = null)
         {
             var sheetPart = spreadSheet.WorkbookPart.AddNewPart<WorksheetPart>();
@@ -295,7 +293,7 @@ namespace QueryMultiDb
 
             var sheets = spreadSheet.WorkbookPart.Workbook.GetFirstChild<Sheets>();
             var relationshipId = spreadSheet.WorkbookPart.GetIdOfPart(sheetPart);
-            
+
             uint sheetId = 1;
 
             if (sheets.Elements<Sheet>().Any())
@@ -337,18 +335,29 @@ namespace QueryMultiDb
 
                 sheetData.AppendChild(newRow);
             }
+            
+            AddTablePart(sheetPart, table.Columns, table.Rows.Count, spreadSheet.WorkbookPart);
+        }
+
+        private static void AddTablePart(WorksheetPart sheetPart, TableColumn[] columns, int rowCount, WorkbookPart workBookPart)
+        {
+            var rangeReference = GetXlsTableRangeReference(columns.Length, rowCount);
+
+            var ignoredErrors = new IgnoredErrors(
+                new IgnoredError
+                {
+                    NumberStoredAsText = true,
+                    SequenceOfReferences = new ListValue<StringValue>
+                    {
+                        InnerText = rangeReference
+                    }
+                }
+            );
+
+            // Ignored errors must be added before table parts.
+            sheetPart.Worksheet.Append(ignoredErrors);
 
             var tableDefinitionPart = sheetPart.AddNewPart<TableDefinitionPart>();
-            GenerateTablePartContent(tableDefinitionPart, table.Columns, table.Rows.Count, spreadSheet.WorkbookPart);
-            var tableParts1 = new TableParts {Count = 1U};
-            var tablePart1 = new TablePart {Id = sheetPart.GetIdOfPart(tableDefinitionPart)};
-            tableParts1.Append(tablePart1);
-            sheetPart.Worksheet.Append(tableParts1);
-        }
-        
-        private static void GenerateTablePartContent(TableDefinitionPart part, TableColumn[] columns, int rowCount, WorkbookPart workBookPart)
-        {
-            var rangeReference = GetXlsRangeReference(0, 1, columns.Length - 1, rowCount + 1);
             var autoFilter = new AutoFilter {Reference = rangeReference};
             var tableColumns = new TableColumns {Count = (uint) columns.Length};
             var styleInfo = new TableStyleInfo
@@ -384,7 +393,24 @@ namespace QueryMultiDb
                     });
             }
 
-            part.Table = table;
+            tableDefinitionPart.Table = table;
+
+            var tableParts = new TableParts(
+                new TablePart
+                {
+                    Id = sheetPart.GetIdOfPart(tableDefinitionPart)
+                }
+            )
+            {
+                Count = 1U
+            };
+
+            sheetPart.Worksheet.Append(tableParts);
+        }
+
+        private static string GetXlsTableRangeReference(int columnCount, int rowCount)
+        {
+            return GetXlsRangeReference(0, 1, columnCount - 1, rowCount + 1);
         }
 
         private static string GetXlsRangeReference(int col1, int row1, int col2, int row2)
@@ -411,7 +437,7 @@ namespace QueryMultiDb
 
             return r;
         }
-        
+
         private static Cell GetExcelCell(object item)
         {
             var type = item.GetType();

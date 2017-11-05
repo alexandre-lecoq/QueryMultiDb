@@ -6,9 +6,6 @@ Todo
 Fix
 ---
 
-*) Corriger les problemes de type de données, quand la données en SQL est du texte qui contient un nombre.
-Dans ce cas, excel fait un avertissement "Nombre stocké sous forme de texte".
-
 *) Ajouter des tests.
 
 
@@ -24,6 +21,8 @@ Feature
 
 Other
 -----
+
+*) Verifier erreur de syntaxe vs table inexistante dans requete SQL.
 
 *) Vérifier l'affichage des millisecondes dans le fichier excel.
 
