@@ -459,7 +459,7 @@ namespace QueryMultiDb
 
             if (type == typeof(DBNull))
             {
-                return GetExcelCellAsNull(item);
+                return GetExcelCellAsNull();
             }
 
             return GetExcelCellAsDefault(item);
@@ -476,7 +476,7 @@ namespace QueryMultiDb
             return cell;
         }
 
-        private static Cell GetExcelCellAsNull(object item)
+        private static Cell GetExcelCellAsNull()
         {
             var text = Parameters.Instance.HideNulls ? string.Empty : "NULL";
 
