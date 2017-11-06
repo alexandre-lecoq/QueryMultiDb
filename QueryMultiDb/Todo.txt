@@ -24,8 +24,6 @@ Other
 
 *) Vérifier l'affichage des millisecondes dans le fichier excel.
 
-*) Vérifier le comportement quand commandtimeout est inferrieur au temps necessaire.
-
 *) Problème *mystérieux*. Lorsque executer en ligne de commande (dans powershell ou cmd.exe), ou dans visual studio sans l'option "Enable the Visual Studio hosting process",
 il est impossible de se connecter à un serveur SQL sur un autre domaine en utilisant les informations stoquées dans le "Credential Manager" avec l'outil "cmdkey.exe".
 Pourtant cela fonctionne bien dans Visual Studio lorsque l'option "Enable the Visual Studio hosting process" est activée. De même, cela fonctione aussi dans ssms.
