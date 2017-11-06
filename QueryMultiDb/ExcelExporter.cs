@@ -22,7 +22,7 @@ namespace QueryMultiDb
 
             using (var spreadSheet = SpreadsheetDocument.Create(destination, SpreadsheetDocumentType.Workbook))
             {
-                Logger.Instance.Info($"Created excel file {destination}");
+                Logger.Instance.Info($"Created excel file '{destination}'");
                 var workbookPart = spreadSheet.AddWorkbookPart();
 
                 var wbsp = spreadSheet.WorkbookPart.AddNewPart<WorkbookStylesPart>();

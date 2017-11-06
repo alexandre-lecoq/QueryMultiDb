@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Data.SqlTypes;
 using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -139,10 +140,10 @@ namespace QueryMultiDb
                 }
             }
 
-            Logger.Instance.Info($"SQL connection : {openStopwatch.Elapsed.TotalMilliseconds} milliseconds.",
+            Logger.Instance.Info($"SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.",
                 database.ServerName,
                 database.DatabaseName);
-            Logger.Instance.Info($"SQL query : {queryStopwatch.Elapsed.TotalMilliseconds} milliseconds.",
+            Logger.Instance.Info($"SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.",
                 database.ServerName,
                 database.DatabaseName);
 

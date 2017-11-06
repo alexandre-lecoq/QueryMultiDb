@@ -64,19 +64,19 @@ namespace QueryMultiDb
             queryStopwatch.Start();
             var result = DataReader.GetQueryResults();
             queryStopwatch.Stop();
-            Logger.Instance.Info($"Query results : {queryStopwatch.Elapsed.TotalMilliseconds} milliseconds.");
+            Logger.Instance.Info($"Query results : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
             var mergeStopwatch = new Stopwatch();
             mergeStopwatch.Start();
             var mergedResults = DataMerger.MergeResults(result);
             mergeStopwatch.Stop();
-            Logger.Instance.Info($"Merged results : {mergeStopwatch.Elapsed.TotalMilliseconds} milliseconds.");
+            Logger.Instance.Info($"Merged results : {mergeStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
             var excelGenerationStopwatch = new Stopwatch();
             excelGenerationStopwatch.Start();
             ExcelExporter.Generate(mergedResults);
             excelGenerationStopwatch.Stop();
-            Logger.Instance.Info($"Excel generation : {excelGenerationStopwatch.Elapsed.TotalMilliseconds} milliseconds.");
+            Logger.Instance.Info($"Excel generation : {excelGenerationStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
         }
     }
 }
