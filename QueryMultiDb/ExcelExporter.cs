@@ -462,6 +462,11 @@ namespace QueryMultiDb
                 return GetExcelCellAsNull();
             }
 
+            if (type == typeof(byte[]))
+            {
+                return GetExcelCellAsByteArray(item);
+            }
+
             return GetExcelCellAsDefault(item);
         }
 
@@ -471,6 +476,22 @@ namespace QueryMultiDb
             {
                 DataType = CellValues.String,
                 CellValue = new CellValue(item.ToString())
+            };
+
+            return cell;
+        }
+
+        private static Cell GetExcelCellAsByteArray(object item)
+        {
+            var base64String = Convert.ToBase64String((byte[])item, Base64FormattingOptions.None);
+            var truncatedText = base64String.Length > 32750
+                ? base64String.Substring(0, 32750) + "...<TRUNCATED>"
+                : base64String;
+
+            var cell = new Cell
+            {
+                DataType = CellValues.String,
+                CellValue = new CellValue(truncatedText)
             };
 
             return cell;
