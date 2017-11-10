@@ -6,11 +6,19 @@ Todo
 Fix
 ---
 
+*) Tronquer correctement le texte trop long pour tous les types de colonnes.
+
+*) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
+
 *) Ajouter des tests.
 
 
 Feature
 -------
+
+*) Afficher un indicateur de progression
+
+*) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
 
@@ -21,8 +29,6 @@ Feature
 
 Other
 -----
-
-*) Vérifier l'affichage des millisecondes dans le fichier excel.
 
 *) Problème *mystérieux*. Lorsque executer en ligne de commande (dans powershell ou cmd.exe), ou dans visual studio sans l'option "Enable the Visual Studio hosting process",
 il est impossible de se connecter à un serveur SQL sur un autre domaine en utilisant les informations stoquées dans le "Credential Manager" avec l'outil "cmdkey.exe".

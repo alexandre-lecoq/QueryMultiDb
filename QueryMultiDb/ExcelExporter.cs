@@ -311,7 +311,9 @@ namespace QueryMultiDb
 
             var headerRow = new Row();
 
-            foreach (var column in table.Columns)
+            var excelColumnSet = GetExcelColumnSet(table.Columns);
+
+            foreach (var column in excelColumnSet)
             {
                 var cell = new Cell
                 {
@@ -327,7 +329,7 @@ namespace QueryMultiDb
             {
                 var newRow = new Row();
 
-                for (var columnIndex = 0; columnIndex < table.Columns.Length; columnIndex++)
+                for (var columnIndex = 0; columnIndex < excelColumnSet.Length; columnIndex++)
                 {
                     var cell = GetExcelCell(tableRow.ItemArray[columnIndex]);
                     newRow.AppendChild(cell);
@@ -336,7 +338,48 @@ namespace QueryMultiDb
                 sheetData.AppendChild(newRow);
             }
             
-            AddTablePart(sheetPart, table.Columns, table.Rows.Count, spreadSheet.WorkbookPart);
+            AddTablePart(sheetPart, excelColumnSet, table.Rows.Count, spreadSheet.WorkbookPart);
+        }
+
+        private static TableColumn[] GetExcelColumnSet(TableColumn[] tableColumns)
+        {
+            var columnNames = new string[tableColumns.Length];
+
+            for (var i = 0; i < tableColumns.Length; i++)
+            {
+                var columnName = string.IsNullOrEmpty(tableColumns[i].ColumnName) ? "Column" : tableColumns[i].ColumnName;
+                columnNames[i] = columnName;
+            }
+            
+            var nameCounts = new Dictionary<string, int>();
+
+            for (var i = 0; i < tableColumns.Length; i++)
+            {
+                var columnName = columnNames[i];
+
+                if (nameCounts.ContainsKey(columnName))
+                {
+                    nameCounts[columnName]++;
+                }
+                else
+                {
+                    nameCounts.Add(columnName, 1);
+                }
+
+                if (nameCounts[columnName] > 1)
+                {
+                    columnNames[i] += nameCounts[columnName];
+                }
+            }
+
+            var excelColumnSet = new TableColumn[tableColumns.Length];
+
+            for (var i = 0; i < tableColumns.Length; i++)
+            {
+                excelColumnSet[i] = new TableColumn(columnNames[i], tableColumns[i].DataType);
+            }
+
+            return excelColumnSet;
         }
 
         private static void AddTablePart(WorksheetPart sheetPart, TableColumn[] columns, int rowCount, WorkbookPart workBookPart)
