@@ -515,10 +515,12 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsDefault(object item)
         {
+            var truncatedText = TruncateTextForExcelCell(item.ToString());
+
             var cell = new Cell
             {
                 DataType = CellValues.String,
-                CellValue = new CellValue(item.ToString())
+                CellValue = new CellValue(truncatedText)
             };
 
             return cell;
@@ -527,9 +529,7 @@ namespace QueryMultiDb
         private static Cell GetExcelCellAsByteArray(object item)
         {
             var base64String = Convert.ToBase64String((byte[])item, Base64FormattingOptions.None);
-            var truncatedText = base64String.Length > 32750
-                ? base64String.Substring(0, 32750) + "...<TRUNCATED>"
-                : base64String;
+            var truncatedText = TruncateTextForExcelCell(base64String);
 
             var cell = new Cell
             {
@@ -590,6 +590,17 @@ namespace QueryMultiDb
             };
 
             return cell;
+        }
+
+        private static string TruncateTextForExcelCell(string base64String)
+        {
+            const int maximumStringLength = 32750;
+
+            var truncatedText = base64String.Length > maximumStringLength
+                ? base64String.Substring(0, maximumStringLength) + "...<TRUNCATED>"
+                : base64String;
+
+            return truncatedText;
         }
     }
 }

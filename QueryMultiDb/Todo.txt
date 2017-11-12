@@ -6,8 +6,6 @@ Todo
 Fix
 ---
 
-*) Tronquer correctement le texte trop long pour tous les types de colonnes.
-
 *) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 
 *) Ajouter des tests.
