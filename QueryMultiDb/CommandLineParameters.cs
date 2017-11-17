@@ -57,5 +57,8 @@ namespace QueryMultiDb
 
         [Option(HelpText = "Hides NULL values by displaying them as empty.", Default = false)]
         public bool HideNulls { get; set; }
+
+        [Option(HelpText = "Reports progress on standard error output.", Default = false)]
+        public bool Progress { get; set; }
     }
 }

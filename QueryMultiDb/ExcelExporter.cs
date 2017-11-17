@@ -234,7 +234,8 @@ namespace QueryMultiDb
                 CreateParameterRow("Quiet", parameters.Quiet),
                 CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
                 CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
-                CreateParameterRow("HideNulls", parameters.HideNulls)
+                CreateParameterRow("HideNulls", parameters.HideNulls),
+                CreateParameterRow("Progress", parameters.Progress)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows);

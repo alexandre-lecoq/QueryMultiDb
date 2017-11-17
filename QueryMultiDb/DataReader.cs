@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Data.SqlTypes;
 using System.Diagnostics;
 using System.Globalization;
+using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -19,11 +19,14 @@ namespace QueryMultiDb
         {
             var resultSets = new List<ExecutionResult>();
 
+            var progressReporter = new ProgressReporter("datareader", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
+
             if (Parameters.Instance.Sequential)
             {
                 foreach (var database in Parameters.Instance.Targets)
                 {
                     var result = QueryDatabase(database);
+                    progressReporter.Increment();
 
                     if (result == null)
                     {
@@ -40,6 +43,7 @@ namespace QueryMultiDb
                 Parallel.ForEach(Parameters.Instance.Targets, options, (database) =>
                 {
                     var result = QueryDatabase(database);
+                    progressReporter.Increment();
 
                     if (result == null)
                     {
@@ -52,6 +56,8 @@ namespace QueryMultiDb
                     }
                 });
             }
+
+            progressReporter.Done();
 
             Logger.Instance.Info($"Maximum concurrent queries : {_maxConcurrentExecutingQueries} queries.");
 

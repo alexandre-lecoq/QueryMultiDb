@@ -14,8 +14,6 @@ Fix
 Feature
 -------
 
-*) Afficher un indicateur de progression
-
 *) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
