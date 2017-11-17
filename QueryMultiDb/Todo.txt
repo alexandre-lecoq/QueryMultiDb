@@ -26,7 +26,7 @@ Feature
 Other
 -----
 
-*) Problème *mystérieux*. Lorsque executer en ligne de commande (dans powershell ou cmd.exe), ou dans visual studio sans l'option "Enable the Visual Studio hosting process",
+*) Problème *mystérieux*. Lorsque executé en ligne de commande (dans powershell ou cmd.exe), ou dans visual studio sans l'option "Enable the Visual Studio hosting process",
 il est impossible de se connecter à un serveur SQL sur un autre domaine en utilisant les informations stoquées dans le "Credential Manager" avec l'outil "cmdkey.exe".
 Pourtant cela fonctionne bien dans Visual Studio lorsque l'option "Enable the Visual Studio hosting process" est activée. De même, cela fonctione aussi dans ssms.
 Impossible de comprendre pourquoi, ni de trouver comment résoudre le problème. Il faut donc garder ce point pour documenter le problème, ou bien documenter la solution.
