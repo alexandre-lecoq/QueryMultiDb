@@ -10,23 +10,21 @@ namespace QueryMultiDb
     {
         public static int Main(string[] args)
         {
+            SetCulture();
+
+            var parserResult = Parser.Default.ParseArguments<CommandLineParameters>(args);
+
+            if (parserResult.Tag != ParserResultType.Parsed)
+            {
+                return -1;
+            }
+
+            var parsedResult = (Parsed<CommandLineParameters>)parserResult;
+            // This must be set very early to be usable at any time.
+            Parameters.Instance = new Parameters(parsedResult.Value);
+
             try
             {
-                CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
-                CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
-                Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
-                Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
-
-                var parserResult = Parser.Default.ParseArguments<CommandLineParameters>(args);
-
-                if (parserResult.Tag != ParserResultType.Parsed)
-                {
-                    return -1;
-                }
-
-                var parsedResult = (Parsed<CommandLineParameters>) parserResult;
-                Parameters.Instance = new Parameters(parsedResult.Value);
-
                 if (Parameters.Instance.StartKeyPress)
                 {
                     Console.WriteLine("Press a key to start...");
@@ -56,6 +54,14 @@ namespace QueryMultiDb
                     Console.ReadKey();
                 }
             }
+        }
+
+        private static void SetCulture()
+        {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentUICulture = CultureInfo.InvariantCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
         }
 
         private static void DoIt()
