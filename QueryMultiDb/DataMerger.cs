@@ -17,9 +17,17 @@ namespace QueryMultiDb
                 return new List<Table>(0);
             }
 
-            var tableCounts = result.Select(executionResult => executionResult.TableSet.Count).ToList();
-            var maxTableCount = tableCounts.Max();
-            var minTableCount = tableCounts.Min();
+            var nullTableSetsResults = result.Where(executionResult => executionResult.TableSet == null).ToList();
+
+            foreach(var executionResult in nullTableSetsResults)
+            {
+                Logger.Instance.Warn($"Execution reult for {executionResult.DatabaseName} in {executionResult.ServerName} contains a null table set.");
+            }
+
+            var tableCounts = result.Where(executionResult => executionResult.TableSet != null).Select(executionResult => executionResult.TableSet.Count).ToList();
+
+            var maxTableCount = tableCounts.Count != 0 ? tableCounts.Max() : 0;
+            var minTableCount = tableCounts.Count != 0 ? tableCounts.Min() : 0;
 
             if (minTableCount != maxTableCount)
             {
