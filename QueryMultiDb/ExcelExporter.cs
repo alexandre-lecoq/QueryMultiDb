@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
@@ -593,15 +594,28 @@ namespace QueryMultiDb
             return cell;
         }
 
-        private static string TruncateTextForExcelCell(string base64String)
+        private static string TruncateTextForExcelCell(string inputString)
         {
-            const int maximumStringLength = 32750;
+            const int maximumExcelCellStringLength = 32750;
 
-            var truncatedText = base64String.Length > maximumStringLength
-                ? base64String.Substring(0, maximumStringLength) + "...<TRUNCATED>"
-                : base64String;
+            var truncateLength = Math.Min(inputString.Length, maximumExcelCellStringLength);
+            var builder = new StringBuilder(inputString, 0, truncateLength, truncateLength + 32);
 
-            return truncatedText;
+            if (inputString.Length > builder.Length)
+            {
+                builder.Append("...<TRUNCATED>");
+            }
+
+            builder
+                .Replace("\x00", "").Replace("\x01", "").Replace("\x02", "").Replace("\x03", "").Replace("\x04", "")
+                .Replace("\x05", "").Replace("\x06", "").Replace("\x07", "").Replace("\x08", "").Replace("\x09", "")
+                .Replace("\x0A", "").Replace("\x0B", "").Replace("\x0C", "").Replace("\x0D", "").Replace("\x0E", "")
+                .Replace("\x0F", "").Replace("\x10", "").Replace("\x11", "").Replace("\x12", "").Replace("\x13", "")
+                .Replace("\x14", "").Replace("\x15", "").Replace("\x16", "").Replace("\x17", "").Replace("\x18", "")
+                .Replace("\x19", "").Replace("\x1A", "").Replace("\x1B", "").Replace("\x1C", "").Replace("\x1D", "")
+                .Replace("\x1E", "").Replace("\x1F", "");
+
+            return builder.ToString();
         }
     }
 }
