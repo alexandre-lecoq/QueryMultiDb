@@ -52,8 +52,8 @@ namespace QueryMultiDb
 
             var columns1List = columns1.ToList();
             var columns2List = columns2.ToList();
-            
-            for (var i = columns2List.Count - 1; i >= 0 ; i--)
+
+            for (var i = columns2List.Count - 1; i >= 0; i--)
             {
                 var tableColumn = columns2List[i];
                 columns2List.RemoveAt(i);
@@ -79,6 +79,26 @@ namespace QueryMultiDb
             }
 
             return true;
+        }
+
+        public static int ComputeHashCode(this TableColumn[] columns)
+        {
+            unchecked
+            {
+                if (columns == null)
+                {
+                    return 0;
+                }
+
+                var hash = 199;
+
+                foreach (var element in columns)
+                {
+                    hash = hash * 397 ^ element.GetHashCode();
+                }
+
+                return hash;
+            }
         }
     }
 }

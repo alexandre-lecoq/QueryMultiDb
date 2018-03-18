@@ -6,13 +6,25 @@ Todo
 Fix
 ---
 
+*) Corriger les comportement etrange lorsque les timeout sont de 1 secondes, ce qui entraine une absence de résultat mal gérée.
+
+*) Corriger le cas où la fusion des résultats plante car le nombre de table est différent pour différente base de données (différence de structure ou requete dynamique).
+	On devrait probablement avoir 2 DataMerger, 1 strict qui n'accepte aucun ecart, et un intelligente qui essaye de deviner le meilleur comportement à suivre.
+
 *) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 
 *) Ajouter des tests.
 
+*) More method parameter checking.
+
+*) Corriger l'erreur lorsque excel ouvre un fichier qui contient un tableau qui a 0 lignes.
 
 Feature
 -------
+
+*) Ajouter progression de la generation du fichier excel.
+
+*) Ajouter progression de l'ecriture du fichier excel.
 
 *) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
 
@@ -21,6 +33,26 @@ Feature
 *) Possibilité d'ajouter des colonnes extra par chaque base de données via le fichier de cibles.
 
 *) Ajuster la largeur des colonnes dans le fichier Excel.
+
+*) Ajouter un parametre pour supprimer _servername.
+
+*) Ajouter un parametre pour supprimer _databasename.
+
+*) Ajouter un parametre pour supprimer l'onglet "Logs".
+
+*) Ajouter un parametre pour supprimer l'onglet "Parameters".
+
+*) Ajouter un parametre pour choisir la couleur des valeurs "NULL".
+
+*) Ajouter un parametre pour choisir le nom des onglets (en remplacement de SheetX), par exemple --sheetlabels="nom1,nom2,nom3".
+
+*) Enregistrer les messages du server SQL généré par l'execution de la requete.
+
+*) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1'; 
+
+*) Ajouter une prévalidation de la requete sur une base en utilisant SET PARSEONLY ON; SET PARSEONLY OFF;
+
+*) Logger @@SPID
 
 
 Other

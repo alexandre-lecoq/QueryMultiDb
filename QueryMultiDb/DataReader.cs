@@ -118,12 +118,11 @@ namespace QueryMultiDb
 
                         using (var reader = command.ExecuteReader())
                         {
-                            result = GetExecutionResult(reader, database);
+                            result = GetExecutionResult(connection, reader, database);
                         }
                     }
-
+                    
                     queryStopwatch.Stop();
-
                     connection.Close();
                 }
             }
@@ -156,7 +155,7 @@ namespace QueryMultiDb
             return result;
         }
 
-        private static ExecutionResult GetExecutionResult(SqlDataReader reader, Database database)
+        private static ExecutionResult GetExecutionResult(SqlConnection connection, SqlDataReader reader, Database database)
         {
             if (reader == null)
             {
@@ -172,6 +171,16 @@ namespace QueryMultiDb
             {
                 throw new ArgumentNullException(nameof(database));
             }
+
+            var infoMessageRows = new List<TableRow>();
+
+            // XXX : connection.FireInfoMessageEventOnUserErrors = true;
+            SqlInfoMessageEventHandler sqlInfoMessageEventHandler = (sender, arg) =>
+            {
+                ConnectionOnInfoMessage(infoMessageRows, arg);
+            };
+
+            connection.InfoMessage += sqlInfoMessageEventHandler;
 
             var tableSet = new List<Table>();
 
@@ -216,9 +225,37 @@ namespace QueryMultiDb
                     database.DatabaseName);
             }
 
+            var infoMessageColumns = new TableColumn[6];
+            infoMessageColumns[0] = new TableColumn("Class", typeof(string));
+            infoMessageColumns[1] = new TableColumn("Number", typeof(string));
+            infoMessageColumns[2] = new TableColumn("State", typeof(string));
+            infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
+            infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
+            infoMessageColumns[5] = new TableColumn("Message", typeof(string));
+            var informationMessageTable = new Table(Table.InformationMessagesId, infoMessageColumns, infoMessageRows);
+            tableSet.Add(informationMessageTable);
+
             var result = new ExecutionResult(database.ServerName, database.DatabaseName, tableSet);
 
+            connection.InfoMessage -= sqlInfoMessageEventHandler;
+
             return result;
+        }
+        
+        private static void ConnectionOnInfoMessage(ICollection<TableRow> infoMessageRows, SqlInfoMessageEventArgs sqlInfoMessageEventArgs)
+        {
+            foreach (SqlError error in sqlInfoMessageEventArgs.Errors)
+            {
+                var items = new object[6];
+                items[0] = error.Class;
+                items[1] = error.Number;
+                items[2] = error.State;
+                items[3] = error.Procedure;
+                items[4] = error.LineNumber;
+                items[5] = error.Message;
+                var row = new TableRow(items);
+                infoMessageRows.Add(row);
+            }
         }
     }
 }

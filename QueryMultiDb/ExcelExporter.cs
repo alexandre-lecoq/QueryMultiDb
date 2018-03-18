@@ -485,6 +485,11 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCell(object item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item), "Parameter cannot be null.");
+            }
+
             var type = item.GetType();
 
             if (type == typeof(bool))

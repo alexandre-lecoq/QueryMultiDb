@@ -45,8 +45,9 @@ namespace QueryMultiDb
         {
             unchecked
             {
-                return ((ColumnName != null ? ColumnName.GetHashCode() : 0) * 397) ^
-                       (DataType != null ? DataType.GetHashCode() : 0);
+                var hash = ((ColumnName != null ? ColumnName.GetHashCode() : 0) * 397) ^
+                           (DataType != null ? DataType.GetHashCode() : 0);
+                return hash;
             }
         }
 
