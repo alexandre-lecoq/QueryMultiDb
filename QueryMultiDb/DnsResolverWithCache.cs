@@ -2,11 +2,13 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using NLog;
 
 namespace QueryMultiDb
 {
     public class DnsResolverWithCache
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private readonly ConcurrentDictionary<string,IPAddress> _ipAddressCache;
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1810:InitializeReferenceTypeStaticFieldsInline", Justification = "Suppreses beforefieldinit in static singleton.")]
@@ -35,7 +37,7 @@ namespace QueryMultiDb
         
         private static IPAddress InternalResolve(string hostName)
         {
-            Logger.Instance.Info($"Resolving host '{hostName}' not in cache.");
+            Logger.Info($"Resolving host '{hostName}' not in cache.");
 
             IPAddress address;
 
@@ -69,13 +71,13 @@ namespace QueryMultiDb
             {
                 var hostEntry = Dns.GetHostEntry(hostName);
                 var addressCount = hostEntry.AddressList.Length;
-                Logger.Instance.Info($"Found {addressCount} address for host.");
+                Logger.Info($"Found {addressCount} address for host.");
 
                 return addressCount > 0 ? hostEntry.AddressList[0] : null;
             }
             catch (SocketException exp)
             {
-                Logger.Instance.Warn($"No address found for host '{hostName}' in DNS.", exp);
+                Logger.Warn($"No address found for host '{hostName}' in DNS.", exp);
                 return null;
             }
         }

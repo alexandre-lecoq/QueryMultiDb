@@ -98,8 +98,6 @@
     <Compile Include="DnsResolverWithCache.cs" />
     <Compile Include="ExcelExporter.cs" />
     <Compile Include="ExecutionResult.cs" />
-    <Compile Include="Log.cs" />
-    <Compile Include="Logger.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressReporter.cs" />
@@ -109,10 +107,14 @@
     <Compile Include="TableColumn.cs" />
     <Compile Include="TableColumnArrayExtensions.cs" />
     <Compile Include="TableRow.cs" />
+    <Compile Include="TableTarget.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="NLog.config" />
+    <None Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

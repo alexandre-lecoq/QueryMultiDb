@@ -6,11 +6,13 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using NLog;
 
 namespace QueryMultiDb
 {
     public static class DataReader
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         private static int _concurrentExecutingQueries;
         private static int _maxConcurrentExecutingQueries;
         private static readonly object ConcurrentExecutionLock = new object();
@@ -59,7 +61,7 @@ namespace QueryMultiDb
 
             progressReporter.Done();
 
-            Logger.Instance.Info($"Maximum concurrent queries : {_maxConcurrentExecutingQueries} queries.");
+            Logger.Info($"Maximum concurrent queries : {_maxConcurrentExecutingQueries} queries.");
 
             return resultSets;
         }
@@ -128,11 +130,11 @@ namespace QueryMultiDb
             }
             catch (SqlException ex)
             {
-                Logger.Instance.Error(ex.Message, ex, database.ServerName, database.DatabaseName);
+                Logger.Error(ex, $"{database.ServerName} {database.DatabaseName} {ex.Message}");
             }
             catch (Exception ex)
             {
-                Logger.Instance.Error(ex.Message, ex, database.ServerName, database.DatabaseName);
+                Logger.Error(ex, $"{database.ServerName} {database.DatabaseName} {ex.Message}");
             }
             finally
             {
@@ -145,12 +147,8 @@ namespace QueryMultiDb
                 }
             }
 
-            Logger.Instance.Info($"SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.",
-                database.ServerName,
-                database.DatabaseName);
-            Logger.Instance.Info($"SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.",
-                database.ServerName,
-                database.DatabaseName);
+            Logger.Info($"{database.ServerName} {database.DatabaseName} SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Info($"{database.ServerName} {database.DatabaseName} SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
             return result;
         }
@@ -210,9 +208,7 @@ namespace QueryMultiDb
                 var table = new Table(columns, rows);
                 tableSet.Add(table);
 
-                Logger.Instance.Info($"Rows in table : {table.Rows.Count}", 
-                    database.ServerName,
-                    database.DatabaseName);
+                Logger.Info($"{database.ServerName} {database.DatabaseName} Rows in table : {table.Rows.Count}");
             } while (reader.NextResult());
 
             reader.Close();
@@ -220,9 +216,7 @@ namespace QueryMultiDb
             // If the number of records affected is -1, it means it is a SELECT statement.
             if (reader.RecordsAffected != -1)
             {
-                Logger.Instance.Info($"Records affected by query : {reader.RecordsAffected}", 
-                    database.ServerName,
-                    database.DatabaseName);
+                Logger.Info($"{database.ServerName} {database.DatabaseName} Records affected by query : {reader.RecordsAffected}");
             }
 
             var infoMessageColumns = new TableColumn[6];

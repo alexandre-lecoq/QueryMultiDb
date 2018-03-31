@@ -1,10 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using NLog;
 
 namespace QueryMultiDb
 {
     public static class DataMerger
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static ICollection<Table> MergeResults(ICollection<ExecutionResult> result)
         {
             if (result == null)
@@ -21,7 +24,7 @@ namespace QueryMultiDb
 
             foreach(var executionResult in nullTableSetsResults)
             {
-                Logger.Instance.Warn($"Execution reult for {executionResult.DatabaseName} in {executionResult.ServerName} contains a null table set.");
+                Logger.Warn($"Execution reult for {executionResult.DatabaseName} in {executionResult.ServerName} contains a null table set.");
             }
 
             var tableCounts = result.Where(executionResult => executionResult.TableSet != null).Select(executionResult => executionResult.TableSet.Count).ToList();
@@ -31,7 +34,7 @@ namespace QueryMultiDb
 
             if (minTableCount != maxTableCount)
             {
-                Logger.Instance.Warn($"Executions yielded different number of tables. Minimum : {minTableCount} ; Maximum : {maxTableCount}");
+                Logger.Warn($"Executions yielded different number of tables. Minimum : {minTableCount} ; Maximum : {maxTableCount}");
             }
 
             var tableSet = new List<Table>(maxTableCount);
@@ -61,7 +64,7 @@ namespace QueryMultiDb
                 }
                 else
                 {
-                    Logger.Instance.Error($"No column set could be computed for table set {tableIndex} ; Table will be skipped.");
+                    Logger.Error($"No column set could be computed for table set {tableIndex} ; Table will be skipped.");
                 }
             }
 
@@ -112,7 +115,7 @@ namespace QueryMultiDb
                 {
                     if (!sourceTable.Columns.IsIdentical(previousColumns))
                     {
-                        Logger.Instance.Error("Not all column sets are identical.");
+                        Logger.Error("Not all column sets are identical.");
                         return null;
                     }
                 }

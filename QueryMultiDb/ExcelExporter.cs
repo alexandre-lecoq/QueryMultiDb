@@ -5,6 +5,8 @@ using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using NLog;
+using NLog.Targets.Wrappers;
 
 // ReSharper disable PossiblyMistakenUseOfParamsMethod
 
@@ -12,6 +14,8 @@ namespace QueryMultiDb
 {
     public static class ExcelExporter
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public static void Generate(ICollection<Table> tables)
         {
             if (tables == null)
@@ -23,7 +27,7 @@ namespace QueryMultiDb
 
             using (var spreadSheet = SpreadsheetDocument.Create(destination, SpreadsheetDocumentType.Workbook))
             {
-                Logger.Instance.Info($"Created excel file '{destination}'");
+                Logger.Info($"Created excel file '{destination}'");
                 var workbookPart = spreadSheet.AddWorkbookPart();
 
                 var wbsp = spreadSheet.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -37,18 +41,20 @@ namespace QueryMultiDb
 
                 foreach (var table in tables)
                 {
-                    Logger.Instance.Info("Adding new excel sheet.");
+                    Logger.Info("Adding new excel sheet.");
                     AddSheet(spreadSheet, table);
                 }
 
-                var logTable = LogsToTable(Logger.Instance.Logs);
+                var flushedTableTarget = LogManager.Configuration.FindTargetByName<AutoFlushTargetWrapper>("flushedTableTarget");
+                var target = flushedTableTarget.WrappedTarget as TableTarget;
+                var logTable = target.Logs;
                 AddSheet(spreadSheet, logTable, "Logs");
 
                 var parameterTable = ParametersToTable(Parameters.Instance);
                 AddSheet(spreadSheet, parameterTable, "Parameters");
             }
 
-            Logger.Instance.Info("Excel file closed after generation.");
+            Logger.Info("Excel file closed after generation.");
         }
 
         private static Stylesheet CreateStylesheet()
@@ -252,41 +258,7 @@ namespace QueryMultiDb
             var tableRow = new TableRow(items);
             return tableRow;
         }
-
-        private static Table LogsToTable(ICollection<Log> logs)
-        {
-            var logColumns = new TableColumn[8];
-            logColumns[0] = new TableColumn("Id", typeof(int));
-            logColumns[1] = new TableColumn("Date", typeof(string));
-            logColumns[2] = new TableColumn("Server", typeof(string));
-            logColumns[3] = new TableColumn("Database", typeof(string));
-            logColumns[4] = new TableColumn("ThreadId", typeof(int));
-            logColumns[5] = new TableColumn("Level", typeof(string));
-            logColumns[6] = new TableColumn("Message", typeof(string));
-            logColumns[7] = new TableColumn("Exception", typeof(string));
-
-            var logRows = new List<TableRow>(logs.Count);
-
-            foreach (var log in logs)
-            {
-                var items = new object[8];
-                items[0] = log.Id;
-                items[1] = log.Date.ToString("o");
-                items[2] = log.Server ?? "";
-                items[3] = log.Database ?? "";
-                items[4] = log.ThreadId;
-                items[5] = log.Level;
-                items[6] = log.Message;
-                items[7] = log.Exception?.ToString() ?? "";
-                var tableRow = new TableRow(items);
-                logRows.Add(tableRow);
-            }
-
-            var logTable = new Table(logColumns, logRows);
-
-            return logTable;
-        }
-
+        
         private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName = null)
         {
             var sheetPart = spreadSheet.WorkbookPart.AddNewPart<WorksheetPart>();
