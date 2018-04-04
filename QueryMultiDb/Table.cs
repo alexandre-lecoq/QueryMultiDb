@@ -15,14 +15,16 @@ namespace QueryMultiDb
     public struct Table : IEquatable<Table>
     {
         public const string InformationMessagesId = "__Information_Messages__";
+        public const string LogsId = "__Logs__";
+        public const string CommandLineParametersId = "__Command_Line_Parameters__";
 
         public TableColumn[] Columns { get; }
 
         public ICollection<TableRow> Rows { get; }
 
         public string Id { get; }
-
-        public Table(TableColumn[] columns, ICollection<TableRow> rows)
+        
+        public Table(TableColumn[] columns, ICollection<TableRow> rows, string id = null)
         {
             if (columns == null)
             {
@@ -34,30 +36,17 @@ namespace QueryMultiDb
                 throw new ArgumentNullException(nameof(rows), "Parameter cannot be null.");
             }
 
-            Columns = columns;
-            Rows = rows;
-            var columnSetHash = columns.Select(tableColumn => tableColumn.GetHashCode()).Aggregate(0, (current, columnHash) => current ^ columnHash);
-            Id = columnSetHash.ToString();
-        }
-
-        public Table(string id, TableColumn[] columns, ICollection<TableRow> rows)
-        {
-            if (id == null)
+            if (id != null)
             {
-                throw new ArgumentNullException(nameof(id), "Parameter cannot be null.");
+                Id = id;
+            }
+            else
+            {
+                var columnSetHash = columns.Select(tableColumn => tableColumn.GetHashCode())
+                    .Aggregate(0, (current, columnHash) => current ^ columnHash);
+                Id = columnSetHash.ToString();
             }
 
-            if (columns == null)
-            {
-                throw new ArgumentNullException(nameof(columns), "Parameter cannot be null.");
-            }
-
-            if (rows == null)
-            {
-                throw new ArgumentNullException(nameof(rows), "Parameter cannot be null.");
-            }
-
-            Id = id;
             Columns = columns;
             Rows = rows;
         }
@@ -94,6 +83,30 @@ namespace QueryMultiDb
         public static bool operator !=(Table left, Table right)
         {
             return !left.Equals(right);
+        }
+
+        public bool HasIdenticalColumns(Table otherTable)
+        {
+            var thisColumns = this.Columns;
+            var otherColumns = otherTable.Columns;
+
+            if (thisColumns.Length != otherColumns.Length)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < thisColumns.Length; i++)
+            {
+                var thisColumn = thisColumns[i];
+                var otherColumn = otherColumns[i];
+
+                if (thisColumn != otherColumn)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

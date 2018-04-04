@@ -26,5 +26,38 @@ namespace QueryMultiDb
             return
                 $"ServerName = \"{ServerName}\" ; DatabaseName = \"{DatabaseName}\" ; Total row count = {totalRowCount} ; Table count = {tableCount}";
         }
+
+        public bool HasIdenticalTableAndColumns(ExecutionResult other)
+        {
+            if (this.TableSet == null && other.TableSet == null)
+            {
+                return true;
+            }
+
+            if (this.TableSet == null || other.TableSet == null)
+            {
+                return false;
+            }
+ 
+            if (this.TableSet.Count != other.TableSet.Count)
+            {
+                return false;
+            }
+
+            for (var i = 0; i < this.TableSet.Count; i++)
+            {
+                var thisTable = this.TableSet.ElementAt(i);
+                var otherTable = other.TableSet.ElementAt(i);
+
+                var isIdentical = thisTable.HasIdenticalColumns(otherTable);
+
+                if (!isIdentical)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
     }
 }

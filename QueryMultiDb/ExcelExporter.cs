@@ -42,7 +42,8 @@ namespace QueryMultiDb
                 foreach (var table in tables)
                 {
                     Logger.Info("Adding new excel sheet.");
-                    AddSheet(spreadSheet, table);
+                    var sheetName = GetSheetNameFromTableId(table.Id);
+                    AddSheet(spreadSheet, table, sheetName);
                 }
 
                 var flushedTableTarget = LogManager.Configuration.FindTargetByName<AutoFlushTargetWrapper>("flushedTableTarget");
@@ -61,6 +62,18 @@ namespace QueryMultiDb
             }
 
             Logger.Info("Excel file closed after generation.");
+        }
+
+        private static string GetSheetNameFromTableId(string tableId)
+        {
+            switch (tableId)
+            {
+                case Table.InformationMessagesId:
+                    return "Information messages";
+
+                default:
+                    return null;
+            }
         }
 
         private static Stylesheet CreateStylesheet()
@@ -251,7 +264,7 @@ namespace QueryMultiDb
                 CreateParameterRow("Progress", parameters.Progress)
             };
 
-            var parameterTable = new Table(parameterColumns, parameterRows);
+            var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);
 
             return parameterTable;
         }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using NLog;
 
@@ -8,67 +9,96 @@ namespace QueryMultiDb
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        /// <summary>
+        /// Merges execution results into a collection of tables.
+        /// </summary>
+        /// <param name="result">A collection of execetion results.</param>
+        /// <returns>The collection of tables.</returns>
+        /// <remarks>
+        /// If the results cannot be merged, an empty collection of tables should be returned and every issue should be logged.
+        /// </remarks>
         public static ICollection<Table> MergeResults(ICollection<ExecutionResult> result)
         {
             if (result == null)
             {
-                return null;
+                throw new ArgumentNullException(nameof(result), "Parameter cannot be null.");
             }
 
             if (result.Count == 0)
             {
+                Logger.Warn("Execution did not yield any results.");
+                Logger.Error("No data will be exported.");
+                return new List<Table>(0);
+            }
+            
+            if (!AllTablesFormatsAreIdentical(result))
+            {
+                Logger.Warn("Not all execution results yielded identical tables.");
                 return new List<Table>(0);
             }
 
-            var nullTableSetsResults = result.Where(executionResult => executionResult.TableSet == null).ToList();
+            WarnAboutMissingTableSets(result);
+            var tableCount = GetFirstResultTableCount(result);
+            var tableSet = new List<Table>(tableCount);
 
-            foreach(var executionResult in nullTableSetsResults)
+            for (var tableIndex = 0; tableIndex < tableCount; tableIndex++)
             {
-                Logger.Warn($"Execution reult for {executionResult.DatabaseName} in {executionResult.ServerName} contains a null table set.");
-            }
+                var builtInColumnSet = new List<TableColumn>(3);
+                builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
 
-            var tableCounts = result.Where(executionResult => executionResult.TableSet != null).Select(executionResult => executionResult.TableSet.Count).ToList();
-
-            var maxTableCount = tableCounts.Count != 0 ? tableCounts.Max() : 0;
-            var minTableCount = tableCounts.Count != 0 ? tableCounts.Min() : 0;
-
-            if (minTableCount != maxTableCount)
-            {
-                Logger.Warn($"Executions yielded different number of tables. Minimum : {minTableCount} ; Maximum : {maxTableCount}");
-            }
-
-            var tableSet = new List<Table>(maxTableCount);
-
-            for (var tableIndex = 0; tableIndex < maxTableCount; tableIndex++)
-            {
-                var computedColumns = FindColumnSet(result, tableIndex);
-
-                if (computedColumns != null)
+                if (Parameters.Instance.IncludeIP)
                 {
-                    var builtInColumnSet = new List<TableColumn>(9);
-                    builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
-
-                    if (Parameters.Instance.IncludeIP)
-                    {
-                        builtInColumnSet.Add(new TableColumn("_ServerIp", typeof(string)));
-                    }
-
-                    builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
-
-                    var destinationColumnSet = new TableColumn[builtInColumnSet.Count + computedColumns.Length];
-                    builtInColumnSet.CopyTo(destinationColumnSet, 0);
-                    computedColumns.CopyTo(destinationColumnSet, builtInColumnSet.Count);
-                    var rows = ComputeRowSet(result, tableIndex);
-                    var destinationTable = new Table(destinationColumnSet, rows);
-                    tableSet.Add(destinationTable);
+                    builtInColumnSet.Add(new TableColumn("_ServerIp", typeof(string)));
                 }
-                else
-                {
-                    Logger.Error($"No column set could be computed for table set {tableIndex} ; Table will be skipped.");
-                }
+
+                builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
+
+                var table = result.ElementAt(0).TableSet.ElementAt(tableIndex);
+                var computedColumns = table.Columns;
+                var destinationColumnSet = new TableColumn[builtInColumnSet.Count + computedColumns.Length];
+                builtInColumnSet.CopyTo(destinationColumnSet, 0);
+                computedColumns.CopyTo(destinationColumnSet, builtInColumnSet.Count);
+                var rows = ComputeRowSet(result, tableIndex);
+                var tableId = table.Id.StartsWith("__") ? table.Id : null;
+                var destinationTable = new Table(destinationColumnSet, rows, tableId);
+                tableSet.Add(destinationTable);
             }
 
             return tableSet;
+        }
+
+        private static int GetFirstResultTableCount(ICollection<ExecutionResult> result)
+        {
+            var executionResultTemplate = result.ElementAt(0);
+            var tableCount = executionResultTemplate.TableSet.Count;
+            return tableCount;
+        }
+
+        private static void WarnAboutMissingTableSets(ICollection<ExecutionResult> result)
+        {
+            var nullTableSetsResults = result.Where(executionResult => executionResult.TableSet == null).ToList();
+
+            foreach (var executionResult in nullTableSetsResults)
+            {
+                Logger.Warn(
+                    $"Execution result for {executionResult.DatabaseName} in {executionResult.ServerName} contains a null table set.");
+            }
+
+            var emptyTableSetsResults = result.Where(executionResult => executionResult.TableSet.Count == 0).ToList();
+
+            foreach (var executionResult in emptyTableSetsResults)
+            {
+                Logger.Warn(
+                    $"Execution result for {executionResult.DatabaseName} in {executionResult.ServerName} contains an empty table set.");
+            }
+        }
+
+        private static bool AllTablesFormatsAreIdentical(ICollection<ExecutionResult> result)
+        {
+            var executionResultTemplate = result.ElementAt(0);
+            var allTablesFormatsAreIdentical = result.All(executionResult => executionResultTemplate.HasIdenticalTableAndColumns(executionResult));
+
+            return allTablesFormatsAreIdentical;
         }
 
         private static ICollection<TableRow> ComputeRowSet(ICollection<ExecutionResult> result, int tableIndex)
@@ -101,29 +131,6 @@ namespace QueryMultiDb
             }
 
             return tableRows;
-        }
-
-        private static TableColumn[] FindColumnSet(IEnumerable<ExecutionResult> result, int tableIndex)
-        {
-            TableColumn[] previousColumns = null;
-
-            foreach (var executionResult in result)
-            {
-                var sourceTable = executionResult.TableSet.ElementAt(tableIndex);
-
-                if (previousColumns != null)
-                {
-                    if (!sourceTable.Columns.IsIdentical(previousColumns))
-                    {
-                        Logger.Error("Not all column sets are identical.");
-                        return null;
-                    }
-                }
-
-                previousColumns = sourceTable.Columns;
-            }
-
-            return previousColumns;
         }
     }
 }

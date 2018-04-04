@@ -20,7 +20,7 @@ namespace QueryMultiDb
             logColumns[5] = new TableColumn("Exception", typeof(string));
 
             _logRows = new List<TableRow>();
-            var logTable = new Table(logColumns, _logRows);
+            var logTable = new Table(logColumns, _logRows, Table.LogsId);
 
             Logs = logTable;
             OptimizeBufferReuse = true;

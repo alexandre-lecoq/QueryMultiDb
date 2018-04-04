@@ -226,7 +226,7 @@ namespace QueryMultiDb
             infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
             infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
             infoMessageColumns[5] = new TableColumn("Message", typeof(string));
-            var informationMessageTable = new Table(Table.InformationMessagesId, infoMessageColumns, infoMessageRows);
+            var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
             tableSet.Add(informationMessageTable);
 
             var result = new ExecutionResult(database.ServerName, database.DatabaseName, tableSet);
