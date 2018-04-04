@@ -9,9 +9,9 @@ namespace QueryMultiDb
 
         public string DatabaseName { get; }
 
-        public ICollection<Table> TableSet { get; }
+        public IList<Table> TableSet { get; }
 
-        public ExecutionResult(string serverName, string databaseName, ICollection<Table> tableSet)
+        public ExecutionResult(string serverName, string databaseName, IList<Table> tableSet)
         {
             ServerName = serverName;
             DatabaseName = databaseName;
@@ -46,8 +46,8 @@ namespace QueryMultiDb
 
             for (var i = 0; i < this.TableSet.Count; i++)
             {
-                var thisTable = this.TableSet.ElementAt(i);
-                var otherTable = other.TableSet.ElementAt(i);
+                var thisTable = this.TableSet[i];
+                var otherTable = other.TableSet[i];
 
                 var isIdentical = thisTable.HasIdenticalColumns(otherTable);
 

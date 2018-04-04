@@ -53,7 +53,7 @@ namespace QueryMultiDb
 
                 builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
 
-                var table = result.ElementAt(0).TableSet.ElementAt(tableIndex);
+                var table = result.First().TableSet[tableIndex];
                 var computedColumns = table.Columns;
                 var destinationColumnSet = new TableColumn[builtInColumnSet.Count + computedColumns.Length];
                 builtInColumnSet.CopyTo(destinationColumnSet, 0);
@@ -69,7 +69,7 @@ namespace QueryMultiDb
 
         private static int GetFirstResultTableCount(ICollection<ExecutionResult> result)
         {
-            var executionResultTemplate = result.ElementAt(0);
+            var executionResultTemplate = result.First();
             var tableCount = executionResultTemplate.TableSet.Count;
             return tableCount;
         }
@@ -95,7 +95,7 @@ namespace QueryMultiDb
 
         private static bool AllTablesFormatsAreIdentical(ICollection<ExecutionResult> result)
         {
-            var executionResultTemplate = result.ElementAt(0);
+            var executionResultTemplate = result.First();
             var allTablesFormatsAreIdentical = result.All(executionResult => executionResultTemplate.HasIdenticalTableAndColumns(executionResult));
 
             return allTablesFormatsAreIdentical;
@@ -107,7 +107,7 @@ namespace QueryMultiDb
 
             foreach (var executionResult in result)
             {
-                var sourceTable = executionResult.TableSet.ElementAt(tableIndex);
+                var sourceTable = executionResult.TableSet[tableIndex];
 
                 foreach (var tableRow in sourceTable.Rows)
                 {
