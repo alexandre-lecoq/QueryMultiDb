@@ -71,13 +71,13 @@ namespace QueryMultiDb
             }
         }
 
-        private static void LogManager_ConfigurationChanged(object sender, NLog.Config.LoggingConfigurationChangedEventArgs e)
+        private static void LogManager_ConfigurationChanged(object sender, LoggingConfigurationChangedEventArgs e)
         {
             ExtendLogConfigurationWithTableTarget();
             Logger.Info("Logger configuration changed.");
         }
 
-        private static void LogManager_ConfigurationReloaded(object sender, NLog.Config.LoggingConfigurationReloadedEventArgs e)
+        private static void LogManager_ConfigurationReloaded(object sender, LoggingConfigurationReloadedEventArgs e)
         {
             ExtendLogConfigurationWithTableTarget();
             Logger.Info("Logger configuration reloaded.");

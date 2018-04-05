@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace QueryMultiDb
@@ -29,24 +30,29 @@ namespace QueryMultiDb
 
         public bool HasIdenticalTableAndColumns(ExecutionResult other)
         {
-            if (this.TableSet == null && other.TableSet == null)
+            if (other == null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            if (TableSet == null && other.TableSet == null)
             {
                 return true;
             }
 
-            if (this.TableSet == null || other.TableSet == null)
+            if (TableSet == null || other.TableSet == null)
             {
                 return false;
             }
  
-            if (this.TableSet.Count != other.TableSet.Count)
+            if (TableSet.Count != other.TableSet.Count)
             {
                 return false;
             }
 
-            for (var i = 0; i < this.TableSet.Count; i++)
+            for (var i = 0; i < TableSet.Count; i++)
             {
-                var thisTable = this.TableSet[i];
+                var thisTable = TableSet[i];
                 var otherTable = other.TableSet[i];
 
                 var isIdentical = thisTable.HasIdenticalColumns(otherTable);

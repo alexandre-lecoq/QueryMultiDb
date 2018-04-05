@@ -87,7 +87,7 @@ namespace QueryMultiDb
 
         public bool HasIdenticalColumns(Table otherTable)
         {
-            var thisColumns = this.Columns;
+            var thisColumns = Columns;
             var otherColumns = otherTable.Columns;
 
             if (thisColumns.Length != otherColumns.Length)

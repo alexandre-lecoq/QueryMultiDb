@@ -59,7 +59,7 @@ namespace QueryMultiDb
                 builtInColumnSet.CopyTo(destinationColumnSet, 0);
                 computedColumns.CopyTo(destinationColumnSet, builtInColumnSet.Count);
                 var rows = ComputeRowSet(result, tableIndex);
-                var tableId = table.Id.StartsWith("__") ? table.Id : null;
+                var tableId = table.Id.StartsWith("__", StringComparison.InvariantCulture) ? table.Id : null;
                 var destinationTable = new Table(destinationColumnSet, rows, tableId);
                 tableSet.Add(destinationTable);
             }

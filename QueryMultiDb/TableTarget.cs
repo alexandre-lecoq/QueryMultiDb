@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using NLog;
 using NLog.Targets;
@@ -35,6 +36,11 @@ namespace QueryMultiDb
 
         protected override void Write(LogEventInfo logEvent)
         {
+            if (logEvent == null)
+            {
+                throw new ArgumentNullException(nameof(logEvent));
+            }
+
             var items = new object[6];
             items[0] = logEvent.SequenceID;
             items[1] = logEvent.TimeStamp.ToString("o");

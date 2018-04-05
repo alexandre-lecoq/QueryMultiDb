@@ -51,7 +51,7 @@ namespace QueryMultiDb
 
                 if (target == null)
                 {
-                    throw new InvalidOperationException("Logger's wrapped table target could not be recovered. It should never happend as this target should be added very early in Program.Main().");
+                    throw new InvalidOperationException("Logger's wrapped table target could not be recovered. It should never happens as this target should be added very early in Program.Main().");
                 }
 
                 var logTable = target.Logs;
