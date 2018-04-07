@@ -105,7 +105,6 @@
     <Compile Include="Shuffler.cs" />
     <Compile Include="Table.cs" />
     <Compile Include="TableColumn.cs" />
-    <Compile Include="TableColumnArrayExtensions.cs" />
     <Compile Include="TableRow.cs" />
     <Compile Include="TableTarget.cs" />
   </ItemGroup>
