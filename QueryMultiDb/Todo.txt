@@ -12,8 +12,6 @@ Fix
 
 *) Ajouter des tests.
 
-*) Corriger l'erreur lorsque excel ouvre un fichier qui contient un tableau qui a 0 lignes.
-
 
 Feature
 -------
