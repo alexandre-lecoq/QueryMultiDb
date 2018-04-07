@@ -12,6 +12,21 @@ namespace QueryMultiDb
 
         public ProgressReporter(string label, int maximumValue, Action<string> reportFunction)
         {
+            if (string.IsNullOrWhiteSpace(label))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(label));
+            }
+
+            if (maximumValue < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(maximumValue));
+            }
+
+            if (reportFunction == null)
+            {
+                throw new ArgumentNullException(nameof(reportFunction));
+            }
+
             _label = label;
             _maximumValue = maximumValue;
             _reportFunction = reportFunction;

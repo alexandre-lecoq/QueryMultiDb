@@ -69,13 +69,34 @@ namespace QueryMultiDb
 
         private static int GetFirstResultTableCount(ICollection<ExecutionResult> result)
         {
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            if (result.Count == 0)
+            {
+                throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
+            }
+
             var executionResultTemplate = result.First();
             var tableCount = executionResultTemplate.TableSet.Count;
+
             return tableCount;
         }
 
         private static void WarnAboutMissingTableSets(ICollection<ExecutionResult> result)
         {
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            if (result.Count == 0)
+            {
+                throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
+            }
+
             var nullTableSetsResults = result.Where(executionResult => executionResult.TableSet == null).ToList();
 
             foreach (var executionResult in nullTableSetsResults)
@@ -95,6 +116,16 @@ namespace QueryMultiDb
 
         private static bool AllTablesFormatsAreIdentical(ICollection<ExecutionResult> result)
         {
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            if (result.Count == 0)
+            {
+                throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
+            }
+
             var executionResultTemplate = result.First();
             var allTablesFormatsAreIdentical = result.All(executionResult => executionResultTemplate.HasIdenticalTableAndColumns(executionResult));
 
@@ -103,6 +134,16 @@ namespace QueryMultiDb
 
         private static ICollection<TableRow> ComputeRowSet(ICollection<ExecutionResult> result, int tableIndex)
         {
+            if (result == null)
+            {
+                throw new ArgumentNullException(nameof(result));
+            }
+
+            if (tableIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(tableIndex));
+            }
+
             var tableRows = new List<TableRow>();
 
             foreach (var executionResult in result)

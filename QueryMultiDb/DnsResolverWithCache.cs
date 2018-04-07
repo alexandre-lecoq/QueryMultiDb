@@ -27,7 +27,7 @@ namespace QueryMultiDb
         {
             if (string.IsNullOrWhiteSpace(hostName))
             {
-                throw new ArgumentNullException(nameof(hostName), "Argument cannot be null or empty or whitespaces.");
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(hostName));
             }
 
             var ipAdress = _ipAddressCache.GetOrAdd(hostName, InternalResolve);
@@ -37,6 +37,11 @@ namespace QueryMultiDb
         
         private static IPAddress InternalResolve(string hostName)
         {
+            if (string.IsNullOrWhiteSpace(hostName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(hostName));
+            }
+
             Logger.Info($"Resolving host '{hostName}' not in cache.");
 
             IPAddress address;
@@ -51,6 +56,11 @@ namespace QueryMultiDb
 
         private static IPAddress LocalHostResolve(string hostName)
         {
+            if (string.IsNullOrWhiteSpace(hostName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(hostName));
+            }
+
             var trimmedName = hostName.Trim();
 
             if (trimmedName == ".")
@@ -67,6 +77,11 @@ namespace QueryMultiDb
 
         private static IPAddress DnsResolve(string hostName)
         {
+            if (string.IsNullOrWhiteSpace(hostName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(hostName));
+            }
+
             try
             {
                 var hostEntry = Dns.GetHostEntry(hostName);

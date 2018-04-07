@@ -1,4 +1,6 @@
-﻿namespace QueryMultiDb
+﻿using System;
+
+namespace QueryMultiDb
 {
     public class Database
     {
@@ -8,6 +10,16 @@
 
         public Database(string serverName, string databaseName)
         {
+            if (string.IsNullOrWhiteSpace(serverName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(serverName));
+            }
+
+            if (string.IsNullOrWhiteSpace(databaseName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(databaseName));
+            }
+
             ServerName = serverName;
             DatabaseName = databaseName;
         }

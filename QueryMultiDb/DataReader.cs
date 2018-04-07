@@ -69,6 +69,11 @@ namespace QueryMultiDb
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities", Justification = "Query string passed from user input on purpose.")]
         private static ExecutionResult QueryDatabase(Database database)
         {
+            if (database == null)
+            {
+                throw new ArgumentNullException(nameof(database));
+            }
+
             var titleAttribute = (AssemblyTitleAttribute) Assembly.GetExecutingAssembly()
                 .GetCustomAttribute(typeof(AssemblyTitleAttribute));
 
@@ -155,6 +160,11 @@ namespace QueryMultiDb
 
         private static ExecutionResult GetExecutionResult(SqlConnection connection, SqlDataReader reader, Database database)
         {
+            if (connection == null)
+            {
+                throw new ArgumentNullException(nameof(connection));
+            }
+
             if (reader == null)
             {
                 throw new ArgumentNullException(nameof(reader));
@@ -238,6 +248,16 @@ namespace QueryMultiDb
         
         private static void ConnectionOnInfoMessage(ICollection<TableRow> infoMessageRows, SqlInfoMessageEventArgs sqlInfoMessageEventArgs)
         {
+            if (infoMessageRows == null)
+            {
+                throw new ArgumentNullException(nameof(infoMessageRows));
+            }
+
+            if (sqlInfoMessageEventArgs == null)
+            {
+                throw new ArgumentNullException(nameof(sqlInfoMessageEventArgs));
+            }
+
             foreach (SqlError error in sqlInfoMessageEventArgs.Errors)
             {
                 var items = new object[6];

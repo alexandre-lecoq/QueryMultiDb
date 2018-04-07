@@ -10,6 +10,16 @@ namespace QueryMultiDb
 
         public TableColumn(string columnName, Type dataType)
         {
+            if (columnName == null)
+            {
+                throw new ArgumentNullException(nameof(columnName));
+            }
+
+            if (dataType == null)
+            {
+                throw new ArgumentNullException(nameof(dataType));
+            }
+
             ColumnName = columnName;
             DataType = dataType;
         }

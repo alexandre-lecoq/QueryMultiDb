@@ -14,6 +14,21 @@ namespace QueryMultiDb
 
         public ExecutionResult(string serverName, string databaseName, IList<Table> tableSet)
         {
+            if (string.IsNullOrWhiteSpace(serverName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(serverName));
+            }
+
+            if (string.IsNullOrWhiteSpace(databaseName))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(databaseName));
+            }
+
+            if (tableSet == null)
+            {
+                throw new ArgumentNullException(nameof(tableSet));
+            }
+
             ServerName = serverName;
             DatabaseName = databaseName;
             TableSet = tableSet;

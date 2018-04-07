@@ -66,6 +66,11 @@ namespace QueryMultiDb
 
         private static string GetSheetNameFromTableId(string tableId)
         {
+            if (string.IsNullOrWhiteSpace(tableId))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(tableId));
+            }
+
             switch (tableId)
             {
                 case Table.InformationMessagesId:
@@ -240,6 +245,11 @@ namespace QueryMultiDb
 
         private static Table ParametersToTable(Parameters parameters)
         {
+            if (parameters == null)
+            {
+                throw new ArgumentNullException(nameof(parameters));
+            }
+
             var parameterColumns = new TableColumn[2];
             parameterColumns[0] = new TableColumn("Parameter", typeof(string));
             parameterColumns[1] = new TableColumn("Value", typeof(string));
@@ -271,15 +281,31 @@ namespace QueryMultiDb
 
         private static TableRow CreateParameterRow(string parameter, object value)
         {
+            if (string.IsNullOrWhiteSpace(parameter))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(parameter));
+            }
+
+            if (value == null)
+            {
+                throw new ArgumentNullException(nameof(value));
+            }
+
             var items = new object[2];
             items[0] = parameter;
             items[1] = value;
             var tableRow = new TableRow(items);
+
             return tableRow;
         }
         
         private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName = null)
         {
+            if (spreadSheet == null)
+            {
+                throw new ArgumentNullException(nameof(spreadSheet));
+            }
+
             var sheetPart = spreadSheet.WorkbookPart.AddNewPart<WorksheetPart>();
             var sheetData = new SheetData();
             sheetPart.Worksheet = new Worksheet(sheetData);
@@ -336,6 +362,11 @@ namespace QueryMultiDb
 
         private static TableColumn[] GetExcelColumnSet(TableColumn[] tableColumns)
         {
+            if (tableColumns == null)
+            {
+                throw new ArgumentNullException(nameof(tableColumns));
+            }
+
             var columnNames = new string[tableColumns.Length];
 
             for (var i = 0; i < tableColumns.Length; i++)
@@ -377,6 +408,26 @@ namespace QueryMultiDb
 
         private static void AddTablePart(WorksheetPart sheetPart, TableColumn[] columns, int rowCount, WorkbookPart workBookPart)
         {
+            if (sheetPart == null)
+            {
+                throw new ArgumentNullException(nameof(sheetPart));
+            }
+
+            if (columns == null)
+            {
+                throw new ArgumentNullException(nameof(columns));
+            }
+
+            if (rowCount < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rowCount));
+            }
+
+            if (workBookPart == null)
+            {
+                throw new ArgumentNullException(nameof(workBookPart));
+            }
+
             var rangeReference = GetXlsTableRangeReference(columns.Length, rowCount);
 
             var ignoredErrors = new IgnoredErrors(
@@ -446,11 +497,41 @@ namespace QueryMultiDb
 
         private static string GetXlsTableRangeReference(int columnCount, int rowCount)
         {
+            if (columnCount < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(columnCount));
+            }
+
+            if (rowCount < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(rowCount));
+            }
+
             return GetXlsRangeReference(0, 1, columnCount - 1, rowCount + 1);
         }
 
         private static string GetXlsRangeReference(int col1, int row1, int col2, int row2)
         {
+            if (col1 < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(col1));
+            }
+
+            if (row1 < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row1));
+            }
+
+            if (col2 < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(col2));
+            }
+
+            if (row2 < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(row2));
+            }
+
             var x = GetXlsCellReference(Math.Min(col1, col2), Math.Min(row1, row2));
             var y = GetXlsCellReference(Math.Max(col1, col2), Math.Max(row1, row2));
 
@@ -464,6 +545,11 @@ namespace QueryMultiDb
 
         private static string GetXlsColumnReference(int colIndex)
         {
+            if (colIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(colIndex));
+            }
+
             var r = string.Empty;
 
             do
@@ -513,6 +599,11 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsDefault(object item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var truncatedText = TruncateTextForExcelCell(item.ToString());
 
             var cell = new Cell
@@ -526,6 +617,11 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsByteArray(object item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var base64String = Convert.ToBase64String((byte[])item, Base64FormattingOptions.None);
             var truncatedText = TruncateTextForExcelCell(base64String);
 
@@ -554,6 +650,11 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsDateTime(object item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var dateTime = (DateTime) item;
 
             var cell = new Cell
@@ -569,6 +670,11 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsInteger(object item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var cell = new Cell
             {
                 DataType = CellValues.Number,
@@ -580,6 +686,11 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsBoolean(object item)
         {
+            if (item == null)
+            {
+                throw new ArgumentNullException(nameof(item));
+            }
+
             var cell = new Cell
             {
                 // XXX : CellValues.String and not CellValues.Boolean because we ouput the boolean as a string value.
@@ -592,6 +703,11 @@ namespace QueryMultiDb
 
         private static string TruncateTextForExcelCell(string inputString)
         {
+            if (inputString == null)
+            {
+                throw new ArgumentNullException(nameof(inputString));
+            }
+
             const int maximumExcelCellStringLength = 32750;
 
             var truncateLength = Math.Min(inputString.Length, maximumExcelCellStringLength);

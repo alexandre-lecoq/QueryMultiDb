@@ -167,6 +167,11 @@ namespace QueryMultiDb
 
         private static IEnumerable<Database> ParseTargets(string parsedResultTargets)
         {
+            if (string.IsNullOrWhiteSpace(parsedResultTargets))
+            {
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(parsedResultTargets));
+            }
+
             var jsonTargets = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonTargets>(parsedResultTargets);
 
             var databaseArray = jsonTargets.DatabaseList.ToArray();
@@ -177,6 +182,11 @@ namespace QueryMultiDb
 
         public static string TargetsToJsonString(IEnumerable<Database> structuredTargets)
         {
+            if (structuredTargets == null)
+            {
+                throw new ArgumentNullException(nameof(structuredTargets));
+            }
+
             var targets = new JsonTargets {DatabaseList = structuredTargets.ToList()};
             var serializeTargets = Newtonsoft.Json.JsonConvert.SerializeObject(targets);
 
