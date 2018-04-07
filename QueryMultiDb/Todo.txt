@@ -8,9 +8,6 @@ Fix
 
 *) Corriger les comportement etrange lorsque les timeout sont de 1 secondes, ce qui entraine une absence de résultat mal gérée.
 
-*) Corriger le cas où la fusion des résultats plante car le nombre de table est différent pour différente base de données (différence de structure ou requete dynamique).
-	On devrait probablement avoir 2 DataMerger, 1 strict qui n'accepte aucun ecart, et un intelligente qui essaye de deviner le meilleur comportement à suivre.
-
 *) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 
 *) Ajouter des tests.
@@ -53,6 +50,8 @@ Feature
 *) Ajouter une prévalidation de la requete sur une base en utilisant SET PARSEONLY ON; SET PARSEONLY OFF;
 
 *) Logger @@SPID
+
+*) Ajouter un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
 
 
 Other
