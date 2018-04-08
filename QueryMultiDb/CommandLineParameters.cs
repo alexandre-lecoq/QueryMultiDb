@@ -47,6 +47,14 @@ namespace QueryMultiDb
         [Option(HelpText = "Show server's IP address.", Default = false)]
         public bool ShowIpAddress { get; set; }
 
+        /// XXX : Issue #42
+        [Option(HelpText = "Show server's name.", Default = false)]
+        public bool ShowServerName { get; set; }
+
+        /// XXX : Issue #42
+        [Option(HelpText = "Show database's name.", Default = false)]
+        public bool ShowDatabaseName { get; set; }
+
         [Option(HelpText = "Do not output information messages to console.", Default = true)]
         public bool Quiet { get; set; }
 

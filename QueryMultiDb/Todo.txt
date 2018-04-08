@@ -26,10 +26,6 @@ Feature
 
 *) Ajuster la largeur des colonnes dans le fichier Excel.
 
-*) Ajouter un parametre pour supprimer _servername.
-
-*) Ajouter un parametre pour supprimer _databasename.
-
 *) Ajouter un parametre pour choisir le nom des onglets (en remplacement de SheetX), par exemple --sheetlabels="nom1,nom2,nom3".
 
 *) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1'; 

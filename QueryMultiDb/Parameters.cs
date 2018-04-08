@@ -30,6 +30,10 @@ namespace QueryMultiDb
 
         public bool ShowIpAddress { get; set; }
 
+        public bool ShowServerName { get; set; }
+
+        public bool ShowDatabaseName { get; set; }
+
         public bool Quiet { get; set; }
         
         public bool StartKeyPress { get; set; }
@@ -163,6 +167,8 @@ namespace QueryMultiDb
             Sequential = parsedResult.Sequential;
             Parallelism = parsedResult.Parallelism;
             ShowIpAddress = parsedResult.ShowIpAddress;
+            ShowServerName = parsedResult.ShowServerName;
+            ShowDatabaseName = parsedResult.ShowDatabaseName;
             Quiet = parsedResult.Quiet;
             StartKeyPress = parsedResult.StartKeyPress;
             StopKeyPress = parsedResult.StopKeyPress;

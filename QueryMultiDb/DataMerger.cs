@@ -44,14 +44,21 @@ namespace QueryMultiDb
             for (var tableIndex = 0; tableIndex < tableCount; tableIndex++)
             {
                 var builtInColumnSet = new List<TableColumn>(3);
-                builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
+
+                if (Parameters.Instance.ShowServerName)
+                {
+                    builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
+                }
 
                 if (Parameters.Instance.ShowIpAddress)
                 {
                     builtInColumnSet.Add(new TableColumn("_ServerIp", typeof(string)));
                 }
 
-                builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
+                if (Parameters.Instance.ShowDatabaseName)
+                {
+                    builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
+                }
 
                 var table = result.First().TableSet[tableIndex];
                 var computedColumns = table.Columns;
@@ -161,7 +168,11 @@ namespace QueryMultiDb
                 foreach (var tableRow in sourceTable.Rows)
                 {
                     var builtInItems = new List<object>(9);
-                    builtInItems.Add(executionResult.ServerName);
+
+                    if (Parameters.Instance.ShowServerName)
+                    {
+                        builtInItems.Add(executionResult.ServerName);
+                    }
 
                     if (Parameters.Instance.ShowIpAddress)
                     {
@@ -169,7 +180,10 @@ namespace QueryMultiDb
                         builtInItems.Add(ip?.ToString() ?? string.Empty);
                     }
 
-                    builtInItems.Add(executionResult.DatabaseName);
+                    if (Parameters.Instance.ShowDatabaseName)
+                    {
+                        builtInItems.Add(executionResult.DatabaseName);
+                    }
 
                     var items = new object[builtInItems.Count + tableRow.ItemArray.Length];
                     builtInItems.CopyTo(items, 0);
