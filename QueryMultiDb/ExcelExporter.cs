@@ -290,7 +290,7 @@ namespace QueryMultiDb
                 CreateParameterRow("Quiet", parameters.Quiet),
                 CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
                 CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
-                CreateParameterRow("HideNulls", parameters.HideNulls),
+                CreateParameterRow("ShowNulls", parameters.ShowNulls),
                 CreateParameterRow("Progress", parameters.Progress),
                 CreateParameterRow("NullsColor", parameters.NullsColor)
             };
@@ -661,7 +661,7 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCellAsNull()
         {
-            var text = Parameters.Instance.HideNulls ? string.Empty : "NULL";
+            var text = Parameters.Instance.ShowNulls ? "NULL" : string.Empty;
 
             var cell = new Cell
             {

@@ -36,7 +36,7 @@ namespace QueryMultiDb
 
         public bool StopKeyPress { get; set; }
 
-        public bool HideNulls { get; set; }
+        public bool ShowNulls { get; set; }
 
         public bool Progress { get; set; }
 
@@ -162,7 +162,7 @@ namespace QueryMultiDb
             Quiet = parsedResult.Quiet;
             StartKeyPress = parsedResult.StartKeyPress;
             StopKeyPress = parsedResult.StopKeyPress;
-            HideNulls = parsedResult.HideNulls;
+            ShowNulls = parsedResult.ShowNulls;
             Progress = parsedResult.Progress;
             NullsColor = parsedResult.NullsColor;
 
