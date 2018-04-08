@@ -365,8 +365,12 @@ namespace QueryMultiDb
 
                 sheetData.AppendChild(newRow);
             }
-            
-            AddTablePart(sheetPart, excelColumnSet, table.Rows.Count, spreadSheet.WorkbookPart);
+
+            if (table.Rows.Count > 0)
+            {
+                // The sheet cannot have a valid table definition if the table has no data rows at all.
+                AddTablePart(sheetPart, excelColumnSet, table.Rows.Count, spreadSheet.WorkbookPart);
+            }
         }
 
         private static TableColumn[] GetExcelColumnSet(TableColumn[] tableColumns)
