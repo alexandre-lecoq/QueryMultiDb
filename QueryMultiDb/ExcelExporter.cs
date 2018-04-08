@@ -67,11 +67,17 @@ namespace QueryMultiDb
 
                 Logger.Info("Excel file logging horizon. Check console output to see beyond horizon.");
 
-                var logTable = target.Logs;
-                AddSheet(spreadSheet, logTable, "Logs");
+                if (Parameters.Instance.ShowLogSheet)
+                {
+                    var logTable = target.Logs;
+                    AddSheet(spreadSheet, logTable, "Logs");
+                }
 
-                var parameterTable = ParametersToTable(Parameters.Instance);
-                AddSheet(spreadSheet, parameterTable, "Parameters");
+                if (Parameters.Instance.ShowParameterSheet)
+                {
+                    var parameterTable = ParametersToTable(Parameters.Instance);
+                    AddSheet(spreadSheet, parameterTable, "Parameters");
+                }
 
                 MemoryManager.Clean();
 
@@ -292,7 +298,9 @@ namespace QueryMultiDb
                 CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
                 CreateParameterRow("ShowNulls", parameters.ShowNulls),
                 CreateParameterRow("Progress", parameters.Progress),
-                CreateParameterRow("NullsColor", parameters.NullsColor)
+                CreateParameterRow("NullsColor", parameters.NullsColor),
+                CreateParameterRow("ShowLogSheet", parameters.ShowLogSheet),
+                CreateParameterRow("ShowParameterSheet", parameters.ShowParameterSheet)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);

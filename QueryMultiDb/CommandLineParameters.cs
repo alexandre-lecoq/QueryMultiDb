@@ -65,5 +65,12 @@ namespace QueryMultiDb
         [Option(HelpText = "Indicates the color of the NULL text in excel files.", Default = "7F7F7F")]
         public string NullsColor { get; set; }
 
+        /// XXX : Issue #42
+        [Option(HelpText = "Show log sheet in excel file.", Default = false)]
+        public bool ShowLogSheet { get; set; }
+
+        /// XXX : Issue #42
+        [Option(HelpText = "Show parameter sheet in excel file.", Default = false)]
+        public bool ShowParameterSheet { get; set; }
     }
 }
