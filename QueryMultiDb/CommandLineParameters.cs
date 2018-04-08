@@ -60,5 +60,9 @@ namespace QueryMultiDb
 
         [Option(HelpText = "Reports progress on standard error output.", Default = false)]
         public bool Progress { get; set; }
+
+        [Option(HelpText = "Indicates the color of the NULL text in excel files.", Default = "7F7F7F")]
+        public string NullsColor { get; set; }
+
     }
 }

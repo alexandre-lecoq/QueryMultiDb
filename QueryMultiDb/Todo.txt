@@ -30,8 +30,6 @@ Feature
 
 *) Ajouter un parametre pour supprimer l'onglet "Parameters".
 
-*) Ajouter un parametre pour choisir la couleur des valeurs "NULL".
-
 *) Ajouter un parametre pour choisir le nom des onglets (en remplacement de SheetX), par exemple --sheetlabels="nom1,nom2,nom3".
 
 *) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1'; 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 
@@ -38,6 +39,8 @@ namespace QueryMultiDb
         public bool HideNulls { get; set; }
 
         public bool Progress { get; set; }
+
+        public string NullsColor { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
@@ -161,6 +164,7 @@ namespace QueryMultiDb
             StopKeyPress = parsedResult.StopKeyPress;
             HideNulls = parsedResult.HideNulls;
             Progress = parsedResult.Progress;
+            NullsColor = parsedResult.NullsColor;
 
             ThrowIfInvalidParameter();
         }
@@ -267,6 +271,18 @@ namespace QueryMultiDb
             if (Parallelism > 32)
             {
                 throw new ArgumentException("Parallelism cannot be more than 32.");
+            }
+
+            uint nullsColorValue;
+
+            if (!uint.TryParse(NullsColor, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out nullsColorValue))
+            {
+                throw new ArgumentException("NullsColor is not a valid hexadecimal value.");
+            }
+
+            if (nullsColorValue > 0xFFFFFF)
+            {
+                throw new ArgumentException("NullsColor is not a valid 24bits RGB color value.");
             }
         }
 

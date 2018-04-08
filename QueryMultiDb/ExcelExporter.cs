@@ -103,6 +103,8 @@ namespace QueryMultiDb
         {
             var stylesheet = new Stylesheet();
 
+            var nullsColorValue = "FF" + Parameters.Instance.NullsColor;
+
             var fonts = new Fonts(
                 new Font
                 {
@@ -130,12 +132,12 @@ namespace QueryMultiDb
                     {
                         Rgb = new HexBinaryValue()
                         {
-                            Value = "FF7F7F7F"
+                            Value = nullsColorValue
                         }
                     }
                 }
             );
-
+            
             fonts.Count = (uint) fonts.ChildElements.Count;
 
             var fills = new Fills(
@@ -289,7 +291,8 @@ namespace QueryMultiDb
                 CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
                 CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
                 CreateParameterRow("HideNulls", parameters.HideNulls),
-                CreateParameterRow("Progress", parameters.Progress)
+                CreateParameterRow("Progress", parameters.Progress),
+                CreateParameterRow("NullsColor", parameters.NullsColor)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);
