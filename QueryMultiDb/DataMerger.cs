@@ -61,7 +61,15 @@ namespace QueryMultiDb
                 var rows = ComputeRowSet(result, tableIndex);
                 var tableId = table.Id.StartsWith("__", StringComparison.InvariantCulture) ? table.Id : null;
                 var destinationTable = new Table(destinationColumnSet, rows, tableId);
-                tableSet.Add(destinationTable);
+
+                if (destinationTable.Rows.Count > 0)
+                {
+                    tableSet.Add(destinationTable);
+                }
+                else
+                {
+                    Logger.Info($"Merged table '{destinationTable.Id}' (Index : {tableIndex}) was dropped because it was empty.");
+                }
             }
 
             return tableSet;
