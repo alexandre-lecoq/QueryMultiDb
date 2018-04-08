@@ -43,8 +43,9 @@ namespace QueryMultiDb
         [Option(HelpText = "The maximum number of queries running in parallel.", Default = 4)]
         public int Parallelism { get; set; }
 
-        [Option(HelpText = "Include server's IP address.", Default = false)]
-        public bool IncludeIP { get; set; }
+        /// XXX : Issue #42
+        [Option(HelpText = "Show server's IP address.", Default = false)]
+        public bool ShowIpAddress { get; set; }
 
         [Option(HelpText = "Do not output information messages to console.", Default = true)]
         public bool Quiet { get; set; }

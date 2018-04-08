@@ -28,7 +28,7 @@ namespace QueryMultiDb
 
         public int Parallelism { get; set; }
 
-        public bool IncludeIP { get; set; }
+        public bool ShowIpAddress { get; set; }
 
         public bool Quiet { get; set; }
         
@@ -162,7 +162,7 @@ namespace QueryMultiDb
             CommandTimeout = parsedResult.CommandTimeout;
             Sequential = parsedResult.Sequential;
             Parallelism = parsedResult.Parallelism;
-            IncludeIP = parsedResult.IncludeIP;
+            ShowIpAddress = parsedResult.ShowIpAddress;
             Quiet = parsedResult.Quiet;
             StartKeyPress = parsedResult.StartKeyPress;
             StopKeyPress = parsedResult.StopKeyPress;

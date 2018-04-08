@@ -46,7 +46,7 @@ namespace QueryMultiDb
                 var builtInColumnSet = new List<TableColumn>(3);
                 builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
 
-                if (Parameters.Instance.IncludeIP)
+                if (Parameters.Instance.ShowIpAddress)
                 {
                     builtInColumnSet.Add(new TableColumn("_ServerIp", typeof(string)));
                 }
@@ -163,7 +163,7 @@ namespace QueryMultiDb
                     var builtInItems = new List<object>(9);
                     builtInItems.Add(executionResult.ServerName);
 
-                    if (Parameters.Instance.IncludeIP)
+                    if (Parameters.Instance.ShowIpAddress)
                     {
                         var ip = DnsResolverWithCache.Instance.Resolve(executionResult.ServerName);
                         builtInItems.Add(ip?.ToString() ?? string.Empty);

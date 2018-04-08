@@ -292,7 +292,7 @@ namespace QueryMultiDb
                 CreateParameterRow("CommandTimeout", parameters.CommandTimeout),
                 CreateParameterRow("Sequential", parameters.Sequential),
                 CreateParameterRow("Parallelism", parameters.Parallelism),
-                CreateParameterRow("IncludeIP", parameters.IncludeIP),
+                CreateParameterRow("ShowIpAddress", parameters.ShowIpAddress),
                 CreateParameterRow("Quiet", parameters.Quiet),
                 CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
                 CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
