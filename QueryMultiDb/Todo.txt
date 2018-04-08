@@ -18,23 +18,23 @@ Fix
 Feature
 -------
 
-*) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
-
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
-
-*) Possibilité d'ajouter des colonnes extra par chaque base de données via le fichier de cibles.
-
-*) Ajuster la largeur des colonnes dans le fichier Excel.
 
 *) Ajouter un parametre pour choisir le nom des onglets (en remplacement de SheetX), par exemple --sheetlabels="nom1,nom2,nom3".
 
+*) Possibilité d'ajouter des colonnes extra par chaque base de données via le fichier de cibles.
+
 *) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1'; 
+
+*) Ajuster la largeur des colonnes dans le fichier Excel.
 
 *) Ajouter une prévalidation de la requete sur une base en utilisant SET PARSEONLY ON; SET PARSEONLY OFF;
 
 *) Logger @@SPID
 
 *) Ajouter un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
+
+*) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
 
 
 Other
