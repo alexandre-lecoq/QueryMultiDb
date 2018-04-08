@@ -6,8 +6,6 @@ Todo
 Fix
 ---
 
-*) Corriger les comportement etrange lorsque les timeout sont de 1 secondes, ce qui entraine une absence de résultat mal gérée.
-
 *) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 
 *) Ajouter des tests.
