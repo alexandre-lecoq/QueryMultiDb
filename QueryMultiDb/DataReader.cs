@@ -182,7 +182,8 @@ namespace QueryMultiDb
 
             var infoMessageRows = new List<TableRow>();
 
-            // XXX : connection.FireInfoMessageEventOnUserErrors = true;
+            connection.FireInfoMessageEventOnUserErrors = true;
+
             SqlInfoMessageEventHandler sqlInfoMessageEventHandler = (sender, arg) =>
             {
                 ConnectionOnInfoMessage(infoMessageRows, arg);
