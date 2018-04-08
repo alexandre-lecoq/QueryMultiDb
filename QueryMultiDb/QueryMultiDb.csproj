@@ -93,6 +93,7 @@
     <Compile Include="DnsResolverWithCache.cs" />
     <Compile Include="ExcelExporter.cs" />
     <Compile Include="ExecutionResult.cs" />
+    <Compile Include="MemoryManager.cs" />
     <Compile Include="Parameters.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProgressReporter.cs" />

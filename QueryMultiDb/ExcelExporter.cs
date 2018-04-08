@@ -23,6 +23,8 @@ namespace QueryMultiDb
                 throw new ArgumentNullException(nameof(tables), "Parameter cannot be null.");
             }
 
+            MemoryManager.Clean();
+
             var destination = Parameters.Instance.OutputDirectory + @"\" + Parameters.Instance.OutputFile;
 
             Logger.Info($"Creating excel file '{destination}'");
@@ -61,16 +63,23 @@ namespace QueryMultiDb
                     throw new InvalidOperationException("Logger's wrapped table target could not be recovered. It should never happens as this target should be added very early in Program.Main().");
                 }
 
+                MemoryManager.Clean();
+
+                Logger.Info("Excel file logging horizon. Check console output to see beyond horizon.");
+
                 var logTable = target.Logs;
                 AddSheet(spreadSheet, logTable, "Logs");
 
                 var parameterTable = ParametersToTable(Parameters.Instance);
                 AddSheet(spreadSheet, parameterTable, "Parameters");
 
+                MemoryManager.Clean();
+
                 Logger.Info("Finalizing excel file writing.");
             }
 
             Logger.Info("Excel file closed after generation.");
+            MemoryManager.Clean();
         }
 
         private static string GetSheetNameFromTableId(string tableId)
