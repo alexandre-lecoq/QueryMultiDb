@@ -21,7 +21,7 @@ namespace QueryMultiDb
         {
             var resultSets = new List<ExecutionResult>();
 
-            var progressReporter = new ProgressReporter("datareader", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
+            var progressReporter = new ProgressReporter("DataReader.GetQueryResults", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
 
             if (Parameters.Instance.Sequential)
             {

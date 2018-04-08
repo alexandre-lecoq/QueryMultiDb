@@ -25,6 +25,8 @@ namespace QueryMultiDb
 
             var destination = Parameters.Instance.OutputDirectory + @"\" + Parameters.Instance.OutputFile;
 
+            Logger.Info($"Creating excel file '{destination}'");
+
             using (var spreadSheet = SpreadsheetDocument.Create(destination, SpreadsheetDocumentType.Workbook))
             {
                 Logger.Info($"Created excel file '{destination}'");
@@ -39,12 +41,17 @@ namespace QueryMultiDb
                     Sheets = new Sheets()
                 };
 
+                var progressReporter = new ProgressReporter("ExcelExporter.Generate", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
+
                 foreach (var table in tables)
                 {
                     Logger.Info("Adding new excel sheet.");
                     var sheetName = GetSheetNameFromTableId(table.Id);
                     AddSheet(spreadSheet, table, sheetName);
+                    progressReporter.Increment();
                 }
+
+                progressReporter.Done();
 
                 var flushedTableTarget = LogManager.Configuration.FindTargetByName<AutoFlushTargetWrapper>("flushedTableTarget");
                 var target = flushedTableTarget.WrappedTarget as TableTarget;
@@ -59,6 +66,8 @@ namespace QueryMultiDb
 
                 var parameterTable = ParametersToTable(Parameters.Instance);
                 AddSheet(spreadSheet, parameterTable, "Parameters");
+
+                Logger.Info("Finalizing excel file writing.");
             }
 
             Logger.Info("Excel file closed after generation.");

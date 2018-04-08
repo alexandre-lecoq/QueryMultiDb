@@ -16,10 +16,6 @@ Fix
 Feature
 -------
 
-*) Ajouter progression de la generation du fichier excel.
-
-*) Ajouter progression de l'ecriture du fichier excel.
-
 *) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
@@ -39,8 +35,6 @@ Feature
 *) Ajouter un parametre pour choisir la couleur des valeurs "NULL".
 
 *) Ajouter un parametre pour choisir le nom des onglets (en remplacement de SheetX), par exemple --sheetlabels="nom1,nom2,nom3".
-
-*) Enregistrer les messages du server SQL généré par l'execution de la requete.
 
 *) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1'; 
 
