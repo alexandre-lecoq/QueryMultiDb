@@ -135,11 +135,11 @@ namespace QueryMultiDb
             }
             catch (SqlException ex)
             {
-                Logger.Error(ex, $"{database.ServerName} {database.DatabaseName} {ex.Message}");
+                Logger.Error(ex, $"{database.ToLogPrefix()} {ex.Message}");
             }
             catch (Exception ex)
             {
-                Logger.Error(ex, $"{database.ServerName} {database.DatabaseName} {ex.Message}");
+                Logger.Error(ex, $"{database.ToLogPrefix()} {ex.Message}");
             }
             finally
             {
@@ -152,8 +152,8 @@ namespace QueryMultiDb
                 }
             }
 
-            Logger.Info($"{database.ServerName} {database.DatabaseName} SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
-            Logger.Info($"{database.ServerName} {database.DatabaseName} SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Info($"{database.ToLogPrefix()} SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Info($"{database.ToLogPrefix()} SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
             return result;
         }
@@ -218,7 +218,7 @@ namespace QueryMultiDb
                 var table = new Table(columns, rows);
                 tableSet.Add(table);
 
-                Logger.Info($"{database.ServerName} {database.DatabaseName} Rows in table : {table.Rows.Count}");
+                Logger.Info($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
             } while (reader.NextResult());
 
             reader.Close();
@@ -226,7 +226,7 @@ namespace QueryMultiDb
             // If the number of records affected is -1, it means it is a SELECT statement.
             if (reader.RecordsAffected != -1)
             {
-                Logger.Info($"{database.ServerName} {database.DatabaseName} Records affected by query : {reader.RecordsAffected}");
+                Logger.Info($"{database.ToLogPrefix()} Records affected by query : {reader.RecordsAffected}");
             }
 
             var infoMessageColumns = new TableColumn[6];

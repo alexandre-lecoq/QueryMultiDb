@@ -28,5 +28,10 @@ namespace QueryMultiDb
         {
             return $"ServerName = \"{ServerName}\" ; DatabaseName = \"{DatabaseName}\"";
         }
+
+        public string ToLogPrefix()
+        {
+            return $"{ServerName}/{DatabaseName} ;";
+        }
     }
 }
