@@ -41,18 +41,7 @@ namespace QueryMultiDb
                     Console.WriteLine("Press a key to start...");
                     Console.ReadKey();
                 }
-
-                if (Parameters.Instance.Debug)
-                {
-                    Logger.Info("Debug mode is active.");
-                    Logger.Fatal("Fatal log test");
-                    Logger.Error("Error log test");
-                    Logger.Warn("Warn log test");
-                    Logger.Info("Info log test");
-                    Logger.Debug("Debug log test");
-                    Logger.Trace("Trace log test");
-                }
-
+                
                 DoIt();
 
                 return 0;

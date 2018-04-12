@@ -18,8 +18,6 @@ namespace QueryMultiDb
 
         public string Query { get; set; }
 
-        public bool Debug { get; set; }
-
         public int ConnectionTimeout { get; set; }
 
         public int CommandTimeout { get; set; }
@@ -34,8 +32,6 @@ namespace QueryMultiDb
 
         public bool ShowDatabaseName { get; set; }
 
-        public bool Quiet { get; set; }
-        
         public bool StartKeyPress { get; set; }
 
         public bool StopKeyPress { get; set; }
@@ -117,8 +113,6 @@ namespace QueryMultiDb
                 Query = File.ReadAllText(parsedResult.QueryFile);
             }
 
-            Debug = parsedResult.Debug;
-
             if (parsedResult.Targets == null && parsedResult.TargetsStandardInput == false && parsedResult.TargetsFile == null)
             {
                 throw new ArgumentException("No target specified.");
@@ -169,7 +163,6 @@ namespace QueryMultiDb
             ShowIpAddress = parsedResult.ShowIpAddress;
             ShowServerName = parsedResult.ShowServerName;
             ShowDatabaseName = parsedResult.ShowDatabaseName;
-            Quiet = parsedResult.Quiet;
             StartKeyPress = parsedResult.StartKeyPress;
             StopKeyPress = parsedResult.StopKeyPress;
             ShowNulls = parsedResult.ShowNulls;

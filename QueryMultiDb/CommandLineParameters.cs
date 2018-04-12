@@ -28,9 +28,6 @@ namespace QueryMultiDb
         [Option(HelpText = "Indicates the file containing the SQL query to execute.", Default = null)]
         public string QueryFile { get; set; }
 
-        [Option(HelpText = "Add debug messages to output.", Default = false)]
-        public bool Debug { get; set; }
-
         [Option(HelpText = "Perform queries one at a time.", Default = false)]
         public bool Sequential { get; set; }
 
@@ -54,9 +51,6 @@ namespace QueryMultiDb
         /// XXX : Issue #42
         [Option(HelpText = "Show database's name.", Default = false)]
         public bool ShowDatabaseName { get; set; }
-
-        [Option(HelpText = "Do not output information messages to console.", Default = true)]
-        public bool Quiet { get; set; }
 
         [Option(HelpText = "Wait for a key press to start.", Default = false)]
         public bool StartKeyPress { get; set; }
