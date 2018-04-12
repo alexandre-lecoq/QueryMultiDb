@@ -40,6 +40,22 @@ namespace QueryMultiDb
         [Option(HelpText = "The maximum number of queries running in parallel.", Default = 4)]
         public int Parallelism { get; set; }
 
+        [Option(HelpText = "Wait for a key press to start.", Default = false)]
+        public bool StartKeyPress { get; set; }
+
+        [Option(HelpText = "Wait for a key press to stop.", Default = false)]
+        public bool StopKeyPress { get; set; }
+        
+        [Option(HelpText = "Reports progress on standard error output.", Default = false)]
+        public bool Progress { get; set; }
+
+        [Option(HelpText = "Indicates the color of the NULL text in excel files.", Default = "7F7F7F")]
+        public string NullsColor { get; set; }
+
+        /// XXX : Issue #42
+        [Option(HelpText = "Show NULL values explicitly rather than showing empty value.", Default = false)]
+        public bool ShowNulls { get; set; }
+
         /// XXX : Issue #42
         [Option(HelpText = "Show server's IP address.", Default = false)]
         public bool ShowIpAddress { get; set; }
@@ -51,22 +67,6 @@ namespace QueryMultiDb
         /// XXX : Issue #42
         [Option(HelpText = "Show database's name.", Default = false)]
         public bool ShowDatabaseName { get; set; }
-
-        [Option(HelpText = "Wait for a key press to start.", Default = false)]
-        public bool StartKeyPress { get; set; }
-
-        [Option(HelpText = "Wait for a key press to stop.", Default = false)]
-        public bool StopKeyPress { get; set; }
-
-        /// XXX : Issue #42
-        [Option(HelpText = "Show NULL values explicitly rather than showing empty value.", Default = false)]
-        public bool ShowNulls { get; set; }
-
-        [Option(HelpText = "Reports progress on standard error output.", Default = false)]
-        public bool Progress { get; set; }
-
-        [Option(HelpText = "Indicates the color of the NULL text in excel files.", Default = "7F7F7F")]
-        public string NullsColor { get; set; }
 
         /// XXX : Issue #42
         [Option(HelpText = "Show log sheet in excel file.", Default = false)]
