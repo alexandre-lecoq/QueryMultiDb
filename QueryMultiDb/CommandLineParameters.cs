@@ -75,5 +75,9 @@ namespace QueryMultiDb
         /// XXX : Issue #42
         [Option(HelpText = "Show parameter sheet in excel file.", Default = false)]
         public bool ShowParameterSheet { get; set; }
+
+        /// XXX : Issue #42
+        [Option(HelpText = "Show parameter sheet in excel file.", Default = false)]
+        public bool ShowInformationMessages { get; set; }
     }
 }

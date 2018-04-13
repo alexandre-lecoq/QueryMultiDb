@@ -46,6 +46,8 @@ namespace QueryMultiDb
 
         public bool ShowParameterSheet { get; set; }
 
+        public bool ShowInformationMessages { get; set; }
+        
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
         {
@@ -168,9 +170,9 @@ namespace QueryMultiDb
             ShowNulls = parsedResult.ShowNulls;
             Progress = parsedResult.Progress;
             NullsColor = parsedResult.NullsColor;
-
             ShowLogSheet = parsedResult.ShowLogSheet;
             ShowParameterSheet = parsedResult.ShowParameterSheet;
+            ShowInformationMessages = parsedResult.ShowInformationMessages;
 
             ThrowIfInvalidParameter();
         }

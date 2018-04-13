@@ -182,14 +182,17 @@ namespace QueryMultiDb
 
             var infoMessageRows = new List<TableRow>();
 
-            connection.FireInfoMessageEventOnUserErrors = true;
-
-            SqlInfoMessageEventHandler sqlInfoMessageEventHandler = (sender, arg) =>
+            if (Parameters.Instance.ShowInformationMessages)
             {
-                ConnectionOnInfoMessage(infoMessageRows, arg);
-            };
+                connection.FireInfoMessageEventOnUserErrors = true;
 
-            connection.InfoMessage += sqlInfoMessageEventHandler;
+                SqlInfoMessageEventHandler sqlInfoMessageEventHandler = (sender, arg) =>
+                {
+                    ConnectionOnInfoMessage(infoMessageRows, arg);
+                };
+
+                connection.InfoMessage += sqlInfoMessageEventHandler;
+            }
 
             var tableSet = new List<Table>();
 
@@ -230,15 +233,18 @@ namespace QueryMultiDb
                 Logger.Info($"{database.ToLogPrefix()} Records affected by query : {reader.RecordsAffected}");
             }
 
-            var infoMessageColumns = new TableColumn[6];
-            infoMessageColumns[0] = new TableColumn("Class", typeof(string));
-            infoMessageColumns[1] = new TableColumn("Number", typeof(string));
-            infoMessageColumns[2] = new TableColumn("State", typeof(string));
-            infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
-            infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
-            infoMessageColumns[5] = new TableColumn("Message", typeof(string));
-            var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
-            tableSet.Add(informationMessageTable);
+            if (Parameters.Instance.ShowInformationMessages)
+            {
+                var infoMessageColumns = new TableColumn[6];
+                infoMessageColumns[0] = new TableColumn("Class", typeof(string));
+                infoMessageColumns[1] = new TableColumn("Number", typeof(string));
+                infoMessageColumns[2] = new TableColumn("State", typeof(string));
+                infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
+                infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
+                infoMessageColumns[5] = new TableColumn("Message", typeof(string));
+                var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
+                tableSet.Add(informationMessageTable);
+            }
 
             var result = new ExecutionResult(database.ServerName, database.DatabaseName, tableSet);
 

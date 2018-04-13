@@ -6,9 +6,9 @@ Todo
 Fix
 ---
 
-*) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
-
 *) Ajouter des tests.
+
+*) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 
 *) Issue #42 : Indicates a commandline parameter of boolean type which should default to a "true" value.
 	It defaults to "false" because the command line parsing library currently in use
