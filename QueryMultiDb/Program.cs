@@ -19,8 +19,6 @@ namespace QueryMultiDb
             LogManager.ConfigurationReloaded += LogManager_ConfigurationReloaded;
             LogManager.ConfigurationChanged += LogManager_ConfigurationChanged;
 
-            Logger.Info("Initializing QueryMultiDb");
-
             SetCulture();
 
             var parserResult = Parser.Default.ParseArguments<CommandLineParameters>(args);
@@ -33,6 +31,8 @@ namespace QueryMultiDb
             var parsedResult = (Parsed<CommandLineParameters>)parserResult;
             // This must be set very early to be usable at any time.
             Parameters.Instance = new Parameters(parsedResult.Value);
+
+            Logger.Info("Initialized QueryMultiDb");
 
             try
             {
