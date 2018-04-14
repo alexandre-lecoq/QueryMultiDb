@@ -45,12 +45,15 @@ namespace QueryMultiDb
 
                 var progressReporter = new ProgressReporter("ExcelExporter.Generate", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
 
+                var tableIndex = 0;
                 foreach (var table in tables)
                 {
                     Logger.Info("Adding new excel sheet.");
-                    var sheetName = GetSheetNameFromTableId(table.Id);
-                    AddSheet(spreadSheet, table, sheetName);
+                    var sheetNameById = GetSheetNameFromTableId(table.Id);
+                    var sheetNameByParameter = GetSheetNameFromParameter(tableIndex);
+                    AddSheet(spreadSheet, table, sheetNameById ?? sheetNameByParameter);
                     progressReporter.Increment();
+                    tableIndex++;
                 }
 
                 progressReporter.Done();
@@ -86,6 +89,25 @@ namespace QueryMultiDb
 
             Logger.Info("Excel file closed after generation.");
             MemoryManager.Clean();
+        }
+
+        private static string GetSheetNameFromParameter(int tableIndex)
+        {
+            if (tableIndex < 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(tableIndex));
+            }
+
+            var labels = Parameters.Instance.SheetLabels;
+
+            if (tableIndex >= labels.Count)
+            {
+                return null;
+            }
+
+            var label = labels.ElementAt(tableIndex);
+
+            return label;
         }
 
         private static string GetSheetNameFromTableId(string tableId)
@@ -301,7 +323,8 @@ namespace QueryMultiDb
                 CreateParameterRow("ShowParameterSheet", parameters.ShowParameterSheet),
                 CreateParameterRow("ShowServerName", parameters.ShowServerName),
                 CreateParameterRow("ShowDatabaseName", parameters.ShowDatabaseName),
-                CreateParameterRow("ShowInformationMessages", parameters.ShowInformationMessages)
+                CreateParameterRow("ShowInformationMessages", parameters.ShowInformationMessages),
+                CreateParameterRow("SheetLabels", string.Join(", ", parameters.SheetLabels))
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);

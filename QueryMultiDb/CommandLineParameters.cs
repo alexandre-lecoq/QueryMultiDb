@@ -79,5 +79,8 @@ namespace QueryMultiDb
         /// XXX : Issue #42
         [Option(HelpText = "Show parameter sheet in excel file.", Default = false)]
         public bool ShowInformationMessages { get; set; }
+
+        [Option(HelpText = "Defines the sheets' labels.")]
+        public string SheetLabels { get; set; }
     }
 }

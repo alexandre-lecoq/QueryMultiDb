@@ -47,7 +47,9 @@ namespace QueryMultiDb
         public bool ShowParameterSheet { get; set; }
 
         public bool ShowInformationMessages { get; set; }
-        
+
+        public ICollection<string> SheetLabels { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
         {
@@ -173,8 +175,27 @@ namespace QueryMultiDb
             ShowLogSheet = parsedResult.ShowLogSheet;
             ShowParameterSheet = parsedResult.ShowParameterSheet;
             ShowInformationMessages = parsedResult.ShowInformationMessages;
+            SheetLabels = ParseSheetLabels(parsedResult.SheetLabels);
 
             ThrowIfInvalidParameter();
+        }
+
+        private ICollection<string> ParseSheetLabels(string parsedResultSheetLabels)
+        {
+            if (parsedResultSheetLabels == null)
+            {
+                return new List<string>();
+            }
+
+            if (string.IsNullOrWhiteSpace(parsedResultSheetLabels))
+            {
+                throw new ArgumentException("Value cannot be whitespace.", nameof(parsedResultSheetLabels));
+            }
+
+            var splitLabels = parsedResultSheetLabels.Split(',');
+            var trimmedLabels = splitLabels.Select(p => p.Trim());
+
+            return trimmedLabels.ToList();
         }
 
         private static IEnumerable<Database> ParseTargets(string parsedResultTargets)
@@ -291,6 +312,19 @@ namespace QueryMultiDb
             if (nullsColorValue > 0xFFFFFF)
             {
                 throw new ArgumentException("NullsColor is not a valid 24bits RGB color value.");
+            }
+
+            if (SheetLabels == null)
+            {
+                throw new ArgumentException("SheetLabels cannot be null.");
+            }
+
+            foreach (var label in SheetLabels)
+            {
+                if (string.IsNullOrWhiteSpace(label))
+                {
+                    throw new ArgumentException("Sheet label cannot be null, empty or blank.");
+                }
             }
         }
 
