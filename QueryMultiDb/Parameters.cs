@@ -14,7 +14,7 @@ namespace QueryMultiDb
 
         public bool Overwrite { get; set; }
 
-        public IEnumerable<Database> Targets { get; set; }
+        public TargetSet Targets { get; set; }
 
         public string Query { get; set; }
 
@@ -32,6 +32,8 @@ namespace QueryMultiDb
 
         public bool ShowDatabaseName { get; set; }
 
+        public bool ShowExtraColumns { get; set; }
+        
         public bool StartKeyPress { get; set; }
 
         public bool StopKeyPress { get; set; }
@@ -54,6 +56,18 @@ namespace QueryMultiDb
         private class JsonTargets
         {
             public List<Database> DatabaseList { get; set; }
+
+            public string ExtraValue1Title { get; set; }
+
+            public string ExtraValue2Title { get; set; }
+
+            public string ExtraValue3Title { get; set; }
+
+            public string ExtraValue4Title { get; set; }
+
+            public string ExtraValue5Title { get; set; }
+
+            public string ExtraValue6Title { get; set; }
         }
 
         private static Parameters _instance;
@@ -167,6 +181,7 @@ namespace QueryMultiDb
             ShowIpAddress = parsedResult.ShowIpAddress;
             ShowServerName = parsedResult.ShowServerName;
             ShowDatabaseName = parsedResult.ShowDatabaseName;
+            ShowExtraColumns = parsedResult.ShowExtraColumns;
             StartKeyPress = parsedResult.StartKeyPress;
             StopKeyPress = parsedResult.StopKeyPress;
             ShowNulls = parsedResult.ShowNulls;
@@ -180,7 +195,7 @@ namespace QueryMultiDb
             ThrowIfInvalidParameter();
         }
 
-        private ICollection<string> ParseSheetLabels(string parsedResultSheetLabels)
+        private static ICollection<string> ParseSheetLabels(string parsedResultSheetLabels)
         {
             if (parsedResultSheetLabels == null)
             {
@@ -198,7 +213,7 @@ namespace QueryMultiDb
             return trimmedLabels.ToList();
         }
 
-        private static IEnumerable<Database> ParseTargets(string parsedResultTargets)
+        private static TargetSet ParseTargets(string parsedResultTargets)
         {
             if (string.IsNullOrWhiteSpace(parsedResultTargets))
             {
@@ -208,19 +223,57 @@ namespace QueryMultiDb
             var jsonTargets = Newtonsoft.Json.JsonConvert.DeserializeObject<JsonTargets>(parsedResultTargets);
 
             var databaseArray = jsonTargets.DatabaseList.ToArray();
+
+            // This is very important to shuffle this array because its processing will likely be parallelized.
+            // It drastically reduces the probability two problematic databases are close to each other in the array in the average case.
+            // Doing so, it reduces the chance of having several threads blocked at the same time.
+            // You can see this shuffling as a performance optimization.
             Shuffler.ShuffleArray(databaseArray);
 
-            return databaseArray;
+            var extraValueTitles = new[]
+            {
+                jsonTargets.ExtraValue1Title,
+                jsonTargets.ExtraValue2Title,
+                jsonTargets.ExtraValue3Title,
+                jsonTargets.ExtraValue4Title,
+                jsonTargets.ExtraValue5Title,
+                jsonTargets.ExtraValue6Title
+            };
+
+            for (var i = 0; i < extraValueTitles.Length; i++)
+            {
+                if (string.IsNullOrWhiteSpace(extraValueTitles[i]))
+                {
+                    extraValueTitles[i] = $"ExtraValue{(i + 1)}";
+                }
+                else
+                {
+                    extraValueTitles[i] = extraValueTitles[i].Trim();
+                }
+
+                extraValueTitles[i] = "_" + extraValueTitles[i];
+            }
+
+            return new TargetSet(databaseArray, extraValueTitles);
         }
 
-        public static string TargetsToJsonString(IEnumerable<Database> structuredTargets)
+        public static string TargetsToJsonString(TargetSet structuredTargets)
         {
             if (structuredTargets == null)
             {
                 throw new ArgumentNullException(nameof(structuredTargets));
             }
 
-            var targets = new JsonTargets {DatabaseList = structuredTargets.ToList()};
+            var targets = new JsonTargets
+            {
+                DatabaseList = structuredTargets.Databases.ToList(),
+                ExtraValue1Title = structuredTargets.ExtraValueTitles[0],
+                ExtraValue2Title = structuredTargets.ExtraValueTitles[1],
+                ExtraValue3Title = structuredTargets.ExtraValueTitles[2],
+                ExtraValue4Title = structuredTargets.ExtraValueTitles[3],
+                ExtraValue5Title = structuredTargets.ExtraValueTitles[4],
+                ExtraValue6Title = structuredTargets.ExtraValueTitles[5]
+            };
             var serializeTargets = Newtonsoft.Json.JsonConvert.SerializeObject(targets);
 
             return serializeTargets;
@@ -238,12 +291,12 @@ namespace QueryMultiDb
                 throw new ArgumentException("Targets cannot be null.");
             }
 
-            if (!Targets.Any())
+            if (!Targets.Databases.Any())
             {
-                throw new ArgumentException("Targets cannot be empty.");
+                throw new ArgumentException("Targets' databases cannot be empty.");
             }
 
-            foreach (var database in Targets)
+            foreach (var database in Targets.Databases)
             {
                 if (string.IsNullOrWhiteSpace(database.ServerName))
                 {
@@ -254,6 +307,11 @@ namespace QueryMultiDb
                 {
                     throw new ArgumentException("DatabaseName cannot be null, empty or blank.");
                 }
+            }
+
+            if (Targets.ExtraValueTitles == null)
+            {
+                throw new ArgumentException("Targets' ExtraValueTitles cannot be null.");
             }
 
             if (!Directory.Exists(OutputDirectory))

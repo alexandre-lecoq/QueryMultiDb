@@ -69,6 +69,10 @@ namespace QueryMultiDb
         public bool ShowDatabaseName { get; set; }
 
         /// XXX : Issue #42
+        [Option(HelpText = "Show targets' extra columns.", Default = false)]
+        public bool ShowExtraColumns { get; set; }
+
+        /// XXX : Issue #42
         [Option(HelpText = "Show log sheet in excel file.", Default = false)]
         public bool ShowLogSheet { get; set; }
 

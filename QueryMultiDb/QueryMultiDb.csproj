@@ -103,6 +103,7 @@
     <Compile Include="TableColumn.cs" />
     <Compile Include="TableRow.cs" />
     <Compile Include="TableTarget.cs" />
+    <Compile Include="Targets.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -43,7 +43,7 @@ namespace QueryMultiDb
 
             for (var tableIndex = 0; tableIndex < tableCount; tableIndex++)
             {
-                var builtInColumnSet = new List<TableColumn>(3);
+                var builtInColumnSet = new List<TableColumn>(10);
 
                 if (Parameters.Instance.ShowServerName)
                 {
@@ -58,6 +58,18 @@ namespace QueryMultiDb
                 if (Parameters.Instance.ShowDatabaseName)
                 {
                     builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
+                }
+                
+                if (Parameters.Instance.ShowExtraColumns)
+                {
+                    var titlesSettings = Parameters.Instance.Targets.ExtraValueTitles;
+
+                    builtInColumnSet.Add(new TableColumn(titlesSettings[0], typeof(string)));
+                    builtInColumnSet.Add(new TableColumn(titlesSettings[1], typeof(string)));
+                    builtInColumnSet.Add(new TableColumn(titlesSettings[2], typeof(string)));
+                    builtInColumnSet.Add(new TableColumn(titlesSettings[3], typeof(string)));
+                    builtInColumnSet.Add(new TableColumn(titlesSettings[4], typeof(string)));
+                    builtInColumnSet.Add(new TableColumn(titlesSettings[5], typeof(string)));
                 }
 
                 var table = result.First().TableSet[tableIndex];
@@ -117,7 +129,7 @@ namespace QueryMultiDb
             foreach (var executionResult in nullTableSetsResults)
             {
                 Logger.Warn(
-                    $"Execution result for {executionResult.DatabaseName} in {executionResult.ServerName} contains a null table set.");
+                    $"Execution result for {executionResult.Database.DatabaseName} in {executionResult.Database.ServerName} contains a null table set.");
             }
 
             var emptyTableSetsResults = result.Where(executionResult => executionResult.TableSet.Count == 0).ToList();
@@ -125,7 +137,7 @@ namespace QueryMultiDb
             foreach (var executionResult in emptyTableSetsResults)
             {
                 Logger.Warn(
-                    $"Execution result for {executionResult.DatabaseName} in {executionResult.ServerName} contains an empty table set.");
+                    $"Execution result for {executionResult.Database.DatabaseName} in {executionResult.Database.ServerName} contains an empty table set.");
             }
         }
 
@@ -167,22 +179,32 @@ namespace QueryMultiDb
 
                 foreach (var tableRow in sourceTable.Rows)
                 {
-                    var builtInItems = new List<object>(9);
+                    var builtInItems = new List<object>(10);
 
                     if (Parameters.Instance.ShowServerName)
                     {
-                        builtInItems.Add(executionResult.ServerName);
+                        builtInItems.Add(executionResult.Database.ServerName);
                     }
 
                     if (Parameters.Instance.ShowIpAddress)
                     {
-                        var ip = DnsResolverWithCache.Instance.Resolve(executionResult.ServerName);
+                        var ip = DnsResolverWithCache.Instance.Resolve(executionResult.Database.ServerName);
                         builtInItems.Add(ip?.ToString() ?? string.Empty);
                     }
 
                     if (Parameters.Instance.ShowDatabaseName)
                     {
-                        builtInItems.Add(executionResult.DatabaseName);
+                        builtInItems.Add(executionResult.Database.DatabaseName);
+                    }
+
+                    if (Parameters.Instance.ShowExtraColumns)
+                    {
+                        builtInItems.Add(executionResult.Database.ExtraValue1);
+                        builtInItems.Add(executionResult.Database.ExtraValue2);
+                        builtInItems.Add(executionResult.Database.ExtraValue3);
+                        builtInItems.Add(executionResult.Database.ExtraValue4);
+                        builtInItems.Add(executionResult.Database.ExtraValue5);
+                        builtInItems.Add(executionResult.Database.ExtraValue6);
                     }
 
                     var items = new object[builtInItems.Count + tableRow.ItemArray.Length];

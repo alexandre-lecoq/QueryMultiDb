@@ -21,8 +21,6 @@ To be implemented (short-term)
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
 
-*) Possibilité d'ajouter des colonnes extra par chaque base de données via le fichier de cibles.
-
 *) Créer un package chocolatey
 
 

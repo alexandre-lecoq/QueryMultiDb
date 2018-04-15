@@ -43,7 +43,7 @@ namespace QueryMultiDb
                     Sheets = new Sheets()
                 };
 
-                var progressReporter = new ProgressReporter("ExcelExporter.Generate", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
+                var progressReporter = new ProgressReporter("ExcelExporter.Generate", Parameters.Instance.Targets.Databases.Count(), s => Console.Error.WriteLine(s));
 
                 var tableIndex = 0;
                 foreach (var table in tables)
@@ -323,6 +323,7 @@ namespace QueryMultiDb
                 CreateParameterRow("ShowParameterSheet", parameters.ShowParameterSheet),
                 CreateParameterRow("ShowServerName", parameters.ShowServerName),
                 CreateParameterRow("ShowDatabaseName", parameters.ShowDatabaseName),
+                CreateParameterRow("ShowExtraColumns", parameters.ShowExtraColumns),
                 CreateParameterRow("ShowInformationMessages", parameters.ShowInformationMessages),
                 CreateParameterRow("SheetLabels", string.Join(", ", parameters.SheetLabels))
             };

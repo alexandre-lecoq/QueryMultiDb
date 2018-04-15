@@ -6,31 +6,23 @@ namespace QueryMultiDb
 {
     public class ExecutionResult
     {
-        public string ServerName { get; }
-
-        public string DatabaseName { get; }
+        public Database Database { get; }
 
         public IList<Table> TableSet { get; }
 
-        public ExecutionResult(string serverName, string databaseName, IList<Table> tableSet)
+        public ExecutionResult(Database database, IList<Table> tableSet)
         {
-            if (string.IsNullOrWhiteSpace(serverName))
+            if (database == null)
             {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(serverName));
+                throw new ArgumentNullException(nameof(database));
             }
-
-            if (string.IsNullOrWhiteSpace(databaseName))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(databaseName));
-            }
-
+            
             if (tableSet == null)
             {
                 throw new ArgumentNullException(nameof(tableSet));
             }
 
-            ServerName = serverName;
-            DatabaseName = databaseName;
+            Database = database;
             TableSet = tableSet;
         }
 
@@ -39,8 +31,7 @@ namespace QueryMultiDb
             var tableCount = TableSet.Count;
             var totalRowCount = TableSet.Sum(table => table.Rows.Count);
 
-            return
-                $"ServerName = \"{ServerName}\" ; DatabaseName = \"{DatabaseName}\" ; Total row count = {totalRowCount} ; Table count = {tableCount}";
+            return $"{Database} ; Total row count = {totalRowCount} ; Table count = {tableCount}";
         }
 
         public bool HasIdenticalTableAndColumns(ExecutionResult other)

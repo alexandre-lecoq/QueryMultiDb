@@ -21,11 +21,11 @@ namespace QueryMultiDb
         {
             var resultSets = new List<ExecutionResult>();
 
-            var progressReporter = new ProgressReporter("DataReader.GetQueryResults", Parameters.Instance.Targets.Count(), s => Console.Error.WriteLine(s));
+            var progressReporter = new ProgressReporter("DataReader.GetQueryResults", Parameters.Instance.Targets.Databases.Count(), s => Console.Error.WriteLine(s));
 
             if (Parameters.Instance.Sequential)
             {
-                foreach (var database in Parameters.Instance.Targets)
+                foreach (var database in Parameters.Instance.Targets.Databases)
                 {
                     var result = QueryDatabase(database);
                     progressReporter.Increment();
@@ -42,7 +42,7 @@ namespace QueryMultiDb
             {
                 var options = new ParallelOptions { MaxDegreeOfParallelism = Parameters.Instance.Parallelism };
 
-                Parallel.ForEach(Parameters.Instance.Targets, options, (database) =>
+                Parallel.ForEach(Parameters.Instance.Targets.Databases, options, (database) =>
                 {
                     var result = QueryDatabase(database);
                     progressReporter.Increment();
@@ -245,7 +245,7 @@ namespace QueryMultiDb
                 tableSet.Add(informationMessageTable);
             }
 
-            var result = new ExecutionResult(database.ServerName, database.DatabaseName, tableSet);
+            var result = new ExecutionResult(database, tableSet);
 
             if (Parameters.Instance.ShowInformationMessages)
             {
