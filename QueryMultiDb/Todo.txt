@@ -21,8 +21,6 @@ To be implemented (short-term)
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
 
-*) Ajouter de la documentation dans le fichier README.md
-
 *) Créer un package chocolatey
 
 
