@@ -64,12 +64,13 @@ namespace QueryMultiDb
                 {
                     var titlesSettings = Parameters.Instance.Targets.ExtraValueTitles;
 
-                    builtInColumnSet.Add(new TableColumn(titlesSettings[0], typeof(string)));
-                    builtInColumnSet.Add(new TableColumn(titlesSettings[1], typeof(string)));
-                    builtInColumnSet.Add(new TableColumn(titlesSettings[2], typeof(string)));
-                    builtInColumnSet.Add(new TableColumn(titlesSettings[3], typeof(string)));
-                    builtInColumnSet.Add(new TableColumn(titlesSettings[4], typeof(string)));
-                    builtInColumnSet.Add(new TableColumn(titlesSettings[5], typeof(string)));
+                    for (var i = 0; i < 6; i++)
+                    {
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[i])
+                        {
+                            builtInColumnSet.Add(new TableColumn(titlesSettings[i], typeof(string)));
+                        }
+                    }
                 }
 
                 var table = result.First().TableSet[tableIndex];
@@ -199,12 +200,35 @@ namespace QueryMultiDb
 
                     if (Parameters.Instance.ShowExtraColumns)
                     {
-                        builtInItems.Add(executionResult.Database.ExtraValue1);
-                        builtInItems.Add(executionResult.Database.ExtraValue2);
-                        builtInItems.Add(executionResult.Database.ExtraValue3);
-                        builtInItems.Add(executionResult.Database.ExtraValue4);
-                        builtInItems.Add(executionResult.Database.ExtraValue5);
-                        builtInItems.Add(executionResult.Database.ExtraValue6);
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[0])
+                        {
+                            builtInItems.Add(executionResult.Database.ExtraValue1);
+                        }
+
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[1])
+                        {
+                            builtInItems.Add(executionResult.Database.ExtraValue2);
+                        }
+
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[2])
+                        {
+                            builtInItems.Add(executionResult.Database.ExtraValue3);
+                        }
+
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[3])
+                        {
+                            builtInItems.Add(executionResult.Database.ExtraValue4);
+                        }
+
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[4])
+                        {
+                            builtInItems.Add(executionResult.Database.ExtraValue5);
+                        }
+
+                        if (!Parameters.Instance.Targets.EmptyExtraValues[5])
+                        {
+                            builtInItems.Add(executionResult.Database.ExtraValue6);
+                        }
                     }
 
                     var items = new object[builtInItems.Count + tableRow.ItemArray.Length];

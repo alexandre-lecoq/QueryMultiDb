@@ -23,8 +23,6 @@ To be implemented (short-term)
 
 *) Ajouter de la documentation dans le fichier README.md
 
-*) Supprimer les colonnes "ExtraValue" si la colonne est vide pour toutes les lignes.
-
 *) Créer un package chocolatey
 
 
