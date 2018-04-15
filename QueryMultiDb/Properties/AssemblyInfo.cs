@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("QueryMultiDb")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("A command-line tool to query multiple SQL Server databases at once and store results in an excel file.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Alexandre Lecoq")]
 [assembly: AssemblyProduct("QueryMultiDb")]
-[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyCopyright("Copyright © Alexandre Lecoq 2017")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 
