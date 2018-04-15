@@ -21,6 +21,10 @@ To be implemented (short-term)
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
 
+*) Ajouter de la documentation dans le fichier README.md
+
+*) Supprimer les colonnes "ExtraValue" si la colonne est vide pour toutes les lignes.
+
 *) Créer un package chocolatey
 
 
