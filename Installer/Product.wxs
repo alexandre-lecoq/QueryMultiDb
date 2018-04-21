@@ -26,8 +26,6 @@
   </Product>
 
   <Fragment>
-    <Property Id="PlatformProgramFilesFolder" Value="[ProgramFilesFolder]" />
-
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder">
         <Directory Id="INSTALLFOLDER" Name="Query Multi Db" />
