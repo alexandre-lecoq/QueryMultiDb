@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Product Id="*"
+           Name="Query Multi Db"
+           Language="1033"
+           Version="!(bind.fileVersion.FILE_QueryMultiDbExe)"
+           Manufacturer="Alexandre Lecoq"
+           UpgradeCode="66FFC8DA-490F-40FE-BEAF-C2EE5508DA9E">
+
+    <Package
+      InstallerVersion="200" 
+      Compressed="yes" 
+      InstallScope="perMachine"
+      Keywords="QueryMultiDb Installer"
+      Description="QueryMultiDb Installer"
+      Comments="Installer for QueryMultiDb."
+      Manufacturer="Alexandre Lecoq" />
+
+    <MajorUpgrade DowngradeErrorMessage="A newer version of [ProductName] is already installed." />
+
+    <MediaTemplate EmbedCab="yes" />
+
+    <Feature Id="ProductFeature" Title="QueryMultiDbInstaller" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+    </Feature>
+  </Product>
+
+  <Fragment>
+    <Property Id="PlatformProgramFilesFolder" Value="[ProgramFilesFolder]" />
+
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="ProgramFilesFolder">
+        <Directory Id="INSTALLFOLDER" Name="Query Multi Db" />
+      </Directory>
+    </Directory>
+  </Fragment>
+
+  <Fragment>
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component Id="COMP_QueryMultiDbExe">
+        <!-- Note using the project reference for specifying the source here -->
+        <File Id="FILE_QueryMultiDbExe" Source="$(var.QueryMultiDb.TargetPath)" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+</Wix>
