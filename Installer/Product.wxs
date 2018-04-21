@@ -3,7 +3,7 @@
   <Product Id="*"
            Name="Query Multi Db"
            Language="1033"
-           Version="!(bind.fileVersion.FILE_QueryMultiDbExe)"
+           Version="!(bind.fileVersion.QueryMultiDb.exe)"
            Manufacturer="Alexandre Lecoq"
            UpgradeCode="66FFC8DA-490F-40FE-BEAF-C2EE5508DA9E">
 
@@ -35,9 +35,36 @@
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <Component Id="COMP_QueryMultiDbExe">
-        <!-- Note using the project reference for specifying the source here -->
-        <File Id="FILE_QueryMultiDbExe" Source="$(var.QueryMultiDb.TargetPath)" KeyPath="yes" />
+      <!-- Note using the project reference for specifying the source here -->
+      <Component Id="QueryMultiDb.exe">
+        <File Id="QueryMultiDb.exe" Source="$(var.QueryMultiDb.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="CommandLine.dll">
+        <File Id="CommandLine.dll" Source="$(var.QueryMultiDb.TargetDir)CommandLine.dll" Checksum="yes" />
+      </Component>
+      <Component Id="DocumentFormat.OpenXml.dll">
+        <File Id="DocumentFormat.OpenXml.dll" Source="$(var.QueryMultiDb.TargetDir)DocumentFormat.OpenXml.dll" Checksum="yes" />
+      </Component>
+      <Component Id="Newtonsoft.Json.dll">
+        <File Id="Newtonsoft.Json.dll" Source="$(var.QueryMultiDb.TargetDir)Newtonsoft.Json.dll" Checksum="yes" />
+      </Component>
+      <Component Id="NLog.dll">
+        <File Id="NLog.dll" Source="$(var.QueryMultiDb.TargetDir)NLog.dll" Checksum="yes" />
+      </Component>
+      <Component Id="System.IO.FileSystem.Primitives.dll">
+        <File Id="System.IO.FileSystem.Primitives.dll" Source="$(var.QueryMultiDb.TargetDir)System.IO.FileSystem.Primitives.dll" Checksum="yes" />
+      </Component>
+      <Component Id="System.IO.Packaging.dll">
+        <File Id="System.IO.Packaging.dll" Source="$(var.QueryMultiDb.TargetDir)System.IO.Packaging.dll" Checksum="yes" />
+      </Component>
+      <Component Id="QueryMultiDb.pdb">
+        <File Id="QueryMultiDb.pdb" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.pdb" />
+      </Component>
+      <Component Id="NLog.config">
+        <File Id="NLog.config" Source="$(var.QueryMultiDb.TargetDir)NLog.config" />
+      </Component>
+      <Component Id="QueryMultiDb.exe.config">
+        <File Id="QueryMultiDb.exe.config" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.exe.config" />
       </Component>
     </ComponentGroup>
   </Fragment>
