@@ -6,6 +6,8 @@ Todo
 To be fixed
 -----------
 
+*) Add install directory to path
+
 *) Lorsqu'un requete SQL commence par un PRINT, le texte de ce PRINT n'apparait pas dans les messages d'informations.
 	En revanche lorsqu'une requete fini par un PRINT, les messages apparaissent bien dans l'onglet.
 
@@ -17,6 +19,7 @@ To be fixed
 *) Issue #42 : Indicates a commandline parameter of boolean type which should default to a "true" value.
 	It defaults to "false" because the command line parsing library currently in use
 	does not support passing a boolean parameter to pass a "false" value.
+	This is documented as https://github.com/commandlineparser/commandline/issues/17 .
 
 
 To be implemented (short-term)
@@ -30,6 +33,10 @@ To be implemented (short-term)
 
 *) Créer un package chocolatey
 
+*) Parametre pour logger dans un fichier annexe.
+
+*) Etudier les logs structurés avec Serilog (https://serilog.net/)
+
 
 To be implemented (long-term)
 ------------------------------
@@ -38,13 +45,13 @@ To be implemented (long-term)
 
 *) Logger @@SPID
 
-*) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
+*) Ajouter une prévalidation de la requete sur une base en utilisant SET PARSEONLY ON; SET PARSEONLY OFF;
 
-*) Ajouter un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
+*) Ajouter une fonctionnalité qui compte le nombre de ligne plutot que de telecharger les lignes.
 
 *) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1';
 
-*) Ajouter une prévalidation de la requete sur une base en utilisant SET PARSEONLY ON; SET PARSEONLY OFF;
+*) Ajouter un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
 
 
 Other
