@@ -1,0 +1,7 @@
+﻿
+VERIFICATION
+Verification is intended to assist the Chocolatey moderators and community
+in verifying that this package's contents are trustworthy.
+ 
+The original MSI file and chocolatey package can be downloaded at https://ci.appveyor.com/project/alexandre-lecoq/querymultidb/build/artifacts
+

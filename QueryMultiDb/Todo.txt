@@ -6,12 +6,10 @@ Todo
 To be fixed
 -----------
 
-*) Add install directory to path
+*) Ajouter le chemin d'installation au PATH windows.
 
 *) Lorsqu'un requete SQL commence par un PRINT, le texte de ce PRINT n'apparait pas dans les messages d'informations.
 	En revanche lorsqu'une requete fini par un PRINT, les messages apparaissent bien dans l'onglet.
-
-*) Ajouter des tests.
 
 *) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 	Afficher correctement les millisecondes ou les supprimer.
@@ -21,17 +19,24 @@ To be fixed
 	does not support passing a boolean parameter to pass a "false" value.
 	This is documented as https://github.com/commandlineparser/commandline/issues/17 .
 
+*) Ajouter des tests.
+
 
 To be implemented (short-term)
 ------------------------------
 
+*) Etudier remplacement du package CommandLineParser.
+
+*) Mettre à jour et packager la documentation.
+
 *) Possiblité de gérer des batchs de requete SQL (comme avec GO dans SSMS).
-	Soit avec "GO" soit en passant plusieurs fichier SQL en entrée.
-	L'option avec "GO" est mieux pour alfred.
+	Soit avec "GO", soit en passant plusieurs fichier SQL en entrée. L'option avec "GO" est mieux pour les interfaces graphiques.
+	GO est supporté par SQLCMD, OSQL et SSMS.
+	La syntaxe est : GO [count]
+	GO doit être sur une ligne tout seul, sans aucune commande SQL, mais la ligne peut contenir des commentaires SQL.
+	L'analyse doit pouvoir être faite avec une expression réguliêre.
 
 *) Ajouter une option --querySTDIN pour lire la requete SQL sur l'entrée standard.
-
-*) Créer un package chocolatey
 
 *) Parametre pour logger dans un fichier annexe.
 
@@ -51,8 +56,6 @@ To be implemented (long-term)
 
 *) Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : PRINT 'RenameSheet:Sheet1=' + 'nom1';
 
-*) Ajouter un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
-
 
 Other
 -----
@@ -62,3 +65,9 @@ il est impossible de se connecter à un serveur SQL sur un autre domaine en util
 Pourtant cela fonctionne bien dans Visual Studio lorsque l'option "Enable the Visual Studio hosting process" est activée. De même, cela fonctione aussi dans ssms.
 Impossible de comprendre pourquoi, ni de trouver comment résoudre le problème. Il faut donc garder ce point pour documenter le problème, ou bien documenter la solution.
 La command "runas" n'a pas aidé non plus.
+
+*) Ne Pas Ajouter un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
+Pas sûr sur cela soit une bonne idée étant donnée la complexité que cela ajouterait.
+Surtout que cela permetterait juste d'agréger les tables avec des ensembles de colonnes différents (SELECT * ou requête dynamique).
+La solution serait forcément basé sur des heuristiques. Ca laisse entrevoir beaucoup de travail et beaucoup de complexisté pour un résultat moyen.
+Ca ne parait pas indispensable d'autant plus que SELECT * et les requêtes dynamiques peuvent être utilisées si une seule base de données est intérrogée.

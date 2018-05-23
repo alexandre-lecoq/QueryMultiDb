@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Do not remove this test for UTF-8: if “Ω” doesn’t appear as greek uppercase omega letter enclosed in quotation marks, you should use an editor that supports UTF-8, not this one. -->
+<package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
+  <metadata>
+    <id>QueryMultiDb</id>
+    <version>$CurrentVersion$</version>
+    <packageSourceUrl>https://github.com/alexandre-lecoq/QueryMultiDb</packageSourceUrl>
+    <owners>Alexandre Lecoq</owners>
+    <title>QueryMultiDb (Install)</title>
+    <authors>Alexandre Lecoq</authors>
+    <projectUrl>https://github.com/alexandre-lecoq/QueryMultiDb</projectUrl>
+    <copyright>2018 Alexandre Lecoq</copyright>
+    <licenseUrl>https://opensource.org/licenses/BSD-3-Clause</licenseUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <projectSourceUrl>https://github.com/alexandre-lecoq/QueryMultiDb</projectSourceUrl>
+    <docsUrl>https://github.com/alexandre-lecoq/QueryMultiDb</docsUrl>
+    <bugTrackerUrl>https://github.com/alexandre-lecoq/QueryMultiDb/issues</bugTrackerUrl>
+    <tags>QueryMultiDb database extraction</tags>
+    <summary>Query multiple database</summary>
+    <description>A command-line tool to query multiple SQL Server databases at once and store results in an excel file.</description>
+  </metadata>
+  <files>
+    <file src="tools\**" target="tools" />
+	<file src="$InstallerPath$" target="tools"/>
+  </files>
+</package>

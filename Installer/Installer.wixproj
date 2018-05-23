@@ -43,5 +43,16 @@
 	</Target>
 	<Target Name="AfterBuild">
 	</Target>
+  AfterTargets="CoreBuild" Inputs="@(ChocolateyNuspecPath)" Outputs="$(ChocolateyNupkgPath)"
 	-->
+  <PropertyGroup>
+    <ChocolateyNuspecPath>$(MSBuildProjectDirectory)\..\ChocolateyPackage\querymultidb.nuspec</ChocolateyNuspecPath>
+    <QueryMultiDbPath>$(SolutionDir)QueryMultiDb\bin\$(Configuration)\QueryMultiDb.exe</QueryMultiDbPath>
+  </PropertyGroup>
+  <Target Name="AfterBuild">
+    <GetAssemblyIdentity AssemblyFiles="$(QueryMultiDbPath)">
+      <Output TaskParameter="Assemblies" ItemName="targetAssemblyInfo"/>
+    </GetAssemblyIdentity>
+    <Exec Command="C:\ProgramData\chocolatey\choco.exe Pack &quot;$(ChocolateyNuspecPath)&quot; InstallerPath=&quot;$(TargetPath)&quot; CurrentVersion=&quot;%(targetAssemblyInfo.Version)&quot; $(targetAssemblyInfo) -OutputDirectory &quot;$(TargetDir).&quot;" />
+  </Target>
 </Project>
