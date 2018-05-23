@@ -33,7 +33,7 @@ namespace QueryMultiDb
             using (var spreadSheet = SpreadsheetDocument.Create(destination, SpreadsheetDocumentType.Workbook))
             {
                 Logger.Info("Created excel file");
-                var workbookPart = spreadSheet.AddWorkbookPart();
+                spreadSheet.AddWorkbookPart();
 
                 var wbsp = spreadSheet.WorkbookPart.AddNewPart<WorkbookStylesPart>();
                 wbsp.Stylesheet = CreateStylesheet();

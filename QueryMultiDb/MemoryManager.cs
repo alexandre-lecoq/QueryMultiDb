@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using NLog;
+// ReSharper disable FormatStringProblem
 
 namespace QueryMultiDb
 {

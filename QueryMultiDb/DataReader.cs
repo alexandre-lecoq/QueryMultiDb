@@ -61,6 +61,7 @@ namespace QueryMultiDb
 
             progressReporter.Done();
 
+            // ReSharper disable once InconsistentlySynchronizedField : Parallelization is already finished when this is reached.
             Logger.Info($"Maximum concurrent queries : {_maxConcurrentExecutingQueries} queries.");
 
             return resultSets;
