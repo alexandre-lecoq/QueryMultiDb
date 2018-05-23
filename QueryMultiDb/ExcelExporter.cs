@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
@@ -715,13 +716,23 @@ namespace QueryMultiDb
 
             var dateTime = (DateTime) item;
 
+#if false
+            // This code uses the CellValues.Date data type, but doesn't support milliseconds.
             var cell = new Cell
             {
-                // Works in Office 2010+ with "s" formated datetime.
                 DataType = CellValues.Date,
                 CellValue = new CellValue(dateTime.ToString("s")),
                 StyleIndex = 1
             };
+#else
+            // This code uses the CellValues.Number data type, but supports milliseconds.
+            var cell = new Cell
+            {
+                DataType = CellValues.Number,
+                CellValue = new CellValue(dateTime.ToOADate().ToString(CultureInfo.InvariantCulture)),
+                StyleIndex = 1
+            };
+#endif
 
             return cell;
         }
