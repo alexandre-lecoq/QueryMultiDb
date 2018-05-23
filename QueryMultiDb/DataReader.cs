@@ -117,19 +117,9 @@ namespace QueryMultiDb
                     openStopwatch.Stop();
 
                     queryStopwatch.Start();
-
-                    using (var command = connection.CreateCommand())
-                    {
-                        command.CommandText = Parameters.Instance.Query;
-                        command.CommandTimeout = Parameters.Instance.CommandTimeout;
-
-                        using (var reader = command.ExecuteReader())
-                        {
-                            result = GetExecutionResult(connection, reader, database);
-                        }
-                    }
-                    
+                    result = GetExecutionResult(connection, database);
                     queryStopwatch.Stop();
+
                     connection.Close();
                 }
             }
@@ -158,21 +148,11 @@ namespace QueryMultiDb
             return result;
         }
 
-        private static ExecutionResult GetExecutionResult(SqlConnection connection, SqlDataReader reader, Database database)
+        private static ExecutionResult GetExecutionResult(SqlConnection connection, Database database)
         {
             if (connection == null)
             {
                 throw new ArgumentNullException(nameof(connection));
-            }
-
-            if (reader == null)
-            {
-                throw new ArgumentNullException(nameof(reader));
-            }
-
-            if (reader.IsClosed)
-            {
-                throw new ArgumentException("Cannot read a closed data reader.", nameof(reader));
             }
 
             if (database == null)
@@ -193,68 +173,77 @@ namespace QueryMultiDb
                 connection.InfoMessage += sqlInfoMessageEventHandler;
             }
 
-            var tableSet = new List<Table>();
-
-            do
+            using (var command = connection.CreateCommand())
             {
-                var fieldCount = reader.FieldCount;
-                var columns = new TableColumn[fieldCount];
+                command.CommandText = Parameters.Instance.Query;
+                command.CommandTimeout = Parameters.Instance.CommandTimeout;
 
-                for (var i = 0; i < fieldCount; i++)
+                using (var reader = command.ExecuteReader())
                 {
-                    var name = reader.GetName(i);
-                    var type = reader.GetFieldType(i);
-                    var column = new TableColumn(name, type);
-                    columns[i] = column;
+                    var tableSet = new List<Table>();
+
+                    do
+                    {
+                        var fieldCount = reader.FieldCount;
+                        var columns = new TableColumn[fieldCount];
+
+                        for (var i = 0; i < fieldCount; i++)
+                        {
+                            var name = reader.GetName(i);
+                            var type = reader.GetFieldType(i);
+                            var column = new TableColumn(name, type);
+                            columns[i] = column;
+                        }
+
+                        var rows = new List<TableRow>();
+
+                        while (reader.Read())
+                        {
+                            var itemArray = new object[fieldCount];
+                            reader.GetValues(itemArray);
+                            var row = new TableRow(itemArray);
+                            rows.Add(row);
+                        }
+
+                        var table = new Table(columns, rows);
+                        tableSet.Add(table);
+
+                        Logger.Info($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
+                    } while (reader.NextResult());
+
+                    reader.Close();
+
+                    // If the number of records affected is -1, it means it is a SELECT statement.
+                    if (reader.RecordsAffected != -1)
+                    {
+                        Logger.Info($"{database.ToLogPrefix()} Records affected by query : {reader.RecordsAffected}");
+                    }
+
+                    if (Parameters.Instance.ShowInformationMessages)
+                    {
+                        var infoMessageColumns = new TableColumn[6];
+                        infoMessageColumns[0] = new TableColumn("Class", typeof(string));
+                        infoMessageColumns[1] = new TableColumn("Number", typeof(string));
+                        infoMessageColumns[2] = new TableColumn("State", typeof(string));
+                        infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
+                        infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
+                        infoMessageColumns[5] = new TableColumn("Message", typeof(string));
+                        var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
+                        tableSet.Add(informationMessageTable);
+                    }
+
+                    var result = new ExecutionResult(database, tableSet);
+
+                    if (Parameters.Instance.ShowInformationMessages)
+                    {
+                        connection.InfoMessage -= sqlInfoMessageEventHandler;
+                    }
+
+                    return result;
                 }
-
-                var rows = new List<TableRow>();
-
-                while (reader.Read())
-                {
-                    var itemArray = new object[fieldCount];
-                    reader.GetValues(itemArray);
-                    var row = new TableRow(itemArray);
-                    rows.Add(row);
-                }
-
-                var table = new Table(columns, rows);
-                tableSet.Add(table);
-
-                Logger.Info($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
-            } while (reader.NextResult());
-
-            reader.Close();
-
-            // If the number of records affected is -1, it means it is a SELECT statement.
-            if (reader.RecordsAffected != -1)
-            {
-                Logger.Info($"{database.ToLogPrefix()} Records affected by query : {reader.RecordsAffected}");
             }
-
-            if (Parameters.Instance.ShowInformationMessages)
-            {
-                var infoMessageColumns = new TableColumn[6];
-                infoMessageColumns[0] = new TableColumn("Class", typeof(string));
-                infoMessageColumns[1] = new TableColumn("Number", typeof(string));
-                infoMessageColumns[2] = new TableColumn("State", typeof(string));
-                infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
-                infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
-                infoMessageColumns[5] = new TableColumn("Message", typeof(string));
-                var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
-                tableSet.Add(informationMessageTable);
-            }
-
-            var result = new ExecutionResult(database, tableSet);
-
-            if (Parameters.Instance.ShowInformationMessages)
-            {
-                connection.InfoMessage -= sqlInfoMessageEventHandler;
-            }
-
-            return result;
         }
-        
+
         private static void ConnectionOnInfoMessage(ICollection<TableRow> infoMessageRows, SqlInfoMessageEventArgs sqlInfoMessageEventArgs)
         {
             if (infoMessageRows == null)

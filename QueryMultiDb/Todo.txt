@@ -8,8 +8,7 @@ To be fixed
 
 *) Ajouter le chemin d'installation au PATH windows.
 
-*) Lorsqu'un requete SQL commence par un PRINT, le texte de ce PRINT n'apparait pas dans les messages d'informations.
-	En revanche lorsqu'une requete fini par un PRINT, les messages apparaissent bien dans l'onglet.
+*) Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
 *) Corriger l'affichage des millisecondes dans les fichier Excel. Actuellement les dates affichent toujours 000 millisecondes.
 	Afficher correctement les millisecondes ou les supprimer.
