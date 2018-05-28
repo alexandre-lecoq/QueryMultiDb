@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
 using System.Threading;
-using CommandLine;
+using CommandLineParser.Exceptions;
 using NLog;
 using NLog.Config;
 using NLog.Targets.Wrappers;
@@ -21,16 +22,27 @@ namespace QueryMultiDb
 
             SetCulture();
 
-            var parserResult = Parser.Default.ParseArguments<CommandLineParameters>(args);
+            var commandLineParser = new CommandLineParser.CommandLineParser();
+            var commandLineParameters = new CommandLineParameters();
+            commandLineParser.ExtractArgumentAttributes(commandLineParameters);
+            commandLineParser.ShowUsageOnEmptyCommandline = true;
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            commandLineParser.ShowUsageHeader = $"QueryMultiDb {version} usage :";
+            commandLineParser.ShowUsageFooter = "Because you're worth it.";
 
-            if (parserResult.Tag != ParserResultType.Parsed)
+            try
             {
+                commandLineParser.ParseCommandLine(args);
+            }
+            catch (CommandLineException exp)
+            {
+                Logger.Fatal(exp, "Command line arguments analysis failed.");
+                commandLineParser.ShowUsage();
                 return -1;
             }
 
-            var parsedResult = (Parsed<CommandLineParameters>)parserResult;
             // This must be set very early to be usable at any time.
-            Parameters.Instance = new Parameters(parsedResult.Value);
+            Parameters.Instance = new Parameters(commandLineParameters);
 
             Logger.Info("Initialized QueryMultiDb");
 

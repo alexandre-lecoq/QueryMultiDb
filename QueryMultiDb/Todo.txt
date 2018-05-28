@@ -10,18 +10,11 @@ To be fixed
 
 *) Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
-*) Issue #42 : Indicates a commandline parameter of boolean type which should default to a "true" value.
-	It defaults to "false" because the command line parsing library currently in use
-	does not support passing a boolean parameter to pass a "false" value.
-	This is documented as https://github.com/commandlineparser/commandline/issues/17 .
-
 *) Ajouter des tests.
 
 
 To be implemented (short-term)
 ------------------------------
-
-*) Etudier remplacement du package CommandLineParser.
 
 *) Mettre à jour et packager la documentation.
 

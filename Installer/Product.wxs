@@ -39,8 +39,8 @@
       <Component Id="QueryMultiDb.exe">
         <File Id="QueryMultiDb.exe" Source="$(var.QueryMultiDb.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="CommandLine.dll">
-        <File Id="CommandLine.dll" Source="$(var.QueryMultiDb.TargetDir)CommandLine.dll" Checksum="yes" />
+      <Component Id="CommandLineArgumentsParser.dll">
+        <File Id="CommandLineArgumentsParser.dll" Source="$(var.QueryMultiDb.TargetDir)CommandLineArgumentsParser.dll" Checksum="yes" />
       </Component>
       <Component Id="DocumentFormat.OpenXml.dll">
         <File Id="DocumentFormat.OpenXml.dll" Source="$(var.QueryMultiDb.TargetDir)DocumentFormat.OpenXml.dll" Checksum="yes" />

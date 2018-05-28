@@ -128,7 +128,7 @@ namespace QueryMultiDb
 
             if (parsedResult.QueryFile != null)
             {
-                Query = File.ReadAllText(parsedResult.QueryFile);
+                Query = File.ReadAllText(parsedResult.QueryFile.FullName);
             }
 
             if (parsedResult.Targets == null && parsedResult.TargetsStandardInput == false && parsedResult.TargetsFile == null)
@@ -166,13 +166,13 @@ namespace QueryMultiDb
             }
             else if (parsedResult.TargetsFile != null)
             {
-                targets = File.ReadAllText(parsedResult.TargetsFile);
+                targets = File.ReadAllText(parsedResult.TargetsFile.FullName);
             }
 
             Targets = ParseTargets(targets);
 
             OutputFile = parsedResult.OutputFile;
-            OutputDirectory = parsedResult.OutputDirectory ?? Directory.GetCurrentDirectory();
+            OutputDirectory = parsedResult.OutputDirectory?.FullName ?? Directory.GetCurrentDirectory();
             Overwrite = parsedResult.Overwrite;
             ConnectionTimeout = parsedResult.ConnectionTimeout;
             CommandTimeout = parsedResult.CommandTimeout;
