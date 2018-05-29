@@ -41,6 +41,12 @@ namespace QueryMultiDb
                 return -1;
             }
 
+            if (!commandLineParser.ParsingSucceeded)
+            {
+                Logger.Fatal("Command line arguments analysis failed.");
+                return -2;
+            }
+
             // This must be set very early to be usable at any time.
             Parameters.Instance = new Parameters(commandLineParameters);
 
@@ -62,7 +68,7 @@ namespace QueryMultiDb
             {
                 Logger.Error(exp, "Fatal error.");
 
-                return -2;
+                return -3;
             }
             finally
             {
