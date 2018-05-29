@@ -25,17 +25,15 @@ startkeypress|Wait for a key press to start.|false|
 stopkeypress|Wait for a key press to stop.|false|
 progress|Reports progress on standard error output.|false|
 nullscolor|Indicates the color of the NULL text in excel files.|7F7F7F|
-shownulls|Show NULL values explicitly rather than showing empty value.|false|
-showipaddress|Show server's IP address.|false|
-showservername|Show server's name.|false|
-showdatabasename|Show database's name.|false|
-showextracolumns|Show targets' extra columns.|false|
-showlogsheet|Show log sheet in excel file.|false|
-showparametersheet|Show parameter sheet in excel file.|false|
-showinformationmessages|Show parameter sheet in excel file.|false|
+shownulls|Show NULL values explicitly rather than showing empty value.|true|
+showipaddress|Show server's IP address.|true|
+showservername|Show server's name.|true|
+showdatabasename|Show database's name.|true|
+showextracolumns|Show targets' extra columns.|true|
+showlogsheet|Show log sheet in excel file.|true|
+showparametersheet|Show parameter sheet in excel file.|true|
+showinformationmessages|Show parameter sheet in excel file.|true|
 sheetlabels|Defines the sheets' labels.||
-help|Display this help screen.||
-version|Display version information.||
 
 ### Example
 
@@ -89,3 +87,7 @@ The utility expects a JSON formatted file for specifying database targets.
 	]
 }
 ```
+
+## Download
+
+Chocolatey package and Windows installer are available in [appveyor artifacts](https://ci.appveyor.com/project/alexandre-lecoq/querymultidb/build/artifacts).
