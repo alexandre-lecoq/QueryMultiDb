@@ -326,7 +326,8 @@ namespace QueryMultiDb
                 CreateParameterRow("ShowDatabaseName", parameters.ShowDatabaseName),
                 CreateParameterRow("ShowExtraColumns", parameters.ShowExtraColumns),
                 CreateParameterRow("ShowInformationMessages", parameters.ShowInformationMessages),
-                CreateParameterRow("SheetLabels", string.Join(", ", parameters.SheetLabels))
+                CreateParameterRow("SheetLabels", string.Join(", ", parameters.SheetLabels)),
+                CreateParameterRow("DiscardResults", parameters.DiscardResults)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);

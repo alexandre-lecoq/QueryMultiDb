@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Globalization;
@@ -183,34 +184,14 @@ namespace QueryMultiDb
                 {
                     var tableSet = new List<Table>();
 
-                    do
+                    if (Parameters.Instance.DiscardResults)
                     {
-                        var fieldCount = reader.FieldCount;
-                        var columns = new TableColumn[fieldCount];
-
-                        for (var i = 0; i < fieldCount; i++)
-                        {
-                            var name = reader.GetName(i);
-                            var type = reader.GetFieldType(i);
-                            var column = new TableColumn(name, type);
-                            columns[i] = column;
-                        }
-
-                        var rows = new List<TableRow>();
-
-                        while (reader.Read())
-                        {
-                            var itemArray = new object[fieldCount];
-                            reader.GetValues(itemArray);
-                            var row = new TableRow(itemArray);
-                            rows.Add(row);
-                        }
-
-                        var table = new Table(columns, rows);
-                        tableSet.Add(table);
-
-                        Logger.Info($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
-                    } while (reader.NextResult());
+                        ReadResultDataAndDiscard(reader, tableSet, database);
+                    }
+                    else
+                    {
+                        ReadResultData(reader, tableSet, database);
+                    }
 
                     reader.Close();
 
@@ -243,6 +224,95 @@ namespace QueryMultiDb
                     return result;
                 }
             }
+        }
+
+        private static void ReadResultDataAndDiscard(IDataReader reader, ICollection<Table> tableSet, Database database)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            if (tableSet == null)
+            {
+                throw new ArgumentNullException(nameof(tableSet));
+            }
+
+            if (database == null)
+            {
+                throw new ArgumentNullException(nameof(database));
+            }
+
+            do
+            {
+                var fieldCount = reader.FieldCount;
+                var rowCount = 0;
+
+                while (reader.Read())
+                {
+                    rowCount++;
+                }
+
+                var columns = new TableColumn[2];
+                columns[0] = new TableColumn("FieldCount", typeof(int));
+                columns[1] = new TableColumn("RowCount", typeof(int));
+
+                var itemArray = new object[] {fieldCount, rowCount};
+                var row = new TableRow(itemArray);
+                var rows = new List<TableRow> {row};
+
+                var table = new Table(columns, rows);
+                tableSet.Add(table);
+
+                Logger.Info($"{database.ToLogPrefix()} Rows in table : {rowCount} (discarded)");
+            } while (reader.NextResult());
+        }
+
+        private static void ReadResultData(IDataReader reader, ICollection<Table> tableSet, Database database)
+        {
+            if (reader == null)
+            {
+                throw new ArgumentNullException(nameof(reader));
+            }
+
+            if (tableSet == null)
+            {
+                throw new ArgumentNullException(nameof(tableSet));
+            }
+
+            if (database == null)
+            {
+                throw new ArgumentNullException(nameof(database));
+            }
+
+            do
+            {
+                var fieldCount = reader.FieldCount;
+                var columns = new TableColumn[fieldCount];
+
+                for (var i = 0; i < fieldCount; i++)
+                {
+                    var name = reader.GetName(i);
+                    var type = reader.GetFieldType(i);
+                    var column = new TableColumn(name, type);
+                    columns[i] = column;
+                }
+
+                var rows = new List<TableRow>();
+
+                while (reader.Read())
+                {
+                    var itemArray = new object[fieldCount];
+                    reader.GetValues(itemArray);
+                    var row = new TableRow(itemArray);
+                    rows.Add(row);
+                }
+
+                var table = new Table(columns, rows);
+                tableSet.Add(table);
+
+                Logger.Info($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
+            } while (reader.NextResult());
         }
 
         private static void ConnectionOnInfoMessage(ICollection<TableRow> infoMessageRows, SqlInfoMessageEventArgs sqlInfoMessageEventArgs)

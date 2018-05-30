@@ -232,5 +232,12 @@ namespace QueryMultiDb
             FullDescription = "This is a comma-separated list of sheet name to be used for query results sheets in excel file.",
             Example = "Sheet 1, Sheet 2, Sheet 3")]
         public string SheetLabels { get; set; }
+
+        [SwitchArgument(
+            "discardresults",
+            false,
+            Description = "Discard query results and display counts instead.",
+            FullDescription = "If the switch is turned on, results will be discarded. A field and row count will be calculated instead. It will save memory and file generation time in this software.")]
+        public bool DiscardResults { get; set; }
     }
 }

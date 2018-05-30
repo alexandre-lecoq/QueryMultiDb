@@ -52,6 +52,8 @@ namespace QueryMultiDb
 
         public ICollection<string> SheetLabels { get; set; }
 
+        public bool DiscardResults { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
         {
@@ -191,6 +193,7 @@ namespace QueryMultiDb
             ShowParameterSheet = parsedResult.ShowParameterSheet;
             ShowInformationMessages = parsedResult.ShowInformationMessages;
             SheetLabels = ParseSheetLabels(parsedResult.SheetLabels);
+            DiscardResults = parsedResult.DiscardResults;
 
             ThrowIfInvalidParameter();
         }
