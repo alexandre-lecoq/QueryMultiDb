@@ -38,7 +38,7 @@ discardresults|Discard query results and display counts instead|false|
 
 ### Example
 
-`.\QueryMultiDb.exe --progress --parallelism 8 --overwrite --queryfile "set001.sql" --outputfile "set001.xlsx" --targetsfile "set001.targets" --shownulls --showlogsheet --showparametersheet --showipaddress --showservername --showdatabasename --showinformationmessages --showextracolumns`
+`.\QueryMultiDb.exe --progress --parallelism 8 --overwrite --queryfile "set001.sql" --outputfile "set001.xlsx" --targetsfile "set001.targets" --shownulls false`
 
 ## Targets
 
