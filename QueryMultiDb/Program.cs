@@ -33,27 +33,18 @@ namespace QueryMultiDb
             try
             {
                 commandLineParser.ParseCommandLine(args);
-            }
-            catch (CommandLineException exp)
-            {
-                Logger.Fatal(exp, "Command line arguments analysis failed.");
-                commandLineParser.ShowUsage();
-                return -1;
-            }
 
-            if (!commandLineParser.ParsingSucceeded)
-            {
-                Logger.Fatal("Command line arguments analysis failed.");
-                return -2;
-            }
+                if (!commandLineParser.ParsingSucceeded)
+                {
+                    Logger.Fatal("Command line arguments analysis failed.");
+                    return -1;
+                }
 
-            // This must be set very early to be usable at any time.
-            Parameters.Instance = new Parameters(commandLineParameters);
+                // This must be set very early to be usable at any time.
+                Parameters.Instance = new Parameters(commandLineParameters);
 
-            Logger.Info("Initialized QueryMultiDb");
+                Logger.Info("Initialized QueryMultiDb");
 
-            try
-            {
                 if (Parameters.Instance.StartKeyPress)
                 {
                     Console.WriteLine("Press a key to start...");
@@ -64,9 +55,15 @@ namespace QueryMultiDb
 
                 return 0;
             }
+            catch (CommandLineException exp)
+            {
+                Logger.Fatal(exp, "Command line arguments analysis failed.");
+                commandLineParser.ShowUsage();
+                return -2;
+            }
             catch (Exception exp)
             {
-                Logger.Error(exp, "Fatal error.");
+                Logger.Fatal(exp, "Fatal error.");
 
                 return -3;
             }

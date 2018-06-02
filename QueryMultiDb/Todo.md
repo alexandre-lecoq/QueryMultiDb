@@ -14,7 +14,7 @@ To be fixed
 To be implemented (short-term)
 ------------------------------
 
-* Mettre à jour et packager la documentation.
+* Packager la documentation.
 
 * Ajouter une option `--querySTDIN` pour lire la requete SQL sur l'entrée standard.
 
