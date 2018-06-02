@@ -8,8 +8,6 @@ To be fixed
 
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
-* Ajouter le chemin d'installation au `PATH` windows.
-
 * Ajouter des tests.
 
 
@@ -22,7 +20,7 @@ To be implemented (short-term)
 
 * Parametre pour logger dans un fichier annexe.
 
-* Ajouter un paramètre pour valider la requête sur les bases de données en utilisant SET PARSEONLY ON; ou SET NOEXEC ON; au lieu de les éxécuter.
+* Ajouter un paramètre pour valider la requête sur les bases de données en utilisant `SET PARSEONLY ON;` ou `SET NOEXEC ON;` au lieu de les éxécuter.
 
 * Etudier les logs structurés avec [Serilog](https://serilog.net/)
 
