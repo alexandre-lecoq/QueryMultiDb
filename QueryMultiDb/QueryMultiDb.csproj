@@ -116,7 +116,6 @@
     </None>
     <None Include="packages.config" />
     <None Include="QueryMultiDb.ruleset" />
-    <None Include="Todo.md" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
