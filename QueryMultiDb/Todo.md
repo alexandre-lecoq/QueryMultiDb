@@ -14,11 +14,20 @@ To be fixed
 To be implemented (short-term)
 ------------------------------
 
-* Packager la documentation.
-
 * Ajouter une option `--querySTDIN` pour lire la requete SQL sur l'entrée standard.
 
+* Ajouter une option `--outputSTDOUT` pour ecrire sur la sortie standard le fichier excel.
+	Cela supprimera les logs de la sortie standard.
+
 * Parametre pour logger dans un fichier annexe.
+
+* Ajouter une interface graphique
+
+* Ajouter un outil pour générer des listes de bases de données au format des fichier `target`
+
+* Utiliser la validation d'arguments du package CommandLineParser.
+
+* Packager la documentation.
 
 * Ajouter un paramètre pour valider la requête sur les bases de données en utilisant `SET PARSEONLY ON;` ou `SET NOEXEC ON;` au lieu de les éxécuter.
 
