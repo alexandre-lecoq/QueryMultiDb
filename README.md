@@ -46,7 +46,7 @@ discardresults|Discard query results and display counts instead|false|
 ## Targets
 
 The utility expects a JSON formatted file for specifying database targets.
-The file can be generated with the [DbTargets](#DbTargets) utility.
+The file can be generated with the [DbTargets](#dbtargets) utility.
 
 ### Simple example
 
