@@ -21,13 +21,11 @@ To be implemented (short-term)
 
 * Parametre pour logger dans un fichier annexe.
 
-* Ajouter une interface graphique
-
-* Ajouter un outil pour générer des listes de bases de données au format des fichier `target`
-
 * Utiliser la validation d'arguments du package CommandLineParser.
 
 * Packager la documentation.
+
+* Ajouter une interface graphique
 
 * Ajouter un paramètre pour valider la requête sur les bases de données en utilisant `SET PARSEONLY ON;` ou `SET NOEXEC ON;` au lieu de les éxécuter.
 

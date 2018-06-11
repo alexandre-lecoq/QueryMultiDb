@@ -1,7 +1,9 @@
-# QueryMultiDb
+# Project status
 A command-line tool to query multiple SQL Server databases at once and store results in an excel file.
 
 [![Build status](https://ci.appveyor.com/api/projects/status/29cusv9r5hu1r2e5?svg=true)](https://ci.appveyor.com/project/alexandre-lecoq/querymultidb)
+
+# QueryMultiDb
 
 ## Command line parameters
 
@@ -38,11 +40,12 @@ discardresults|Discard query results and display counts instead|false|
 
 ### Example
 
-`.\QueryMultiDb.exe --progress --parallelism 8 --overwrite --queryfile "set001.sql" --outputfile "set001.xlsx" --targetsfile "set001.targets" --shownulls false`
+`QueryMultiDb.exe --progress --parallelism 8 --overwrite --queryfile "set001.sql" --outputfile "set001.xlsx" --targetsfile "set001.targets" --shownulls false`
 
 ## Targets
 
 The utility expects a JSON formatted file for specifying database targets.
+The file can be generated with the [DbTargets](#DbTargets) utility.
 
 ### Simple example
 
@@ -70,7 +73,7 @@ The utility expects a JSON formatted file for specifying database targets.
 			"DatabaseName": "FUNNY_DB",
 			"ExtraValue1": "😸😹😺",
 			"ExtraValue2": "🙈🙉🙊",
-			"ExtraValue3": "😇😈😉",
+			"ExtraValue3": "😨😰😱",
 			"ExtraValue4": "😇😈😉",
 			"ExtraValue5": "🙍🙎🙏",
 			"ExtraValue6": "😀😁😂"
@@ -89,6 +92,22 @@ The utility expects a JSON formatted file for specifying database targets.
 }
 ```
 
-## Download
+# DbTargets
+
+A command line utility to generate targets JSON-formated database files.
+
+## Command line parameters
+
+`DbTargets <servername> [regexp]`
+* `servername` : The server's name to connect to.
+* `regexp` : An optional regular expression to filter out database names.
+
+Check [Regular Expression Language - Quick Reference](https://docs.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) for valid regular expressions.
+
+### Example
+
+`DbTargets.exe sqlserver.name.com ".*log.*" > file.targets`
+
+# Download
 
 Chocolatey package and Windows installer are available in [appveyor artifacts](https://ci.appveyor.com/project/alexandre-lecoq/querymultidb/build/artifacts).

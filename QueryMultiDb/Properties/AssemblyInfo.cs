@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexandre Lecoq")]
 [assembly: AssemblyProduct("QueryMultiDb")]
-[assembly: AssemblyCopyright("Copyright © Alexandre Lecoq 2017")]
+[assembly: AssemblyCopyright("Copyright © Alexandre Lecoq 2018")]
 [assembly: AssemblyTrademark("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

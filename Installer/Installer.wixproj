@@ -22,6 +22,14 @@
     <Compile Include="Product.wxs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DbTargets\DbTargets.csproj">
+      <Name>DbTargets</Name>
+      <Project>{25826f24-b794-4148-a81b-4370503306f6}</Project>
+      <Private>True</Private>
+      <DoNotHarvest>True</DoNotHarvest>
+      <RefProjectOutputGroups>Binaries;Content;Satellites</RefProjectOutputGroups>
+      <RefTargetDir>INSTALLFOLDER</RefTargetDir>
+    </ProjectReference>
     <ProjectReference Include="..\QueryMultiDb\QueryMultiDb.csproj">
       <Name>QueryMultiDb</Name>
       <Project>{b22a5cf5-41f2-43cb-9ec2-386647e4b6ee}</Project>
@@ -51,7 +59,7 @@
   </PropertyGroup>
   <Target Name="AfterBuild">
     <GetAssemblyIdentity AssemblyFiles="$(QueryMultiDbPath)">
-      <Output TaskParameter="Assemblies" ItemName="targetAssemblyInfo"/>
+      <Output TaskParameter="Assemblies" ItemName="targetAssemblyInfo" />
     </GetAssemblyIdentity>
     <Exec Command="C:\ProgramData\chocolatey\choco.exe Pack &quot;$(ChocolateyNuspecPath)&quot; InstallerPath=&quot;$(TargetPath)&quot; CurrentVersion=&quot;%(targetAssemblyInfo.Version)&quot; $(targetAssemblyInfo) -OutputDirectory &quot;$(TargetDir).&quot;" />
   </Target>

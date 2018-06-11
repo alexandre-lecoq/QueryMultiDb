@@ -35,7 +35,6 @@
 
   <Fragment>
     <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
-      <!-- Note using the project reference for specifying the source here -->
       <Component Id="QueryMultiDb.exe">
         <File Id="QueryMultiDb.exe" Source="$(var.QueryMultiDb.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
@@ -66,6 +65,17 @@
       <Component Id="QueryMultiDb.exe.config">
         <File Id="QueryMultiDb.exe.config" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.exe.config" />
       </Component>
+
+      <Component Id="DbTargets.exe">
+        <File Id="DbTargets.exe" Source="$(var.DbTargets.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="DbTargets.pdb">
+        <File Id="DbTargets.pdb" Source="$(var.DbTargets.TargetDir)DbTargets.pdb" />
+      </Component>
+      <Component Id="DbTargets.exe.config">
+        <File Id="DbTargets.exe.config" Source="$(var.DbTargets.TargetDir)DbTargets.exe.config" />
+      </Component>
+
       <Component Id="Path" Guid="425AAEEB-760D-4658-85D0-DC98A56AD621">
         <CreateFolder/>
         <Environment Id="SystemPath" Name="PATH" Value="[INSTALLFOLDER]" Permanent="no" Part="last" Action="set" System="yes" />
