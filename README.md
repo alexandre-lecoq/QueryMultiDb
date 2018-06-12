@@ -99,7 +99,7 @@ A command line utility to generate targets JSON-formated database files.
 
 ## Command line parameters
 
-`DbTargets <servername> [regexp]`
+`DbTargets.exe <servername> [regexp]`
 * `servername` : The server's name to connect to.
 * `regexp` : An optional regular expression to filter out database names.
 
