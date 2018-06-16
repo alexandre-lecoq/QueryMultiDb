@@ -26,11 +26,21 @@ namespace QueryMultiDb
             Logger.Info(message);
         }
 
-        private static string ToSuffixedSizeString(this long value, int decimalPlaces = 2)
+        public static string ToSuffixedSizeString(this long value, int decimalPlaces = 2)
         {
             if (decimalPlaces < 0)
             {
                 throw new ArgumentOutOfRangeException(nameof(decimalPlaces));
+            }
+
+            if (decimalPlaces > 28)
+            {
+                throw new ArgumentOutOfRangeException(nameof(decimalPlaces));
+            }
+
+            if (value == long.MinValue)
+            {
+                return "-" + ToSuffixedSizeString(long.MaxValue);
             }
 
             if (value < 0)
