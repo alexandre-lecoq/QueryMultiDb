@@ -60,6 +60,5 @@ namespace QueryMultiDb
 
             return string.Format("{0:n" + decimalPlaces + "} {1}", adjustedSize, SizeSuffixes[mag]);
         }
-
     }
 }
