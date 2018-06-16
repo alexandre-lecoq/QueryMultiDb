@@ -75,6 +75,9 @@
       <Component Id="DbTargets.exe.config">
         <File Id="DbTargets.exe.config" Source="$(var.DbTargets.TargetDir)DbTargets.exe.config" />
       </Component>
+      <Component Id="README.md">
+        <File Id="README.md" Source="$(var.SolutionDir)README.md" />
+      </Component>
 
       <Component Id="Path" Guid="425AAEEB-760D-4658-85D0-DC98A56AD621">
         <CreateFolder/>

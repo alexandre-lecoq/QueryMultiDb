@@ -23,7 +23,11 @@ To be implemented (short-term)
 
 * Utiliser la validation d'arguments du package CommandLineParser.
 
-* Packager la documentation.
+* Ajouter le support de Travis CI
+
+* Ajouter le package sur chocolatey
+
+* Ajouter la courverture de tests (codecov ? coveralls ? sonarqube ?)
 
 * Ajouter une interface graphique
 
