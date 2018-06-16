@@ -8,8 +8,6 @@ To be fixed
 
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
-* Valider les arguments de la ligne de commande dans DbTargets
-
 * Ajouter des tests.
 
 

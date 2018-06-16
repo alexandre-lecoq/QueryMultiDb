@@ -25,6 +25,20 @@ namespace DbTargets
                 return -1;
             }
 
+            if (string.IsNullOrWhiteSpace(args[0]))
+            {
+                Console.WriteLine("Server name cannot be empty.");
+                Console.WriteLine("Usage : DbTargets <servername> [regexp]");
+                return -2;
+            }
+
+            if (!IsValidRegex(args[1]))
+            {
+                Console.WriteLine("Invalid regular expression.");
+                Console.WriteLine("Usage : DbTargets <servername> [regexp]");
+                return -3;
+            }
+
             var serverName = args[0];
             var regexp = (string)null;
 
@@ -42,6 +56,21 @@ namespace DbTargets
             sw.Write(content);
 
             return 0;
+        }
+
+        private static bool IsValidRegex(string regexp)
+        {
+            try
+            {
+                // ReSharper disable once ObjectCreationAsStatement
+                new Regex(regexp, RegexOptions.IgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         private static List<string> QueryDatabaseNames(string serverName)
