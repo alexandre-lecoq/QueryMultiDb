@@ -38,6 +38,7 @@ showparametersheet|Show parameter sheet in excel file.|true|
 showinformationmessages|Show parameter sheet in excel file.|true|
 sheetlabels|Defines the sheets' labels.||
 discardresults|Discard query results and display counts instead|false|
+applicationname|Defines the application name for the SQL server connection.||
 
 ### Example
 

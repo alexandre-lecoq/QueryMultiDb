@@ -78,6 +78,12 @@ namespace QueryMultiDb
 
             var titleAttribute = (AssemblyTitleAttribute) Assembly.GetExecutingAssembly()
                 .GetCustomAttribute(typeof(AssemblyTitleAttribute));
+            var applicationName = titleAttribute.Title;
+
+            if (!string.IsNullOrWhiteSpace(Parameters.Instance.ApplicationName))
+            {
+                applicationName += " / " + Parameters.Instance.ApplicationName.Trim();
+            }
 
             var connectionStringBuilder = new SqlConnectionStringBuilder
             {
@@ -87,7 +93,7 @@ namespace QueryMultiDb
 
                 IntegratedSecurity = true,
                 WorkstationID = Environment.MachineName,
-                ApplicationName = titleAttribute.Title,
+                ApplicationName = applicationName,
 
                 ApplicationIntent = ApplicationIntent.ReadWrite,
                 NetworkLibrary = "dbmssocn",

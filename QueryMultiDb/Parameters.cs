@@ -54,6 +54,8 @@ namespace QueryMultiDb
 
         public bool DiscardResults { get; set; }
 
+        public string ApplicationName { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
         {
@@ -194,6 +196,7 @@ namespace QueryMultiDb
             ShowInformationMessages = parsedResult.ShowInformationMessages;
             SheetLabels = ParseSheetLabels(parsedResult.SheetLabels);
             DiscardResults = parsedResult.DiscardResults;
+            ApplicationName = parsedResult.ApplicationName;
 
             ThrowIfInvalidParameter();
         }
@@ -386,6 +389,11 @@ namespace QueryMultiDb
                 {
                     throw new ArgumentException("Sheet label cannot be null, empty or blank.");
                 }
+            }
+
+            if (ApplicationName != null && ApplicationName.Trim() == string.Empty)
+            {
+                throw new ArgumentException("ApplicationName cannot be an empty.");
             }
         }
 

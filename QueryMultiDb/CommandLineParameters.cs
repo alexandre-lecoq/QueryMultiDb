@@ -239,5 +239,14 @@ namespace QueryMultiDb
             Description = "Discard query results and display counts instead.",
             FullDescription = "If the switch is turned on, results will be discarded. A field and row count will be calculated instead. It will save memory and file generation time in this software.")]
         public bool DiscardResults { get; set; }
+
+        [ValueArgument(
+            typeof(string),
+            "applicationname",
+            DefaultValue = null,
+            Description = "Defines the application name for the SQL server connection.",
+            FullDescription = "You can use this to specify the name of the application running this tool. The name will be visible in SQL server's connection information.",
+            Example = "MyApplication")]
+        public string ApplicationName { get; set; }
     }
 }
