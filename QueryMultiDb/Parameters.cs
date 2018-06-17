@@ -208,9 +208,9 @@ namespace QueryMultiDb
                 return new List<string>();
             }
 
-            if (string.IsNullOrWhiteSpace(parsedResultSheetLabels))
+            if (parsedResultSheetLabels.Trim() == string.Empty)
             {
-                throw new ArgumentException("Value cannot be whitespace.", nameof(parsedResultSheetLabels));
+                throw new ArgumentException("Value cannot be empty or whitespace.", nameof(parsedResultSheetLabels));
             }
 
             var splitLabels = parsedResultSheetLabels.Split(',');
