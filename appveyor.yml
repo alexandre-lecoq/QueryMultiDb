@@ -1,5 +1,6 @@
 version: 1.0.{build}
 configuration: Release
+clone_depth: 1
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.cs'
@@ -7,11 +8,19 @@ assembly_info:
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
 install:
-- cmd: choco upgrade chocolatey
+- cmd: >-
+    choco upgrade chocolatey
+
+    choco install msbuild-sonarqube-runner
 before_build:
-- cmd: nuget restore
+- cmd: >-
+    nuget restore
+
+    SonarScanner.MSBuild.exe begin /k:"QueryMultiDb" /d:sonar.organization="alexandre-lecoq-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="f35bbbddefd47794d06e1f61cf452f994ddd3a71"
 build:
   verbosity: normal
+after_build:
+- cmd: SonarScanner.MSBuild.exe end /d:sonar.login="f35bbbddefd47794d06e1f61cf452f994ddd3a71"
 artifacts:
 - path: Installer\bin\Release\QueryMultiDb.msi
   name: Installer
