@@ -1,21 +1,35 @@
 # Project status
 
 [![License](http://img.shields.io/:license-mit-blue.svg)](http://csmacnz.mit-license.org)
+
 [![Build status](https://ci.appveyor.com/api/projects/status/29cusv9r5hu1r2e5?svg=true)](https://ci.appveyor.com/project/alexandre-lecoq/querymultidb)
+
 [![codecov](https://codecov.io/gh/alexandre-lecoq/QueryMultiDb/branch/master/graph/badge.svg)](https://codecov.io/gh/alexandre-lecoq/QueryMultiDb)
+
 [![Coverage Status](https://coveralls.io/repos/github/alexandre-lecoq/QueryMultiDb/badge.svg?branch=master)](https://coveralls.io/github/alexandre-lecoq/QueryMultiDb?branch=master)
 
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=bugs)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=code_smells)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=coverage)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=duplicated_lines_density)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=ncloc)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=sqale_rating)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=alert_status)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=reliability_rating)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=security_rating)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=sqale_index)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 [![SonarCloud bugs](https://sonarcloud.io/api/project_badges/measure?project=QueryMultiDb&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=QueryMultiDb)
+
 
 # QueryMultiDb
 

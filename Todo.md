@@ -19,11 +19,9 @@ To be implemented (short-term)
 * Ajouter une option `--outputSTDOUT` pour ecrire sur la sortie standard le fichier excel.
 	Cela supprimera les logs de la sortie standard.
 
-* Parametre pour logger dans un fichier annexe.
+* Ajouter un parametre --logfile pour logger dans un fichier annexe.
 
 * Utiliser la validation d'arguments du package CommandLineParser.
-
-* Ajouter le support de Travis CI
 
 * Ajouter le package sur chocolatey
 
@@ -42,6 +40,12 @@ To be implemented (short-term)
 
 To be implemented (long-term)
 ------------------------------
+
+* Ajouter le support de Travis CI
+
+* Ajouter le support coveralls (cassé)
+
+* Ajouter le support coverity
 
 * Ajuster la largeur des colonnes dans le fichier Excel.
 
