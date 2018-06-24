@@ -1,17 +1,29 @@
 version: 1.0.{build}
+image: Visual Studio 2017
 configuration: Release
-clone_depth: 1
+
+environment:
+  COVERALLS_REPO_TOKEN:
+    secure: D2UAgklYO9LG75FbrhhO43JKZSQ16xnxlyY/Y9SmR+1m8zAhuEcM02gN7GhPBevj
+
 assembly_info:
   patch: true
   file: '**\AssemblyInfo.cs'
   assembly_version: '{version}'
   assembly_file_version: '{version}'
   assembly_informational_version: '{version}'
+
 install:
 - cmd: >-
     choco upgrade chocolatey
 
     choco install msbuild-sonarqube-runner
+
+    choco install codecov
+
+    choco install opencover.portable
+
+# dotnet tool install -g coveralls.net
 before_build:
 - cmd: >-
     nuget restore
@@ -21,6 +33,14 @@ build:
   verbosity: normal
 after_build:
 - cmd: SonarScanner.MSBuild.exe end /d:sonar.login="f35bbbddefd47794d06e1f61cf452f994ddd3a71"
+test_script:
+- cmd: >-
+    OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.exe" -targetargs:"\"C:\projects\querymultidb\QueryMultiDb.Tests.Unit\bin\Release\QueryMultiDb.Tests.Unit.dll\" -noshadow -appveyor -xml C:\projects\querymultidb\QueryMultiDb.Tests.Unit.report.xml" -output:"QueryMultiDb.Tests.Unit.coverage.xml"
+
+    codecov -f "QueryMultiDb.Tests.Unit.coverage.xml"
+
+# csmacnz.coveralls.exe --opencover -i "QueryMultiDb.Tests.Unit.coverage.xml" --repoToken %COVERALLS_REPO_TOKEN%
+
 artifacts:
 - path: Installer\bin\Release\QueryMultiDb.msi
   name: Installer

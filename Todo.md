@@ -27,8 +27,6 @@ To be implemented (short-term)
 
 * Ajouter le package sur chocolatey
 
-* Ajouter la courverture de tests (codecov ? coveralls ? sonarqube ?)
-
 * Ajouter une interface graphique
 
 * Ajouter un paramètre pour valider la requête sur les bases de données en utilisant `SET PARSEONLY ON;` ou `SET NOEXEC ON;` au lieu de les éxécuter.
