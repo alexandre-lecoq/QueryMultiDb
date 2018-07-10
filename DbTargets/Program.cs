@@ -20,23 +20,14 @@ namespace DbTargets
 
             if ((args.Length < 1) || (args.Length > 2))
             {
-                Console.WriteLine("Incorrect number of arguments.");
-                Console.WriteLine("Usage : DbTargets <servername> [regexp]");
+                ShowUsage("Incorrect number of arguments.");
                 return -1;
             }
 
             if (string.IsNullOrWhiteSpace(args[0]))
             {
-                Console.WriteLine("Server name cannot be empty.");
-                Console.WriteLine("Usage : DbTargets <servername> [regexp]");
+                ShowUsage("Server name cannot be empty.");
                 return -2;
-            }
-
-            if (!IsValidRegex(args[1]))
-            {
-                Console.WriteLine("Invalid regular expression.");
-                Console.WriteLine("Usage : DbTargets <servername> [regexp]");
-                return -3;
             }
 
             var serverName = args[0];
@@ -45,17 +36,40 @@ namespace DbTargets
             if (args.Length > 1)
             {
                 regexp = args[1];
+
+                if (!IsValidRegex(regexp))
+                {
+                    ShowUsage("Invalid regular expression.");
+                    return -3;
+                }
             }
-            
-            var databaseNames = QueryDatabaseNames(serverName);
-            var filteredDatabaseNames = FilterDatabases(databaseNames, regexp);
-            var content = GenerateJsonTargets(serverName, filteredDatabaseNames);
 
-            var sw = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
-            Console.SetOut(sw);
-            sw.Write(content);
+            try
+            {
+                var databaseNames = QueryDatabaseNames(serverName);
+                var filteredDatabaseNames = FilterDatabases(databaseNames, regexp);
+                var content = GenerateJsonTargets(serverName, filteredDatabaseNames);
 
-            return 0;
+                var sw = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true};
+                Console.SetOut(sw);
+                sw.Write(content);
+
+                return 0;
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine("Unexpected error.");
+                Console.Error.WriteLine(e);
+                return -4;
+            }
+        }
+
+        private static void ShowUsage(string reasonMessage)
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Console.WriteLine($"DbTargets {version}");
+            Console.WriteLine($"Error : {reasonMessage}");
+            Console.WriteLine("Usage : DbTargets <servername> [regexp]");
         }
 
         private static bool IsValidRegex(string regexp)
