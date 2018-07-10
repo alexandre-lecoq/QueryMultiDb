@@ -69,7 +69,7 @@ namespace QueryMultiDb
             }
             finally
             {
-                if (Parameters.Instance.StopKeyPress)
+                if (Parameters.IsInitialized && Parameters.Instance.StopKeyPress)
                 {
                     Console.WriteLine("Press a key to stop...");
                     Console.ReadKey();

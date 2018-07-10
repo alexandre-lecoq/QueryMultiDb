@@ -76,6 +76,8 @@ namespace QueryMultiDb
 
         private static Parameters _instance;
 
+        public static bool IsInitialized => _instance != null;
+
         public static Parameters Instance
         {
             get
