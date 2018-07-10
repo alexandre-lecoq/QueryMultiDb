@@ -198,7 +198,7 @@ namespace QueryMultiDb
             ShowInformationMessages = parsedResult.ShowInformationMessages;
             SheetLabels = ParseSheetLabels(parsedResult.SheetLabels);
             DiscardResults = parsedResult.DiscardResults;
-            ApplicationName = parsedResult.ApplicationName;
+            ApplicationName = parsedResult.ApplicationName ?? string.Empty;
 
             ThrowIfInvalidParameter();
         }
@@ -393,9 +393,9 @@ namespace QueryMultiDb
                 }
             }
 
-            if (ApplicationName != null && ApplicationName.Trim() == string.Empty)
+            if (!string.IsNullOrEmpty(ApplicationName) && ApplicationName.Trim() == string.Empty)
             {
-                throw new ArgumentException("ApplicationName cannot be an empty.");
+                throw new ArgumentException("ApplicationName cannot be white spaces.");
             }
         }
 
