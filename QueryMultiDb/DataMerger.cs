@@ -34,6 +34,7 @@ namespace QueryMultiDb
             if (!AllTablesFormatsAreIdentical(result))
             {
                 Logger.Warn("Not all execution results yielded identical tables.");
+                Logger.Error("No data will be exported.");
                 return new List<Table>(0);
             }
 
