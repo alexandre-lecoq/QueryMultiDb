@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using NLog;
 
 namespace QueryMultiDb
 {
     public class ExecutionResult
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public Database Database { get; }
 
         public IList<Table> TableSet { get; }
@@ -48,11 +51,13 @@ namespace QueryMultiDb
 
             if (TableSet == null || other.TableSet == null)
             {
+                LogTableComparisonWarning(this, other, "One of them does not contain any tables");
                 return false;
             }
  
             if (TableSet.Count != other.TableSet.Count)
             {
+                LogTableComparisonWarning(this, other, $"Results have different number of tables : {TableSet.Count} vs {other.TableSet.Count}");
                 return false;
             }
 
@@ -65,11 +70,18 @@ namespace QueryMultiDb
 
                 if (!isIdentical)
                 {
+                    LogTableComparisonWarning(this, other, $"Tables #{i} have different column set");
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private static void LogTableComparisonWarning(ExecutionResult left, ExecutionResult right, string specificMessage)
+        {
+            var message = $"Tables are not identical. In {left.Database.ServerName} {left.Database.DatabaseName} and {right.Database.ServerName} {right.Database.DatabaseName}. {specificMessage}.";
+            Logger.Warn(message);
         }
     }
 }
