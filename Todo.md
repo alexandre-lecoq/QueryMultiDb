@@ -6,6 +6,13 @@ Todo
 To be fixed
 -----------
 
+* Ameliorer le DataMerger.
+	Lorsque résultats sont fusionnées, les tables "système" devrait être ignorée lors de la verification de la similarité des jeux de resultat.
+	Seul les tables qui correspondent aux requetes SQL devrait être comparées.
+	Lorsqu'une exception SQL arrive, il ne faudrait pas renvoyer une table vide, mais plutot renvoyer aucune table.
+	Il faudrait que la fusion des tables systemes se fasse avec leur clé et pas avec leur index.
+	Lorsqu'un jeu resultat ne contient aucune table, il faudrait qu'il puisse etre fusioné avec un autre jeu, puisqu'il n'y a pas d'ambiguité.
+
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
 * Ajouter des tests.
