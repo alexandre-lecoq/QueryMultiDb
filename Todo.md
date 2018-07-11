@@ -15,6 +15,8 @@ To be fixed
 
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
+* Afficher plus de log lorsque que l'analyser d'argument plante lorsqu'un fichier n'existe pas par exemple.
+
 * Ajouter des tests.
 
 
