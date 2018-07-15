@@ -294,6 +294,13 @@ namespace QueryMultiDb
             do
             {
                 var fieldCount = reader.FieldCount;
+
+                if (fieldCount == 0)
+                {
+                    Logger.Info($"{database.ToLogPrefix()} Table was skipped because it contained 0 column.");
+                    continue;
+                }
+
                 var columns = new TableColumn[fieldCount];
 
                 for (var i = 0; i < fieldCount; i++)

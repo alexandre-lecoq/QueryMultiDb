@@ -53,7 +53,7 @@ namespace QueryMultiDb
 
         public override string ToString()
         {
-            return $"Rows = {Rows.Count}; Columns = {Columns.Length}";
+            return $"Rows = {Rows.Count}; Columns = {Columns.Length} ; Id = {Id}";
         }
 
         public bool Equals(Table other)
