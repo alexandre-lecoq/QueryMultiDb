@@ -1,6 +1,6 @@
 # Project status
 
-[![License](http://img.shields.io/:license-mit-blue.svg)](http://csmacnz.mit-license.org)
+[![License](https://img.shields.io/:license-BSD-blue.svg)](https://opensource.org/licenses/BSD-3-Clause)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/29cusv9r5hu1r2e5?svg=true)](https://ci.appveyor.com/project/alexandre-lecoq/querymultidb)
 
