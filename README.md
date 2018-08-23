@@ -139,6 +139,16 @@ Check [Regular Expression Language - Quick Reference](https://docs.microsoft.com
 
 `DbTargets.exe sqlserver.name.com ".*log.*" > file.targets`
 
-# Download
+# Installation
+
+QueryMultiDb can be installed using several methods.
+
+## Download
 
 Chocolatey package and Windows installer are available in [appveyor artifacts](https://ci.appveyor.com/project/alexandre-lecoq/querymultidb/build/artifacts).
+
+## Chocolatey
+
+It can be installed, upgraded and uninstalled using chocolatey.
+To install QueryMultiDb, run the following command from the command line or from PowerShell:
+`choco install querymultidb`
