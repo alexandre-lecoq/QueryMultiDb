@@ -149,6 +149,6 @@ Chocolatey package and Windows installer are available in [appveyor artifacts](h
 
 ## Chocolatey
 
-It can be installed, upgraded and uninstalled using chocolatey.
+It can be installed, upgraded and uninstalled using [chocolatey](https://chocolatey.org/packages/QueryMultiDb).
 To install QueryMultiDb, run the following command from the command line or from PowerShell:
 `choco install querymultidb`
