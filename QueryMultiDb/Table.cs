@@ -18,6 +18,16 @@ namespace QueryMultiDb
         public const string LogsId = "__Logs__";
         public const string CommandLineParametersId = "__Command_Line_Parameters__";
 
+        /// <summary>
+        /// The set must contains all constant defined table ids so that IsSystemTable property can work properly.
+        /// </summary>
+        private static readonly HashSet<string> SystemTableIds = new HashSet<string>
+        {
+            InformationMessagesId,
+            LogsId,
+            CommandLineParametersId
+        };
+
         public TableColumn[] Columns { get; }
 
         public ICollection<TableRow> Rows { get; }
@@ -44,7 +54,7 @@ namespace QueryMultiDb
             {
                 var columnSetHash = columns.Select(tableColumn => tableColumn.GetHashCode())
                     .Aggregate(0, (current, columnHash) => current ^ columnHash);
-                Id = columnSetHash.ToString();
+                Id = columnSetHash.ToString("x8");
             }
 
             Columns = columns;
@@ -63,8 +73,8 @@ namespace QueryMultiDb
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            return obj is Table && Equals((Table) obj);
+            if (obj is null) return false;
+            return obj is Table table && Equals(table);
         }
 
         public override int GetHashCode()
@@ -84,6 +94,8 @@ namespace QueryMultiDb
         {
             return !left.Equals(right);
         }
+
+        public bool IsSystemTable => SystemTableIds.Contains(Id);
 
         public bool HasIdenticalColumns(Table otherTable)
         {
