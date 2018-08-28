@@ -74,6 +74,9 @@ namespace QueryMultiDb
                     Console.WriteLine("Press a key to stop...");
                     Console.ReadKey();
                 }
+
+                LogManager.ConfigurationReloaded -= LogManager_ConfigurationReloaded;
+                LogManager.ConfigurationChanged -= LogManager_ConfigurationChanged;
             }
         }
 
@@ -99,6 +102,11 @@ namespace QueryMultiDb
         /// </remarks>
         private static void ExtendLogConfigurationWithTableTarget()
         {
+            if (LogManager.Configuration == null)
+            {
+                throw new NullReferenceException("LogManager.Configuration must not be null.");
+            }
+
             var tableTarget = new TableTarget {Name = "tableTarget"};
             var autoFlushTargetWrapper = new AutoFlushTargetWrapper
             {
