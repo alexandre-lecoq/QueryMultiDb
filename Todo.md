@@ -6,8 +6,6 @@ Todo
 To be fixed
 -----------
 
-* Ameliorer le DataMerger. Il faudrait que la fusion des tables systemes se fasse avec leur clé et pas avec leur index.
-
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
 * Gerer correctement les exceptions lorsque aucun argument n'est passé en ligne de commande.
@@ -28,8 +26,6 @@ To be implemented (short-term)
 * Ajouter un parametre --logfile pour logger dans un fichier annexe.
 
 * Utiliser la validation d'arguments du package CommandLineParser.
-
-* Ajouter le package sur chocolatey
 
 * Ajouter une interface graphique
 

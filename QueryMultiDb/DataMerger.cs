@@ -12,7 +12,7 @@ namespace QueryMultiDb
         /// <summary>
         /// Merges execution results into a collection of tables.
         /// </summary>
-        /// <param name="result">A collection of execetion results.</param>
+        /// <param name="result">A collection of execution results.</param>
         /// <returns>The collection of tables.</returns>
         /// <remarks>
         /// If the results cannot be merged, an empty collection of tables should be returned and every issue should be logged.
@@ -31,72 +31,61 @@ namespace QueryMultiDb
                 return new List<Table>(0);
             }
             
-            if (!AllTablesFormatsAreIdentical(result))
+            if (!AllResultsCanBeMerged(result))
             {
-                Logger.Warn("Not all execution results yielded identical tables.");
+                Logger.Warn("Not all execution results can me merged. It is likely table sets aren't all identical.");
                 Logger.Error("No data will be exported.");
                 return new List<Table>(0);
             }
 
             WarnAboutMissingTableSets(result);
-            var tableCount = GetFirstResultTableCount(result);
+            var resultTemplate = GetFirstResultWithNonEmptyTableSet(result);
+            var tableCount = resultTemplate.TableSet.Count;
             var tableSet = new List<Table>(tableCount);
 
             for (var tableIndex = 0; tableIndex < tableCount; tableIndex++)
             {
-                var builtInColumnSet = new List<TableColumn>(10);
+                var index = tableIndex;
 
-                if (Parameters.Instance.ShowServerName)
+                Table? TableSelector(ExecutionResult r)
                 {
-                    builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
-                }
-
-                if (Parameters.Instance.ShowIpAddress)
-                {
-                    builtInColumnSet.Add(new TableColumn("_ServerIp", typeof(string)));
-                }
-
-                if (Parameters.Instance.ShowDatabaseName)
-                {
-                    builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
-                }
-                
-                if (Parameters.Instance.ShowExtraColumns)
-                {
-                    var titlesSettings = Parameters.Instance.Targets.ExtraValueTitles;
-
-                    for (var i = 0; i < 6; i++)
+                    if (r.TableSet.Count > index)
                     {
-                        if (!Parameters.Instance.Targets.EmptyExtraValues[i])
-                        {
-                            builtInColumnSet.Add(new TableColumn(titlesSettings[i], typeof(string)));
-                        }
+                        return r.TableSet[index];
                     }
+
+                    return null;
                 }
 
-                var table = result.First().TableSet[tableIndex];
-                var computedColumns = table.Columns;
-                var destinationColumnSet = new TableColumn[builtInColumnSet.Count + computedColumns.Length];
-                builtInColumnSet.CopyTo(destinationColumnSet, 0);
-                computedColumns.CopyTo(destinationColumnSet, builtInColumnSet.Count);
-                var rows = ComputeRowSet(result, tableIndex);
-                var tableId = table.Id.StartsWith("__", StringComparison.InvariantCulture) ? table.Id : null;
-                var destinationTable = new Table(destinationColumnSet, rows, tableId);
+                MergeTables(result, resultTemplate, TableSelector, tableSet);
+            }
 
-                if (destinationTable.Rows.Count > 0)
-                {
-                    tableSet.Add(destinationTable);
-                }
-                else
-                {
-                    Logger.Info($"Merged table '{destinationTable.Id}' (Index : {tableIndex}) was dropped because it was empty.");
-                }
+            if (Parameters.Instance.ShowInformationMessages)
+            {
+                MergeTables(result, resultTemplate, r => r.InformationMessagesTable, tableSet);
             }
 
             return tableSet;
         }
 
-        private static int GetFirstResultTableCount(ICollection<ExecutionResult> result)
+        private static void MergeTables(ICollection<ExecutionResult> result, ExecutionResult resultTemplate, Func<ExecutionResult, Table?> tableSelector, List<Table> tableSet)
+        {
+            var columns = ComputeColumnSet(resultTemplate, tableSelector);
+            var rows = ComputeRowSet(result, tableSelector);
+            var tableId = ComputeTableId(resultTemplate, tableSelector);
+            var destinationTable = new Table(columns, rows, tableId);
+
+            if (destinationTable.Rows.Count > 0)
+            {
+                tableSet.Add(destinationTable);
+            }
+            else
+            {
+                Logger.Info($"Merged table '{tableId}' was dropped because it was empty.");
+            }
+        }
+        
+        private static ExecutionResult GetFirstResultWithNonEmptyTableSet(ICollection<ExecutionResult> result)
         {
             if (result == null)
             {
@@ -108,10 +97,9 @@ namespace QueryMultiDb
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
             }
 
-            var executionResultTemplate = result.First();
-            var tableCount = executionResultTemplate.TableSet.Count;
+            var executionResultTemplate = result.First(r => r.TableSet.Count != 0);
 
-            return tableCount;
+            return executionResultTemplate;
         }
 
         private static void WarnAboutMissingTableSets(ICollection<ExecutionResult> result)
@@ -143,7 +131,7 @@ namespace QueryMultiDb
             }
         }
 
-        private static bool AllTablesFormatsAreIdentical(ICollection<ExecutionResult> result)
+        private static bool AllResultsCanBeMerged(ICollection<ExecutionResult> result)
         {
             if (result == null)
             {
@@ -156,28 +144,40 @@ namespace QueryMultiDb
             }
 
             var executionResultTemplate = result.First();
-            var allTablesFormatsAreIdentical = result.All(executionResult => executionResultTemplate.HasIdenticalTableAndColumns(executionResult));
+            var allTablesFormatsAreIdentical = result.All(executionResult => executionResultTemplate.CanBeMerged(executionResult));
 
             return allTablesFormatsAreIdentical;
         }
 
-        private static ICollection<TableRow> ComputeRowSet(ICollection<ExecutionResult> result, int tableIndex)
+        private static ICollection<TableRow> ComputeRowSet(ICollection<ExecutionResult> result, Func<ExecutionResult, Table?> tableSelector)
         {
             if (result == null)
             {
                 throw new ArgumentNullException(nameof(result));
             }
 
-            if (tableIndex < 0)
+            if (tableSelector == null)
             {
-                throw new ArgumentOutOfRangeException(nameof(tableIndex));
+                throw new ArgumentNullException(nameof(tableSelector));
             }
 
             var tableRows = new List<TableRow>();
 
+            var minColumnCount = 0;
+            var maxColumnCount = 0;
+
             foreach (var executionResult in result)
             {
-                var sourceTable = executionResult.TableSet[tableIndex];
+                var table = tableSelector(executionResult);
+
+                if (!table.HasValue)
+                {
+                    var message = $"Execution result {executionResult} does not contain expected table.";
+                    Logger.Warn(message);
+                    continue;
+                }
+
+                var sourceTable = table.Value;
 
                 foreach (var tableRow in sourceTable.Rows)
                 {
@@ -232,7 +232,10 @@ namespace QueryMultiDb
                         }
                     }
 
-                    var items = new object[builtInItems.Count + tableRow.ItemArray.Length];
+                    var columnCount = tableRow.ItemArray.Length;
+                    minColumnCount = Math.Min(minColumnCount, columnCount);
+                    maxColumnCount = Math.Max(maxColumnCount, columnCount);
+                    var items = new object[builtInItems.Count + columnCount];
                     builtInItems.CopyTo(items, 0);
                     tableRow.ItemArray.CopyTo(items, builtInItems.Count);
                     var newRow = new TableRow(items);
@@ -240,7 +243,74 @@ namespace QueryMultiDb
                 }
             }
 
+            if (minColumnCount != 0 && minColumnCount != maxColumnCount)
+            {
+                var message = $"Unexpected inconsistent number of columns in row set. Found {minColumnCount} to {maxColumnCount} columns in table's rows. Tables cannot be merged.";
+                Logger.Fatal(message);
+                throw new Exception(message);
+            }
+
             return tableRows;
+        }
+
+        private static string ComputeTableId(ExecutionResult resultTemplate, Func<ExecutionResult, Table?> tableSelector)
+        {
+            var table = tableSelector(resultTemplate);
+            
+            if (!table.HasValue)
+            {
+                throw new Exception("Selected execution template table does not contain expected table");
+            }
+
+            var tableId = table.Value.Id.StartsWith("__", StringComparison.InvariantCulture) ? table.Value.Id : null;
+
+            return tableId;
+        }
+
+        private static TableColumn[] ComputeColumnSet(ExecutionResult resultTemplate, Func<ExecutionResult, Table?> tableSelector)
+        {
+            var builtInColumnSet = new List<TableColumn>(10);
+
+            if (Parameters.Instance.ShowServerName)
+            {
+                builtInColumnSet.Add(new TableColumn("_ServerName", typeof(string)));
+            }
+
+            if (Parameters.Instance.ShowIpAddress)
+            {
+                builtInColumnSet.Add(new TableColumn("_ServerIp", typeof(string)));
+            }
+
+            if (Parameters.Instance.ShowDatabaseName)
+            {
+                builtInColumnSet.Add(new TableColumn("_DatabaseName", typeof(string)));
+            }
+
+            if (Parameters.Instance.ShowExtraColumns)
+            {
+                var titlesSettings = Parameters.Instance.Targets.ExtraValueTitles;
+
+                for (var i = 0; i < 6; i++)
+                {
+                    if (!Parameters.Instance.Targets.EmptyExtraValues[i])
+                    {
+                        builtInColumnSet.Add(new TableColumn(titlesSettings[i], typeof(string)));
+                    }
+                }
+            }
+
+            var table = tableSelector(resultTemplate);
+
+            if (!table.HasValue)
+            {
+                throw new Exception("Selected execution template table does not contain expected table");
+            }
+
+            var computedColumns = table.Value.Columns;
+            var destinationColumnSet = new TableColumn[builtInColumnSet.Count + computedColumns.Length];
+            builtInColumnSet.CopyTo(destinationColumnSet, 0);
+            computedColumns.CopyTo(destinationColumnSet, builtInColumnSet.Count);
+            return destinationColumnSet;
         }
     }
 }

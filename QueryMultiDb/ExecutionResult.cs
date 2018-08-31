@@ -13,7 +13,9 @@ namespace QueryMultiDb
 
         public IList<Table> TableSet { get; }
 
-        public ExecutionResult(Database database, IList<Table> tableSet)
+        public Table InformationMessagesTable { get; }
+
+        public ExecutionResult(Database database, IList<Table> tableSet, Table informationMessages)
         {
             if (database == null)
             {
@@ -27,6 +29,7 @@ namespace QueryMultiDb
 
             Database = database;
             TableSet = tableSet;
+            InformationMessagesTable = informationMessages;
         }
 
         public override string ToString()
@@ -37,7 +40,7 @@ namespace QueryMultiDb
             return $"{Database} ; Total row count = {totalRowCount} ; Table count = {tableCount}";
         }
 
-        public bool HasIdenticalTableAndColumns(ExecutionResult other)
+        public bool CanBeMerged(ExecutionResult other)
         {
             if (other == null)
             {
@@ -57,6 +60,12 @@ namespace QueryMultiDb
  
             if (TableSet.Count != other.TableSet.Count)
             {
+                if (TableSet.Count == 0 || other.TableSet.Count == 0)
+                {
+                    LogTableComparisonWarning(this, other, $"Results can be merged although they have different number of tables because one of them has no table : {TableSet.Count} vs {other.TableSet.Count}");
+                    return true;
+                }
+
                 LogTableComparisonWarning(this, other, $"Results have different number of tables : {TableSet.Count} vs {other.TableSet.Count}");
                 return false;
             }

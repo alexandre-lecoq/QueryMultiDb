@@ -18,16 +18,6 @@ namespace QueryMultiDb
         public const string LogsId = "__Logs__";
         public const string CommandLineParametersId = "__Command_Line_Parameters__";
 
-        /// <summary>
-        /// The set must contains all constant defined table ids so that IsSystemTable property can work properly.
-        /// </summary>
-        private static readonly HashSet<string> SystemTableIds = new HashSet<string>
-        {
-            InformationMessagesId,
-            LogsId,
-            CommandLineParametersId
-        };
-
         public TableColumn[] Columns { get; }
 
         public ICollection<TableRow> Rows { get; }
@@ -94,8 +84,6 @@ namespace QueryMultiDb
         {
             return !left.Equals(right);
         }
-
-        public bool IsSystemTable => SystemTableIds.Contains(Id);
 
         public bool HasIdenticalColumns(Table otherTable)
         {

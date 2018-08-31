@@ -207,20 +207,16 @@ namespace QueryMultiDb
                         Logger.Info($"{database.ToLogPrefix()} Records affected by query : {reader.RecordsAffected}");
                     }
 
-                    if (Parameters.Instance.ShowInformationMessages)
-                    {
-                        var infoMessageColumns = new TableColumn[6];
-                        infoMessageColumns[0] = new TableColumn("Class", typeof(string));
-                        infoMessageColumns[1] = new TableColumn("Number", typeof(string));
-                        infoMessageColumns[2] = new TableColumn("State", typeof(string));
-                        infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
-                        infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
-                        infoMessageColumns[5] = new TableColumn("Message", typeof(string));
-                        var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
-                        tableSet.Add(informationMessageTable);
-                    }
+                    var infoMessageColumns = new TableColumn[6];
+                    infoMessageColumns[0] = new TableColumn("Class", typeof(string));
+                    infoMessageColumns[1] = new TableColumn("Number", typeof(string));
+                    infoMessageColumns[2] = new TableColumn("State", typeof(string));
+                    infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
+                    infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
+                    infoMessageColumns[5] = new TableColumn("Message", typeof(string));
+                    var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
 
-                    var result = new ExecutionResult(database, tableSet);
+                    var result = new ExecutionResult(database, tableSet, informationMessageTable);
 
                     if (Parameters.Instance.ShowInformationMessages)
                     {
