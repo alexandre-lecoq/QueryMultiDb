@@ -14,6 +14,8 @@ To be fixed
 
 * Ajouter des tests.
 
+* Supprimer sonarcloud : c'est lent, ca marche mal, et c'est pas interressant sauf pour les analyses mieux faites par d'autre outils.
+
 
 To be implemented (short-term)
 ------------------------------
