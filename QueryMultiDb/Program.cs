@@ -36,7 +36,7 @@ namespace QueryMultiDb
 
                 if (!commandLineParser.ParsingSucceeded)
                 {
-                    Logger.Fatal("Command line arguments analysis failed.");
+                    Logger.Fatal("Command line arguments analysis gracefully failed.");
                     return -1;
                 }
 
@@ -57,13 +57,13 @@ namespace QueryMultiDb
             }
             catch (CommandLineException exp)
             {
-                Logger.Fatal(exp, "Command line arguments analysis failed.");
+                Logger.Fatal(exp, "Command line arguments analysis catastrophically failed. " + exp.Message);
                 commandLineParser.ShowUsage();
                 return -2;
             }
             catch (Exception exp)
             {
-                Logger.Fatal(exp, "Fatal error.");
+                Logger.Fatal(exp, "Fatal error. " + exp.Message);
 
                 return -3;
             }
