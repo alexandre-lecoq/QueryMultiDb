@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
@@ -26,7 +27,9 @@ namespace QueryMultiDb
 
             MemoryManager.Clean();
 
-            var destination = Parameters.Instance.OutputDirectory + @"\" + Parameters.Instance.OutputFile;
+            var destination = Path.IsPathRooted(Parameters.Instance.OutputFile)
+                ? Parameters.Instance.OutputFile
+                : Path.Combine(Parameters.Instance.OutputDirectory, Parameters.Instance.OutputFile);
 
             Logger.Info($"Creating excel file '{destination}'");
 
