@@ -14,11 +14,13 @@ To be fixed
 
 * Ajouter des tests.
 
-* Supprimer sonarcloud : c'est lent, ca marche mal, et c'est pas interressant sauf pour les analyses mieux faites par d'autre outils.
-
 
 To be implemented (short-term)
 ------------------------------
+
+* Ajouter le numero de version de QueryMultiDb dans l'onglet log du fichier excel.
+
+* Améliorer le DataMerger afin que lorsque les jeux de données d'une requete ne puisse pas être fusionée, alors que les autres résultats le peuvent, alors il devraient l'être.
 
 * Ajouter une option `--querySTDIN` pour lire la requete SQL sur l'entrée standard.
 
@@ -42,14 +44,26 @@ To be implemented (short-term)
 	`GO` doit être sur une ligne tout seul, sans aucune commande SQL, mais la ligne peut contenir des commentaires SQL.
 
 
-To be implemented (long-term)
-------------------------------
+To be implemented (automated monitoring)
+----------------------------------------
+
+* Supprimer sonarcloud : c'est lent, ca marche mal, et c'est pas interressant sauf pour les analyses mieux faites par d'autre outils. En gros, c'est de la merde.
 
 * Ajouter le support de Travis CI
 
 * Ajouter le support coveralls (cassé)
 
 * Ajouter le support coverity
+
+* Trouver quelque chose pour la detection de vulnerabilité et securité (en plus de coverity)
+
+* Trouver quelque chose pour la detection de bugs et des problemes de fiabilités
+
+* Trouver quelque chose pour la detection de la dette technique, qualité, et maintenabilité
+
+
+To be implemented (long-term)
+------------------------------
 
 * Ajuster la largeur des colonnes dans le fichier Excel.
 
