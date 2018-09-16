@@ -79,7 +79,7 @@ namespace QueryMultiDb
 
                 if (!isIdentical)
                 {
-                    LogTableComparisonWarning(this, other, $"Tables #{i} have different column set");
+                    LogTableComparisonWarning(this, other, $"Tables at index #{i} have different column set");
                     return false;
                 }
             }
