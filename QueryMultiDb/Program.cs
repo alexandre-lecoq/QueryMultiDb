@@ -43,7 +43,7 @@ namespace QueryMultiDb
                 // This must be set very early to be usable at any time.
                 Parameters.Instance = new Parameters(commandLineParameters);
 
-                Logger.Info("Initialized QueryMultiDb");
+                Logger.Info($"Initialized QueryMultiDb {version}");
 
                 if (Parameters.Instance.StartKeyPress)
                 {
@@ -75,6 +75,7 @@ namespace QueryMultiDb
                     Console.ReadKey();
                 }
 
+                LogManager.Flush();
                 LogManager.ConfigurationReloaded -= LogManager_ConfigurationReloaded;
                 LogManager.ConfigurationChanged -= LogManager_ConfigurationChanged;
             }

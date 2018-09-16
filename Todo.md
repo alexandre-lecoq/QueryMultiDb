@@ -18,8 +18,6 @@ To be fixed
 To be implemented (short-term)
 ------------------------------
 
-* Ajouter le numero de version de QueryMultiDb dans l'onglet log du fichier excel.
-
 * Améliorer le DataMerger afin que lorsque les jeux de données d'une requete ne puisse pas être fusionée, alors que les autres résultats le peuvent, alors il devraient l'être.
 
 * Ajouter une option `--querySTDIN` pour lire la requete SQL sur l'entrée standard.
