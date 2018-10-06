@@ -57,13 +57,13 @@ namespace QueryMultiDb
             }
             catch (CommandLineException exp)
             {
-                Logger.Fatal(exp, "Command line arguments analysis catastrophically failed. " + exp.Message);
+                Logger.Fatal(exp,$"Command line arguments analysis catastrophically failed. {exp.Message} ({exp.GetType().FullName})");
                 commandLineParser.ShowUsage();
                 return -2;
             }
             catch (Exception exp)
             {
-                Logger.Fatal(exp, "Fatal error. " + exp.Message);
+                Logger.Fatal(exp, $"Fatal error. {exp.Message} ({exp.GetType().FullName})");
 
                 return -3;
             }

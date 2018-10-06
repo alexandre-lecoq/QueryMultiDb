@@ -12,13 +12,9 @@ To be fixed
 
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
-* Gerer correctement les exceptions lorsque aucun argument n'est passé en ligne de commande.
-
 * Afficher plus de log lorsque que l'analyser d'argument plante lorsqu'un fichier n'existe pas par exemple.
 
 * Ajouter des tests.
-
-* Ajouter le type d'exception au message lorsqu'il y a une erreur fatal.
 
 * Revoir les log en console pour que cele soit moins verbeux sur la console. (mettre des log au niveaux debug, et ne pas logger debug sur la console ?)
 
@@ -45,8 +41,6 @@ To be implemented (short-term)
 
 * Utiliser la validation d'arguments du package CommandLineParser.
 
-* Ajouter une interface graphique
-
 * Ajouter un paramètre pour valider la requête sur les bases de données en utilisant `SET PARSEONLY ON;` ou `SET NOEXEC ON;` au lieu de les éxécuter.
 
 * Ajouter un parametre en ligne de commande pour filtrer avec une expression reguliere sur les `ServerName` des fichier de targets.
@@ -64,6 +58,8 @@ To be implemented (short-term)
 
 To be implemented (automated monitoring)
 ----------------------------------------
+
+* Ajouter une interface graphique
 
 * Ajouter le support de Travis CI
 

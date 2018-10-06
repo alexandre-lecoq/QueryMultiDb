@@ -246,7 +246,6 @@ namespace QueryMultiDb
             if (minColumnCount != 0 && minColumnCount != maxColumnCount)
             {
                 var message = $"Unexpected inconsistent number of columns in row set. Found {minColumnCount} to {maxColumnCount} columns in table's rows. Tables cannot be merged.";
-                Logger.Fatal(message);
                 throw new Exception(message);
             }
 
