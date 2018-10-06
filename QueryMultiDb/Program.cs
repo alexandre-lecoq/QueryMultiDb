@@ -34,6 +34,14 @@ namespace QueryMultiDb
 
             try
             {
+                Logger.Info($"Initialized QueryMultiDb {version}");
+                Logger.Info($"Argument count : {args.Length}");
+
+                foreach (var s in args)
+                {
+                    Logger.Debug($"Argument : '{s}'");
+                }
+
                 commandLineParser.ParseCommandLine(args);
 
                 if (!commandLineParser.ParsingSucceeded)
@@ -44,8 +52,6 @@ namespace QueryMultiDb
 
                 // This must be set very early to be usable at any time.
                 Parameters.Instance = new Parameters(commandLineParameters);
-
-                Logger.Info($"Initialized QueryMultiDb {version}");
 
                 if (Parameters.Instance.StartKeyPress)
                 {
@@ -60,7 +66,8 @@ namespace QueryMultiDb
             catch (CommandLineException exp)
             {
                 Logger.Fatal(exp,$"Command line arguments analysis catastrophically failed. {exp.Message} ({exp.GetType().FullName})");
-                commandLineParser.ShowUsage();
+                //commandLineParser.ShowUsage();
+
                 return -2;
             }
             catch (Exception exp)

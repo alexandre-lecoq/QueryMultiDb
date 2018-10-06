@@ -3,8 +3,12 @@ image: Visual Studio 2019
 configuration: Release
 
 environment:
+  Appveyor: true
   COVERALLS_REPO_TOKEN:
     secure: D2UAgklYO9LG75FbrhhO43JKZSQ16xnxlyY/Y9SmR+1m8zAhuEcM02gN7GhPBevj
+
+services:
+  - mssql2017
 
 assembly_info:
   patch: true

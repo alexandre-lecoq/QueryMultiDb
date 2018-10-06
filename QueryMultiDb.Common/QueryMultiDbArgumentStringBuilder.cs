@@ -8,7 +8,11 @@
 
         public bool? Progress { get; set; }
 
+        public string Query { get; set; }
+
         public string QueryFile { get; set; }
+        
+        public string Targets { get; set; }
 
         public string TargetsFile { get; set; }
 
@@ -72,9 +76,19 @@
                 }
             }
 
+            if (!string.IsNullOrWhiteSpace(Query))
+            {
+                sb.Append($@" --query ""{Query.Replace("\"", "\"\"")}""");
+            }
+
             if (!string.IsNullOrWhiteSpace(QueryFile))
             {
                 sb.Append($@" --queryfile ""{QueryFile}""");
+            }
+
+            if (!string.IsNullOrWhiteSpace(Targets))
+            {
+                sb.Append($@" --targets ""{Targets.Replace("\"", "\"\"")}""");
             }
 
             if (!string.IsNullOrWhiteSpace(TargetsFile))
