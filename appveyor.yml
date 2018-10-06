@@ -17,8 +17,6 @@ install:
 - cmd: >-
     choco upgrade chocolatey
 
-    choco install msbuild-sonarqube-runner
-
     choco install codecov
 
     choco install opencover.portable
@@ -28,11 +26,9 @@ before_build:
 - cmd: >-
     nuget restore
 
-    SonarScanner.MSBuild.exe begin /k:"QueryMultiDb" /d:sonar.organization="alexandre-lecoq-github" /d:sonar.host.url="https://sonarcloud.io" /d:sonar.login="f35bbbddefd47794d06e1f61cf452f994ddd3a71"
 build:
   verbosity: normal
-after_build:
-- cmd: SonarScanner.MSBuild.exe end /d:sonar.login="f35bbbddefd47794d06e1f61cf452f994ddd3a71"
+
 test_script:
 - cmd: >-
     OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.exe" -targetargs:"\"C:\projects\querymultidb\QueryMultiDb.Tests.Unit\bin\Release\QueryMultiDb.Tests.Unit.dll\" -noshadow -appveyor -xml C:\projects\querymultidb\QueryMultiDb.Tests.Unit.report.xml" -output:"QueryMultiDb.Tests.Unit.coverage.xml"

@@ -65,8 +65,6 @@ To be implemented (short-term)
 To be implemented (automated monitoring)
 ----------------------------------------
 
-* Supprimer sonarcloud : c'est lent, ca marche mal, et c'est pas interressant sauf pour les analyses mieux faites par d'autre outils. En gros, c'est de la merde.
-
 * Ajouter le support de Travis CI
 
 * Ajouter le support coveralls (cassé)
