@@ -6,6 +6,10 @@ Todo
 To be fixed
 -----------
 
+* S'il y a plus de 1048576 lignes dans un onglet, excel affiche une erreur car c'est le maximum de lignes supporté par excel.
+	Il faudrait détecté s'il y a trop de ligne dans ExcelExporter.
+	Si c'est le cas, il supprimer le tableau et ajouté un message d'erreur dans les logs ou tronquer le tableau et ajouter un log d'erreur dans les logs en fonction d'un parametre.
+
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
 * Gerer correctement les exceptions lorsque aucun argument n'est passé en ligne de commande.
@@ -13,6 +17,18 @@ To be fixed
 * Afficher plus de log lorsque que l'analyser d'argument plante lorsqu'un fichier n'existe pas par exemple.
 
 * Ajouter des tests.
+
+* Ajouter le type d'exception au message lorsqu'il y a une erreur fatal.
+
+* Revoir les log en console pour que cele soit moins verbeux sur la console. (mettre des log au niveaux debug, et ne pas logger debug sur la console ?)
+
+* Ne pas afficher les ExtraValue* vide dans l'onglet parametre quand aucunes valeurs n'est passée.
+
+* Lorsqu'il n'y a qu'une seule requete et qu'elle ne renvoie rien, on trouve dans les logs le message "Merged table '' was dropped because it was empty."
+	Le nom de table ne devrait pas être ''.
+
+* Message "Tables are not identical. In <SERVER> <DATABASE> and <SERVER> <DATABASE>. Tables at index #0 have different column set."
+	Alors que les deux tables ont bien le même nombre de colonnes. Quelle est la difference ?
 
 
 To be implemented (short-term)
@@ -32,6 +48,10 @@ To be implemented (short-term)
 * Ajouter une interface graphique
 
 * Ajouter un paramètre pour valider la requête sur les bases de données en utilisant `SET PARSEONLY ON;` ou `SET NOEXEC ON;` au lieu de les éxécuter.
+
+* Ajouter un parametre en ligne de commande pour filtrer avec une expression reguliere sur les `ServerName` des fichier de targets.
+
+* Ajouter un parametre en ligne de commande pour filtrer avec une expression reguliere sur les `DatabaseName` des fichier de targets.
 
 * Etudier les logs structurés avec [Serilog](https://serilog.net/)
 
@@ -72,12 +92,6 @@ To be implemented (long-term)
 
 Other
 -----
-
-* Problème *mystérieux*. Lorsque executé en ligne de commande (dans powershell ou cmd.exe), ou dans visual studio sans l'option "Enable the Visual Studio hosting process",
-il est impossible de se connecter à un serveur SQL sur un autre domaine en utilisant les informations stoquées dans le "Credential Manager" avec l'outil "cmdkey.exe".
-Pourtant cela fonctionne bien dans Visual Studio lorsque l'option "Enable the Visual Studio hosting process" est activée. De même, cela fonctione aussi dans ssms.
-Impossible de comprendre pourquoi, ni de trouver comment résoudre le problème. Il faut donc garder ce point pour documenter le problème, ou bien documenter la solution.
-La command "runas" n'a pas aidé non plus.
 
 * **Ne pas ajouter** un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
 Pas sûr sur cela soit une bonne idée étant donnée la complexité que cela ajouterait.
