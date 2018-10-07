@@ -150,8 +150,8 @@ namespace QueryMultiDb
                 }
             }
 
-            Logger.Info($"{database.ToLogPrefix()} SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
-            Logger.Info($"{database.ToLogPrefix()} SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Debug($"{database.ToLogPrefix()} SQL connection : {openStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Debug($"{database.ToLogPrefix()} SQL query : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
             return result;
         }
@@ -266,7 +266,7 @@ namespace QueryMultiDb
                 var table = new Table(columns, rows);
                 tableSet.Add(table);
 
-                Logger.Info($"{database.ToLogPrefix()} Rows in table : {rowCount} (discarded)");
+                Logger.Debug($"{database.ToLogPrefix()} Rows in table : {rowCount} (discarded)");
             } while (reader.NextResult());
         }
 
@@ -320,7 +320,7 @@ namespace QueryMultiDb
                 var table = new Table(columns, rows);
                 tableSet.Add(table);
 
-                Logger.Info($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
+                Logger.Debug($"{database.ToLogPrefix()} Rows in table : {table.Rows.Count}");
             } while (reader.NextResult());
         }
 

@@ -10,8 +10,6 @@ To be fixed
 
 * Afficher plus de log lorsque que l'analyser d'argument plante lorsqu'un fichier n'existe pas par exemple.
 
-* Revoir les log en console pour que cele soit moins verbeux sur la console. (mettre des log au niveaux debug, et ne pas logger debug sur la console ?)
-
 * Ne pas afficher les ExtraValue* vide dans l'onglet parametre quand aucunes valeurs n'est passée.
 
 * Message "Tables are not identical. In <SERVER> <DATABASE> and <SERVER> <DATABASE>. Tables at index #0 have different column set."
