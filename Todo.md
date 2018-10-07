@@ -6,25 +6,18 @@ Todo
 To be fixed
 -----------
 
-* S'il y a plus de 1048576 lignes dans un onglet, excel affiche une erreur car c'est le maximum de lignes supporté par excel.
-	Il faudrait détecté s'il y a trop de ligne dans ExcelExporter.
-	Si c'est le cas, il supprimer le tableau et ajouté un message d'erreur dans les logs ou tronquer le tableau et ajouter un log d'erreur dans les logs en fonction d'un parametre.
-
 * Gerer correctement les exceptions lorsque le fichier de target est invalide.
 
 * Afficher plus de log lorsque que l'analyser d'argument plante lorsqu'un fichier n'existe pas par exemple.
-
-* Ajouter des tests.
 
 * Revoir les log en console pour que cele soit moins verbeux sur la console. (mettre des log au niveaux debug, et ne pas logger debug sur la console ?)
 
 * Ne pas afficher les ExtraValue* vide dans l'onglet parametre quand aucunes valeurs n'est passée.
 
-* Lorsqu'il n'y a qu'une seule requete et qu'elle ne renvoie rien, on trouve dans les logs le message "Merged table '' was dropped because it was empty."
-	Le nom de table ne devrait pas être ''.
-
 * Message "Tables are not identical. In <SERVER> <DATABASE> and <SERVER> <DATABASE>. Tables at index #0 have different column set."
 	Alors que les deux tables ont bien le même nombre de colonnes. Quelle est la difference ?
+
+* Ajouter des tests.
 
 
 To be implemented (short-term)
@@ -46,6 +39,9 @@ To be implemented (short-term)
 * Ajouter un parametre en ligne de commande pour filtrer avec une expression reguliere sur les `ServerName` des fichier de targets.
 
 * Ajouter un parametre en ligne de commande pour filtrer avec une expression reguliere sur les `DatabaseName` des fichier de targets.
+
+* Ajouter un parametre permettant de tronquer le tableau exporté dans excel s'il dépasse 1048576 lignes au lieu de le supprimer.
+	Ajouter un log d'erreur si le tableau est tronqué.
 
 * Etudier les logs structurés avec [Serilog](https://serilog.net/)
 

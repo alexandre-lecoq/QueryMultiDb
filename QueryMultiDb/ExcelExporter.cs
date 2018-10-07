@@ -16,6 +16,15 @@ namespace QueryMultiDb
 {
     public static class ExcelExporter
     {
+        /// <summary>
+        /// Total number of rows Maximum limit
+        /// </summary>
+        /// <remarks>
+        /// From "Excel specifications and limits" : "Excel for Office 365 Excel 2019 Excel 2016 Excel 2013 Excel 2010 Excel 2007"
+        /// At https://support.office.com/en-us/article/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
+        /// </remarks>
+        private const int ExcelTotalNumberRowsMaximumLimit = 1_048_576;
+
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public static void Generate(ICollection<Table> tables)
@@ -53,6 +62,13 @@ namespace QueryMultiDb
                 foreach (var table in tables)
                 {
                     Logger.Info("Adding new excel sheet.");
+
+                    if (table.Rows.Count > ExcelTotalNumberRowsMaximumLimit - 1)
+                    {
+                        Logger.Error($"Table '{table.Id}' not exported in excel file because it had too many rows. The table has {table.Rows.Count} rows and {table.Columns.Length} columns. The maximum number of rows supported by excel is {ExcelTotalNumberRowsMaximumLimit}.");
+                        continue;
+                    }
+
                     var sheetNameById = GetSheetNameFromTableId(table.Id);
                     var sheetNameByParameter = GetSheetNameFromParameter(tableIndex);
                     AddSheet(spreadSheet, table, sheetNameById ?? sheetNameByParameter);

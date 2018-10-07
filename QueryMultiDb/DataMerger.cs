@@ -81,7 +81,7 @@ namespace QueryMultiDb
             }
             else
             {
-                Logger.Info($"Merged table '{tableId}' was dropped because it was empty.");
+                Logger.Info($"Merged table '{destinationTable.Id}' was dropped because it was empty.");
             }
         }
         
