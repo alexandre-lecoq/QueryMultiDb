@@ -15,7 +15,7 @@ To be fixed
 * Ne pas afficher les ExtraValue* vide dans l'onglet parametre quand aucunes valeurs n'est passée.
 
 * Message "Tables are not identical. In <SERVER> <DATABASE> and <SERVER> <DATABASE>. Tables at index #0 have different column set."
-	Alors que les deux tables ont bien le même nombre de colonnes. Quelle est la difference ?
+	Alors que les deux tables ont bien le même nombre de colonnes. Quelle est la difference ? Noms de colonnes ? Types de colonnes ?
 
 * Ajouter des tests.
 
@@ -55,8 +55,6 @@ To be implemented (short-term)
 To be implemented (automated monitoring)
 ----------------------------------------
 
-* Ajouter une interface graphique
-
 * Ajouter le support de Travis CI
 
 * Ajouter le support coveralls (cassé)
@@ -72,6 +70,8 @@ To be implemented (automated monitoring)
 
 To be implemented (long-term)
 ------------------------------
+
+* Ajouter une interface graphique
 
 * Ajuster la largeur des colonnes dans le fichier Excel.
 
