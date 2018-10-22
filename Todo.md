@@ -41,13 +41,25 @@ To be implemented (short-term)
 * Ajouter un parametre permettant de tronquer le tableau exporté dans excel s'il dépasse 1048576 lignes au lieu de le supprimer.
 	Ajouter un log d'erreur si le tableau est tronqué.
 
-* Etudier les logs structurés avec [Serilog](https://serilog.net/)
+* Etudier les logs structurés avec [Serilog](https://serilog.net/) et avec NLog.
 
 * Possiblité de gérer des batchs de requete SQL (comme avec GO dans SSMS).
 	Soit avec `GO`, soit en passant plusieurs fichier SQL en entrée. L'option avec `GO` est mieux pour les interfaces graphiques.
 	`GO` est supporté par SQLCMD, OSQL et SSMS.
 	La syntaxe est : `GO [count]`
 	`GO` doit être sur une ligne tout seul, sans aucune commande SQL, mais la ligne peut contenir des commentaires SQL.
+
+
+To be implemented (long-term)
+------------------------------
+
+* Ajouter une interface graphique
+
+* Ajuster la largeur des colonnes dans le fichier Excel.
+
+* Logger `@@SPID`
+
+* Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : `PRINT 'RenameSheet:Sheet1=' + 'nom1';`
 
 
 To be implemented (automated monitoring)
@@ -64,25 +76,3 @@ To be implemented (automated monitoring)
 * Trouver quelque chose pour la detection de bugs et des problemes de fiabilités
 
 * Trouver quelque chose pour la detection de la dette technique, qualité, et maintenabilité
-
-
-To be implemented (long-term)
-------------------------------
-
-* Ajouter une interface graphique
-
-* Ajuster la largeur des colonnes dans le fichier Excel.
-
-* Logger `@@SPID`
-
-* Ajouter un mecanisme pour pouvoir choisir le nom des onglet avec des commandes dans les messages. Par exemple : `PRINT 'RenameSheet:Sheet1=' + 'nom1';`
-
-
-Other
------
-
-* **Ne pas ajouter** un DataMerger intelligent pour offrir une alternative plus flexible au DataMerger stricte actuel.
-Pas sûr sur cela soit une bonne idée étant donnée la complexité que cela ajouterait.
-Surtout que cela permetterait juste d'agréger les tables avec des ensembles de colonnes différents (SELECT * ou requête dynamique).
-La solution serait forcément basé sur des heuristiques. Ca laisse entrevoir beaucoup de travail et beaucoup de complexisté pour un résultat moyen.
-Ca ne parait pas indispensable d'autant plus que SELECT * et les requêtes dynamiques peuvent être utilisées si une seule base de données est intérrogée.
