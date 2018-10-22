@@ -91,6 +91,8 @@
     <Compile Include="CommandLineParameters.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DataMerger.cs" />
+    <Compile Include="DataMergerSelector.cs" />
+    <Compile Include="DataMergerType.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="DnsResolverWithCache.cs" />
     <Compile Include="ExcelExporter.cs" />
@@ -113,6 +115,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="DataMerger.md" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

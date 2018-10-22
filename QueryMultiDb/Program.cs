@@ -156,9 +156,10 @@ namespace QueryMultiDb
             queryStopwatch.Stop();
             Logger.Info($"Query results : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
+            var dataMerger = DataMergerSelector.GetDataMerger(DataMergerType.Default);
             var mergeStopwatch = new Stopwatch();
             mergeStopwatch.Start();
-            var mergedResults = DataMerger.MergeResults(result);
+            var mergedResults = dataMerger(result);
             mergeStopwatch.Stop();
             Logger.Info($"Merged results : {mergeStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
