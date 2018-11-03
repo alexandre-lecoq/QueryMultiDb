@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDb", "QueryMultiDb\QueryMultiDb.csproj", "{B22A5CF5-41F2-43CB-9EC2-386647E4B6EE}"
 EndProject
@@ -19,6 +19,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbTargets", "DbTargets\DbTargets.csproj", "{25826F24-B794-4148-A81B-4370503306F6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDb.Tests.Unit", "QueryMultiDb.Tests.Unit\QueryMultiDb.Tests.Unit.csproj", "{C9D06460-FAA9-4DD8-A5A8-3C0C56395F0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDbGui", "QueryMultiDbGui\QueryMultiDbGui.csproj", "{67CF094E-3025-4055-BB1C-8351231F7EB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDb.Common", "QueryMultiDb.Common\QueryMultiDb.Common.csproj", "{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDb.Common.Tests.Unit", "QueryMultiDb.Common.Tests.Unit\QueryMultiDb.Common.Tests.Unit.csproj", "{269E2C11-E2F6-452D-8A10-12B6593F2607}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -60,8 +66,35 @@ Global
 		{C9D06460-FAA9-4DD8-A5A8-3C0C56395F0A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C9D06460-FAA9-4DD8-A5A8-3C0C56395F0A}.Release|x86.ActiveCfg = Release|Any CPU
 		{C9D06460-FAA9-4DD8-A5A8-3C0C56395F0A}.Release|x86.Build.0 = Release|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Debug|x86.Build.0 = Debug|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Release|x86.ActiveCfg = Release|Any CPU
+		{67CF094E-3025-4055-BB1C-8351231F7EB9}.Release|x86.Build.0 = Release|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Debug|x86.Build.0 = Debug|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Release|x86.ActiveCfg = Release|Any CPU
+		{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}.Release|x86.Build.0 = Release|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Debug|x86.Build.0 = Debug|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Release|Any CPU.Build.0 = Release|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Release|x86.ActiveCfg = Release|Any CPU
+		{269E2C11-E2F6-452D-8A10-12B6593F2607}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6ADACFBC-C083-4B40-8BCE-E7FA7C7B0242}
 	EndGlobalSection
 EndGlobal

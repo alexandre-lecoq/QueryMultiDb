@@ -133,6 +133,12 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\QueryMultiDb.Common\QueryMultiDb.Common.csproj">
+      <Project>{6b7d3eb8-a8cf-4b0d-9577-4f5c424cdfcb}</Project>
+      <Name>QueryMultiDb.Common</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
