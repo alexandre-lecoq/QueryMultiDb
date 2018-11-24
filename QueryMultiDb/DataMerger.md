@@ -14,6 +14,7 @@ Voici une liste non exhaustive des problèmes rencontrés :
 * Le nombre de colonnes varie d'une exécution à l'autre
 * Le type des colonnes varie d'une exécution à l'autre
 * Le nom des colonnes varie d'une exécution à l'autre
+* L'ordre des colonnes varie d'une exécution à l'autre
 * Le domaine de définition d'une colonne et la sémantique de ces valeurs peut aussi changer d'une exécution à l'autre sans que ce soit même détectable
 * Autre ?
 
@@ -39,7 +40,7 @@ Exemples de stratégies :
 		* Un tableau vide peut toujours être fusionné avec un tableau non vide
 	* Si les tableaux comportent des différences complexe qui ne peuvent être géré par ces règles, alors la fusion est abandonnées et des logs sont émis.
 * [ ] Fusion avec découpe
-	* Fusionne tous les tableaux qui ont le même schéma de colonnes (nombre, nom et type)
+	* Fusionne tous les tableaux qui ont le même schéma de colonnes (nombre, nom, ordre et type)
 	* Si 2 tableaux issue d’une même requête ont deux schémas diffèrent, alors 2 tableaux sont générés en sortie
 		* Cela implique qu'on peut avoir plusieurs onglets pour un seul résultat de requêtes pour résoudre les conflits de fusion.
 * [ ] Fusion nulle
@@ -72,3 +73,8 @@ Elles sont optimistes et peuvent s'appuyer sur des heuristiques qui entraine dan
 
 * Dans tous les cas la procédure de fusion joue toujours le rôle supplémentaire d'ajouter à chaque ligne de données les données des colonnes intégrées automatiquement.
 	* A moins que cette partie soit faite différemment
+
+* Réfléchir à la gestion des requetes differentes dans chaque execution.
+	* Si un jeu de résultat ne pas être fusionné à cause du schema, les autre le peuvent peut être quand même
+
+* Lorsqu'on laisse tomber la fusion de résultat, on a parfois un log WARN, alors que ERROR serait plus approrié.
