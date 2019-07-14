@@ -50,9 +50,6 @@
       <Component Id="NLog.dll">
         <File Id="NLog.dll" Source="$(var.QueryMultiDb.TargetDir)NLog.dll" Checksum="yes" />
       </Component>
-      <Component Id="System.IO.FileSystem.Primitives.dll">
-        <File Id="System.IO.FileSystem.Primitives.dll" Source="$(var.QueryMultiDb.TargetDir)System.IO.FileSystem.Primitives.dll" Checksum="yes" />
-      </Component>
       <Component Id="System.IO.Packaging.dll">
         <File Id="System.IO.Packaging.dll" Source="$(var.QueryMultiDb.TargetDir)System.IO.Packaging.dll" Checksum="yes" />
       </Component>
