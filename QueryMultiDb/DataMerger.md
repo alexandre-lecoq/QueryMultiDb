@@ -3,7 +3,7 @@
 
 This document is in French only, because I wanted it this way.
 It's just a collection of raw thoughts and facts about merging tables.
-If you're willing to know what's lying in here, just use Goggle Translate.
+If you're willing to know what's lying in here, just use Google Translate.
 
 # Pensées sur la fusion des tableaux de données
 
