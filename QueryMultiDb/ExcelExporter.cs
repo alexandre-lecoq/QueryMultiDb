@@ -24,6 +24,10 @@ namespace QueryMultiDb
         /// At https://support.office.com/en-us/article/excel-specifications-and-limits-1672b34d-7043-467e-8e27-269d656771c3
         /// </remarks>
         private const int ExcelTotalNumberRowsMaximumLimit = 1_048_576;
+        
+        private const int MaximumExcelCellStringLength = 32750;
+
+        private const int MaximumExcelSheetNameLength = 31;
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -396,12 +400,18 @@ namespace QueryMultiDb
                 sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
             }
 
+            var realSheetName = sheetName ?? "Sheet" + sheetId;
+            var truncatedSheetName = realSheetName.Length > MaximumExcelSheetNameLength
+                ? realSheetName.Substring(0, MaximumExcelSheetNameLength)
+                : realSheetName;
+
             var sheet = new Sheet()
             {
                 Id = relationshipId,
                 SheetId = sheetId,
-                Name = sheetName ?? "Sheet" + sheetId
+                Name = truncatedSheetName
             };
+
             sheets.Append(sheet);
 
             var headerRow = new Row();
@@ -798,9 +808,7 @@ namespace QueryMultiDb
                 throw new ArgumentNullException(nameof(inputString));
             }
 
-            const int maximumExcelCellStringLength = 32750;
-
-            var truncateLength = Math.Min(inputString.Length, maximumExcelCellStringLength);
+            var truncateLength = Math.Min(inputString.Length, MaximumExcelCellStringLength);
             var builder = new StringBuilder(inputString, 0, truncateLength, truncateLength + 32);
 
             if (inputString.Length > builder.Length)
