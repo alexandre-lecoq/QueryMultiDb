@@ -38,29 +38,29 @@
       <Component Id="QueryMultiDb.exe">
         <File Id="QueryMultiDb.exe" Source="$(var.QueryMultiDb.TargetPath)" KeyPath="yes" Checksum="yes" />
       </Component>
-      <Component Id="CommandLineArgumentsParser.dll">
-        <File Id="CommandLineArgumentsParser.dll" Source="$(var.QueryMultiDb.TargetDir)CommandLineArgumentsParser.dll" Checksum="yes" />
-      </Component>
-      <Component Id="DocumentFormat.OpenXml.dll">
-        <File Id="DocumentFormat.OpenXml.dll" Source="$(var.QueryMultiDb.TargetDir)DocumentFormat.OpenXml.dll" Checksum="yes" />
-      </Component>
-      <Component Id="Newtonsoft.Json.dll">
-        <File Id="Newtonsoft.Json.dll" Source="$(var.QueryMultiDb.TargetDir)Newtonsoft.Json.dll" Checksum="yes" />
-      </Component>
-      <Component Id="NLog.dll">
-        <File Id="NLog.dll" Source="$(var.QueryMultiDb.TargetDir)NLog.dll" Checksum="yes" />
+      <Component Id="QueryMultiDb.pdb">
+        <File Id="QueryMultiDb.pdb" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.pdb" />
       </Component>
       <Component Id="System.IO.Packaging.dll">
         <File Id="System.IO.Packaging.dll" Source="$(var.QueryMultiDb.TargetDir)System.IO.Packaging.dll" Checksum="yes" />
       </Component>
-      <Component Id="QueryMultiDb.pdb">
-        <File Id="QueryMultiDb.pdb" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.pdb" />
+      <Component Id="NLog.dll">
+        <File Id="NLog.dll" Source="$(var.QueryMultiDb.TargetDir)NLog.dll" Checksum="yes" />
+      </Component>
+      <Component Id="QueryMultiDb.exe.config">
+        <File Id="QueryMultiDb.exe.config" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.exe.config" />
       </Component>
       <Component Id="NLog.config">
         <File Id="NLog.config" Source="$(var.QueryMultiDb.TargetDir)NLog.config" />
       </Component>
-      <Component Id="QueryMultiDb.exe.config">
-        <File Id="QueryMultiDb.exe.config" Source="$(var.QueryMultiDb.TargetDir)QueryMultiDb.exe.config" />
+      <Component Id="Newtonsoft.Json.dll">
+        <File Id="Newtonsoft.Json.dll" Source="$(var.QueryMultiDb.TargetDir)Newtonsoft.Json.dll" Checksum="yes" />
+      </Component>
+      <Component Id="DocumentFormat.OpenXml.dll">
+        <File Id="DocumentFormat.OpenXml.dll" Source="$(var.QueryMultiDb.TargetDir)DocumentFormat.OpenXml.dll" Checksum="yes" />
+      </Component>
+      <Component Id="CommandLineArgumentsParser.dll">
+        <File Id="CommandLineArgumentsParser.dll" Source="$(var.QueryMultiDb.TargetDir)CommandLineArgumentsParser.dll" Checksum="yes" />
       </Component>
 
       <Component Id="DbTargets.exe">
@@ -72,6 +72,24 @@
       <Component Id="DbTargets.exe.config">
         <File Id="DbTargets.exe.config" Source="$(var.DbTargets.TargetDir)DbTargets.exe.config" />
       </Component>
+
+      <Component Id="QueryMultiDbGui.exe">
+        <File Id="QueryMultiDbGui.exe" Source="$(var.QueryMultiDbGui.TargetPath)" KeyPath="yes" Checksum="yes" />
+      </Component>
+      <Component Id="QueryMultiDbGui.pdb">
+        <File Id="QueryMultiDbGui.pdb" Source="$(var.QueryMultiDbGui.TargetDir)QueryMultiDbGui.pdb" />
+      </Component>
+      <Component Id="QueryMultiDbGui.exe.config">
+        <File Id="QueryMultiDbGui.exe.config" Source="$(var.QueryMultiDbGui.TargetDir)QueryMultiDbGui.exe.config" />
+      </Component>
+
+      <Component Id="QueryMultiDb.Common.dll">
+        <File Id="QueryMultiDb.Common.dll" Source="$(var.QueryMultiDb.Common.TargetDir)QueryMultiDb.Common.dll" />
+      </Component>
+      <Component Id="QueryMultiDb.Common.pdb">
+        <File Id="QueryMultiDb.Common.pdb" Source="$(var.QueryMultiDb.Common.TargetDir)QueryMultiDb.Common.pdb" />
+      </Component>
+
       <Component Id="README.md">
         <File Id="README.md" Source="$(var.SolutionDir)README.md" />
       </Component>
