@@ -490,7 +490,7 @@ namespace QueryMultiDb
 
             for (var i = 0; i < tableColumns.Length; i++)
             {
-                excelColumnSet[i] = new TableColumn(columnNames[i], tableColumns[i].DataType);
+                excelColumnSet[i] = new TableColumn(columnNames[i].Trim(), tableColumns[i].DataType);
             }
 
             return excelColumnSet;
