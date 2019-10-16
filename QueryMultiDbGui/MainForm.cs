@@ -178,12 +178,22 @@ namespace QueryMultiDbGui
 
         private void SetSqlScriptPreview(string filename)
         {
-            using (var sr = new StreamReader(filename))
+            string text;
+
+            try
             {
-                var text = sr.ReadToEnd();
-                this.InvokeEx(() => sqlScriptPreviewTextBox.Text = text);
-                sr.Close();
+                using (var sr = new StreamReader(filename))
+                {
+                    text = sr.ReadToEnd();
+                    sr.Close();
+                }
             }
+            catch (IOException exp)
+            {
+                text = $"<Could not load SQL file preview : {exp.GetType()} : {exp.Message}>";
+            }
+
+            this.InvokeEx(() => sqlScriptPreviewTextBox.Text = text);
         }
 
         private void browseOutputFileButton_Click(object sender, EventArgs e)
