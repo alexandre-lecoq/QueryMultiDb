@@ -401,9 +401,18 @@ namespace QueryMultiDb
             }
 
             var realSheetName = sheetName ?? "Sheet" + sheetId;
-            var truncatedSheetName = realSheetName.Length > MaximumExcelSheetNameLength
-                ? realSheetName.Substring(0, MaximumExcelSheetNameLength)
-                : realSheetName;
+
+            string truncatedSheetName;
+
+            if (realSheetName.Length > MaximumExcelSheetNameLength)
+            {
+                truncatedSheetName = realSheetName.Substring(0, MaximumExcelSheetNameLength);
+                Logger.Warn($"Sheet name was truncated. Full name was '{realSheetName}', truncated name is '{truncatedSheetName}'.");
+            }
+            else
+            {
+                truncatedSheetName = realSheetName;
+            }
 
             var sheet = new Sheet()
             {
@@ -490,7 +499,14 @@ namespace QueryMultiDb
 
             for (var i = 0; i < tableColumns.Length; i++)
             {
-                excelColumnSet[i] = new TableColumn(columnNames[i].Trim(), tableColumns[i].DataType);
+                var trimmedColumnName = columnNames[i].Trim();
+
+                if (trimmedColumnName.Length != columnNames[i].Length)
+                {
+                    Logger.Warn($"Column name '{columnNames[i]}' contains white spaces. Name was trimmed to '{trimmedColumnName}'.");
+                }
+
+                excelColumnSet[i] = new TableColumn(trimmedColumnName, tableColumns[i].DataType);
             }
 
             return excelColumnSet;
