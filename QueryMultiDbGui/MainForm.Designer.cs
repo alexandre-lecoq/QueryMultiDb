@@ -52,6 +52,10 @@ namespace QueryMultiDbGui
             this.commandTimeoutLabel = new System.Windows.Forms.Label();
             this.commandTimeoutNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.targetDatabaseGroupBox = new System.Windows.Forms.GroupBox();
+            this.targetsFileSizeValueLabel = new System.Windows.Forms.Label();
+            this.targetsFileModificationDateValueLabel = new System.Windows.Forms.Label();
+            this.targetsFileSizeLabel = new System.Windows.Forms.Label();
+            this.targetsFileModificationDateLabel = new System.Windows.Forms.Label();
             this.openTargetsFolderLinkLabel = new System.Windows.Forms.LinkLabel();
             this.targetsComboBox = new System.Windows.Forms.ComboBox();
             this.sqlScriptGroupBox = new System.Windows.Forms.GroupBox();
@@ -64,10 +68,6 @@ namespace QueryMultiDbGui
             this.sqlFileGroupBox = new System.Windows.Forms.GroupBox();
             this.browseSqlFileButton = new System.Windows.Forms.Button();
             this.sqlFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
-            this.targetsFileSizeValueLabel = new System.Windows.Forms.Label();
-            this.targetsFileModificationDateValueLabel = new System.Windows.Forms.Label();
-            this.targetsFileSizeLabel = new System.Windows.Forms.Label();
-            this.targetsFileModificationDateLabel = new System.Windows.Forms.Label();
             this.outputGroupBox.SuspendLayout();
             this.optionGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.parallelismNumericUpDown)).BeginInit();
@@ -149,7 +149,6 @@ namespace QueryMultiDbGui
             this.consoleOutputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.consoleOutputTextBox.Size = new System.Drawing.Size(948, 335);
             this.consoleOutputTextBox.TabIndex = 0;
-            this.consoleOutputTextBox.Text = "<NoValue>";
             // 
             // optionGroupBox
             // 
@@ -322,6 +321,44 @@ namespace QueryMultiDbGui
             this.targetDatabaseGroupBox.TabStop = false;
             this.targetDatabaseGroupBox.Text = "Target databases";
             // 
+            // targetsFileSizeValueLabel
+            // 
+            this.targetsFileSizeValueLabel.AutoSize = true;
+            this.targetsFileSizeValueLabel.ForeColor = System.Drawing.Color.Brown;
+            this.targetsFileSizeValueLabel.Location = new System.Drawing.Point(104, 45);
+            this.targetsFileSizeValueLabel.Name = "targetsFileSizeValueLabel";
+            this.targetsFileSizeValueLabel.Size = new System.Drawing.Size(60, 13);
+            this.targetsFileSizeValueLabel.TabIndex = 22;
+            this.targetsFileSizeValueLabel.Text = "<NoValue>";
+            // 
+            // targetsFileModificationDateValueLabel
+            // 
+            this.targetsFileModificationDateValueLabel.AutoSize = true;
+            this.targetsFileModificationDateValueLabel.ForeColor = System.Drawing.Color.Brown;
+            this.targetsFileModificationDateValueLabel.Location = new System.Drawing.Point(104, 58);
+            this.targetsFileModificationDateValueLabel.Name = "targetsFileModificationDateValueLabel";
+            this.targetsFileModificationDateValueLabel.Size = new System.Drawing.Size(60, 13);
+            this.targetsFileModificationDateValueLabel.TabIndex = 21;
+            this.targetsFileModificationDateValueLabel.Text = "<NoValue>";
+            // 
+            // targetsFileSizeLabel
+            // 
+            this.targetsFileSizeLabel.AutoSize = true;
+            this.targetsFileSizeLabel.Location = new System.Drawing.Point(48, 45);
+            this.targetsFileSizeLabel.Name = "targetsFileSizeLabel";
+            this.targetsFileSizeLabel.Size = new System.Drawing.Size(50, 13);
+            this.targetsFileSizeLabel.TabIndex = 20;
+            this.targetsFileSizeLabel.Text = "File size :";
+            // 
+            // targetsFileModificationDateLabel
+            // 
+            this.targetsFileModificationDateLabel.AutoSize = true;
+            this.targetsFileModificationDateLabel.Location = new System.Drawing.Point(4, 58);
+            this.targetsFileModificationDateLabel.Name = "targetsFileModificationDateLabel";
+            this.targetsFileModificationDateLabel.Size = new System.Drawing.Size(94, 13);
+            this.targetsFileModificationDateLabel.TabIndex = 19;
+            this.targetsFileModificationDateLabel.Text = "Modification date :";
+            // 
             // openTargetsFolderLinkLabel
             // 
             this.openTargetsFolderLinkLabel.AutoSize = true;
@@ -364,7 +401,6 @@ namespace QueryMultiDbGui
             this.sqlScriptPreviewTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.sqlScriptPreviewTextBox.Size = new System.Drawing.Size(948, 323);
             this.sqlScriptPreviewTextBox.TabIndex = 22;
-            this.sqlScriptPreviewTextBox.Text = "<NoValue>";
             // 
             // outputFileGroupBox
             // 
@@ -444,44 +480,6 @@ namespace QueryMultiDbGui
             this.sqlFileDisplayControl.Name = "sqlFileDisplayControl";
             this.sqlFileDisplayControl.Size = new System.Drawing.Size(218, 47);
             this.sqlFileDisplayControl.TabIndex = 0;
-            // 
-            // targetsFileSizeValueLabel
-            // 
-            this.targetsFileSizeValueLabel.AutoSize = true;
-            this.targetsFileSizeValueLabel.ForeColor = System.Drawing.Color.Brown;
-            this.targetsFileSizeValueLabel.Location = new System.Drawing.Point(104, 45);
-            this.targetsFileSizeValueLabel.Name = "targetsFileSizeValueLabel";
-            this.targetsFileSizeValueLabel.Size = new System.Drawing.Size(60, 13);
-            this.targetsFileSizeValueLabel.TabIndex = 22;
-            this.targetsFileSizeValueLabel.Text = "<NoValue>";
-            // 
-            // targetsFileModificationDateValueLabel
-            // 
-            this.targetsFileModificationDateValueLabel.AutoSize = true;
-            this.targetsFileModificationDateValueLabel.ForeColor = System.Drawing.Color.Brown;
-            this.targetsFileModificationDateValueLabel.Location = new System.Drawing.Point(104, 58);
-            this.targetsFileModificationDateValueLabel.Name = "targetsFileModificationDateValueLabel";
-            this.targetsFileModificationDateValueLabel.Size = new System.Drawing.Size(60, 13);
-            this.targetsFileModificationDateValueLabel.TabIndex = 21;
-            this.targetsFileModificationDateValueLabel.Text = "<NoValue>";
-            // 
-            // targetsFileSizeLabel
-            // 
-            this.targetsFileSizeLabel.AutoSize = true;
-            this.targetsFileSizeLabel.Location = new System.Drawing.Point(48, 45);
-            this.targetsFileSizeLabel.Name = "targetsFileSizeLabel";
-            this.targetsFileSizeLabel.Size = new System.Drawing.Size(50, 13);
-            this.targetsFileSizeLabel.TabIndex = 20;
-            this.targetsFileSizeLabel.Text = "File size :";
-            // 
-            // targetsFileModificationDateLabel
-            // 
-            this.targetsFileModificationDateLabel.AutoSize = true;
-            this.targetsFileModificationDateLabel.Location = new System.Drawing.Point(4, 58);
-            this.targetsFileModificationDateLabel.Name = "targetsFileModificationDateLabel";
-            this.targetsFileModificationDateLabel.Size = new System.Drawing.Size(94, 13);
-            this.targetsFileModificationDateLabel.TabIndex = 19;
-            this.targetsFileModificationDateLabel.Text = "Modification date :";
             // 
             // MainForm
             // 
