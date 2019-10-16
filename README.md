@@ -117,6 +117,14 @@ Check [Regular Expression Language - Quick Reference](https://docs.microsoft.com
 
 `DbTargets.exe sqlserver.name.com ".*log.*" > file.targets`
 
+# GUI
+
+A GUI to use QueryMultiDb in a friendlier way.
+
+## How to run
+
+`QueryMultiDbGui.exe`
+
 # Installation
 
 QueryMultiDb can be installed using several methods.
