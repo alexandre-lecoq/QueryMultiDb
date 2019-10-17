@@ -61,13 +61,13 @@ namespace QueryMultiDbGui
             this.sqlScriptGroupBox = new System.Windows.Forms.GroupBox();
             this.sqlScriptPreviewTextBox = new System.Windows.Forms.TextBox();
             this.outputFileGroupBox = new System.Windows.Forms.GroupBox();
-            this.outputFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
             this.browseOutputFileButton = new System.Windows.Forms.Button();
             this.overwriteOutputFileCheckBox = new System.Windows.Forms.CheckBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.sqlFileGroupBox = new System.Windows.Forms.GroupBox();
             this.browseSqlFileButton = new System.Windows.Forms.Button();
             this.sqlFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
+            this.outputFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
             this.outputGroupBox.SuspendLayout();
             this.optionGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.parallelismNumericUpDown)).BeginInit();
@@ -96,9 +96,9 @@ namespace QueryMultiDbGui
             this.outputGroupBox.Controls.Add(this.progressBar);
             this.outputGroupBox.Controls.Add(this.progressStateValueLabel);
             this.outputGroupBox.Controls.Add(this.consoleOutputTextBox);
-            this.outputGroupBox.Location = new System.Drawing.Point(12, 534);
+            this.outputGroupBox.Location = new System.Drawing.Point(12, 509);
             this.outputGroupBox.Name = "outputGroupBox";
-            this.outputGroupBox.Size = new System.Drawing.Size(960, 415);
+            this.outputGroupBox.Size = new System.Drawing.Size(960, 340);
             this.outputGroupBox.TabIndex = 1;
             this.outputGroupBox.TabStop = false;
             this.outputGroupBox.Text = "Output";
@@ -147,7 +147,7 @@ namespace QueryMultiDbGui
             this.consoleOutputTextBox.Name = "consoleOutputTextBox";
             this.consoleOutputTextBox.ReadOnly = true;
             this.consoleOutputTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.consoleOutputTextBox.Size = new System.Drawing.Size(948, 335);
+            this.consoleOutputTextBox.Size = new System.Drawing.Size(948, 260);
             this.consoleOutputTextBox.TabIndex = 0;
             // 
             // optionGroupBox
@@ -164,9 +164,9 @@ namespace QueryMultiDbGui
             this.optionGroupBox.Controls.Add(this.nullColorLabel);
             this.optionGroupBox.Controls.Add(this.commandTimeoutLabel);
             this.optionGroupBox.Controls.Add(this.commandTimeoutNumericUpDown);
-            this.optionGroupBox.Location = new System.Drawing.Point(12, 450);
+            this.optionGroupBox.Location = new System.Drawing.Point(12, 428);
             this.optionGroupBox.Name = "optionGroupBox";
-            this.optionGroupBox.Size = new System.Drawing.Size(960, 78);
+            this.optionGroupBox.Size = new System.Drawing.Size(960, 75);
             this.optionGroupBox.TabIndex = 2;
             this.optionGroupBox.TabStop = false;
             this.optionGroupBox.Text = "Options";
@@ -384,7 +384,7 @@ namespace QueryMultiDbGui
             this.sqlScriptGroupBox.Controls.Add(this.sqlScriptPreviewTextBox);
             this.sqlScriptGroupBox.Location = new System.Drawing.Point(12, 96);
             this.sqlScriptGroupBox.Name = "sqlScriptGroupBox";
-            this.sqlScriptGroupBox.Size = new System.Drawing.Size(960, 348);
+            this.sqlScriptGroupBox.Size = new System.Drawing.Size(960, 326);
             this.sqlScriptGroupBox.TabIndex = 4;
             this.sqlScriptGroupBox.TabStop = false;
             this.sqlScriptGroupBox.Text = "SQL Script";
@@ -399,7 +399,7 @@ namespace QueryMultiDbGui
             this.sqlScriptPreviewTextBox.Name = "sqlScriptPreviewTextBox";
             this.sqlScriptPreviewTextBox.ReadOnly = true;
             this.sqlScriptPreviewTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.sqlScriptPreviewTextBox.Size = new System.Drawing.Size(948, 323);
+            this.sqlScriptPreviewTextBox.Size = new System.Drawing.Size(948, 300);
             this.sqlScriptPreviewTextBox.TabIndex = 22;
             // 
             // outputFileGroupBox
@@ -413,14 +413,6 @@ namespace QueryMultiDbGui
             this.outputFileGroupBox.TabIndex = 5;
             this.outputFileGroupBox.TabStop = false;
             this.outputFileGroupBox.Text = "Output file";
-            // 
-            // outputFileDisplayControl
-            // 
-            this.outputFileDisplayControl.AbsoluteFilePath = null;
-            this.outputFileDisplayControl.Location = new System.Drawing.Point(6, 15);
-            this.outputFileDisplayControl.Name = "outputFileDisplayControl";
-            this.outputFileDisplayControl.Size = new System.Drawing.Size(218, 47);
-            this.outputFileDisplayControl.TabIndex = 14;
             // 
             // browseOutputFileButton
             // 
@@ -481,11 +473,19 @@ namespace QueryMultiDbGui
             this.sqlFileDisplayControl.Size = new System.Drawing.Size(218, 47);
             this.sqlFileDisplayControl.TabIndex = 0;
             // 
+            // outputFileDisplayControl
+            // 
+            this.outputFileDisplayControl.AbsoluteFilePath = null;
+            this.outputFileDisplayControl.Location = new System.Drawing.Point(6, 15);
+            this.outputFileDisplayControl.Name = "outputFileDisplayControl";
+            this.outputFileDisplayControl.Size = new System.Drawing.Size(218, 47);
+            this.outputFileDisplayControl.TabIndex = 14;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 961);
+            this.ClientSize = new System.Drawing.Size(984, 861);
             this.Controls.Add(this.sqlFileGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.outputFileGroupBox);
