@@ -63,7 +63,8 @@ namespace QueryMultiDb
             }
             catch (Exception exp)
             {
-                Logger.Fatal(exp, $"Fatal error. {exp.Message} ({exp.GetType().FullName})");
+                Logger.Fatal(exp, "Fatal error.");
+                Logger.Fatal($"{exp}");
 
                 return -3;
             }
