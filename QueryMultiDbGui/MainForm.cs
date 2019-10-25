@@ -60,6 +60,7 @@ namespace QueryMultiDbGui
             {
                 Path = Path.GetDirectoryName(TargetsFullPath),
                 Filter = "*",
+                IncludeSubdirectories = true,
                 NotifyFilter = AllNotifyFilters,
                 EnableRaisingEvents = true
             };
