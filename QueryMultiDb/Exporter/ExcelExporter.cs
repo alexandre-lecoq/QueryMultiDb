@@ -1,20 +1,19 @@
-﻿using System;
+﻿using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using NLog;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Packaging;
-using DocumentFormat.OpenXml.Spreadsheet;
-using NLog;
-using NLog.Targets.Wrappers;
 
 // ReSharper disable PossiblyMistakenUseOfParamsMethod
 
-namespace QueryMultiDb
+namespace QueryMultiDb.Exporter
 {
-    public static class ExcelExporter
+    public class ExcelExporter : Exporter
     {
         /// <summary>
         /// Total number of rows Maximum limit
@@ -31,24 +30,13 @@ namespace QueryMultiDb
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        public static void Generate(ICollection<Table> tables)
+        public override string Name => "Excel";
+
+        public override void Generate(ICollection<Table> inputTables, Stream outputStream)
         {
-            if (tables == null)
+            using (var spreadSheet = SpreadsheetDocument.Create(outputStream, SpreadsheetDocumentType.Workbook))
             {
-                throw new ArgumentNullException(nameof(tables), "Parameter cannot be null.");
-            }
-
-            MemoryManager.Clean();
-
-            var destination = Path.IsPathRooted(Parameters.Instance.OutputFile)
-                ? Parameters.Instance.OutputFile
-                : Path.Combine(Parameters.Instance.OutputDirectory, Parameters.Instance.OutputFile);
-
-            Logger.Info($"Creating excel file '{destination}'");
-
-            using (var spreadSheet = SpreadsheetDocument.Create(destination, SpreadsheetDocumentType.Workbook))
-            {
-                Logger.Info("Created excel file");
+                Logger.Info("Created excel file.");
                 spreadSheet.AddWorkbookPart();
 
                 var wbsp = spreadSheet.WorkbookPart.AddNewPart<WorkbookStylesPart>();
@@ -60,10 +48,10 @@ namespace QueryMultiDb
                     Sheets = new Sheets()
                 };
 
-                var progressReporter = new ProgressReporter("ExcelExporter.Generate", Parameters.Instance.Targets.Databases.Count(), s => Console.Error.WriteLine(s));
+                var progressReporter = new ProgressReporter("ExcelExporter", Parameters.Instance.Targets.Databases.Count(), s => Console.Error.WriteLine(s));
 
                 var tableIndex = 0;
-                foreach (var table in tables)
+                foreach (var table in inputTables)
                 {
                     Logger.Info("Adding new excel sheet.");
 
@@ -73,81 +61,37 @@ namespace QueryMultiDb
                         continue;
                     }
 
-                    var sheetNameById = GetSheetNameFromTableId(table.Id);
-                    var sheetNameByParameter = GetSheetNameFromParameter(tableIndex);
-                    AddSheet(spreadSheet, table, sheetNameById ?? sheetNameByParameter);
+                    var sheetName = GetPartName(table, tableIndex);
+                    AddSheet(spreadSheet, table, sheetName);
                     progressReporter.Increment();
                     tableIndex++;
                 }
 
                 progressReporter.Done();
 
-                var flushedTableTarget = LogManager.Configuration.FindTargetByName<AutoFlushTargetWrapper>("flushedTableTarget");
-                var target = flushedTableTarget.WrappedTarget as TableTarget;
-
-                if (target == null)
-                {
-                    throw new InvalidOperationException("Logger's wrapped table target could not be recovered. It should never happens as this target should be added very early in Program.Main().");
-                }
-
                 MemoryManager.Clean();
+
+                var target = GetLogTableTarget();
 
                 Logger.Info("Excel file logging horizon. Check console output to see beyond horizon.");
 
                 if (Parameters.Instance.ShowLogSheet)
                 {
                     var logTable = target.Logs;
-                    AddSheet(spreadSheet, logTable, "Logs");
+                    var partName = GetPartName(logTable, tableIndex++);
+                    AddSheet(spreadSheet, logTable, partName);
                 }
 
                 if (Parameters.Instance.ShowParameterSheet)
                 {
                     var parameterTable = ParametersToTable(Parameters.Instance);
-                    AddSheet(spreadSheet, parameterTable, "Parameters");
+                    var partName = GetPartName(parameterTable, tableIndex++);
+                    AddSheet(spreadSheet, parameterTable, partName);
                 }
 
                 MemoryManager.Clean();
 
                 Logger.Info("Finalizing excel file writing.");
-            }
-
-            Logger.Info("Excel file closed after generation.");
-            MemoryManager.Clean();
-        }
-
-        private static string GetSheetNameFromParameter(int tableIndex)
-        {
-            if (tableIndex < 0)
-            {
-                throw new ArgumentOutOfRangeException(nameof(tableIndex));
-            }
-
-            var labels = Parameters.Instance.SheetLabels;
-
-            if (tableIndex >= labels.Count)
-            {
-                return null;
-            }
-
-            var label = labels.ElementAt(tableIndex);
-
-            return label;
-        }
-
-        private static string GetSheetNameFromTableId(string tableId)
-        {
-            if (string.IsNullOrWhiteSpace(tableId))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(tableId));
-            }
-
-            switch (tableId)
-            {
-                case Table.InformationMessagesId:
-                    return "Information messages";
-
-                default:
-                    return null;
             }
         }
 
@@ -315,70 +259,6 @@ namespace QueryMultiDb
             return stylesheet;
         }
 
-        private static Table ParametersToTable(Parameters parameters)
-        {
-            if (parameters == null)
-            {
-                throw new ArgumentNullException(nameof(parameters));
-            }
-
-            var parameterColumns = new TableColumn[2];
-            parameterColumns[0] = new TableColumn("Parameter", typeof(string));
-            parameterColumns[1] = new TableColumn("Value", typeof(string));
-
-            var parameterRows = new List<TableRow>
-            {
-                CreateParameterRow("OutputDirectory", parameters.OutputDirectory),
-                CreateParameterRow("OutputFile", parameters.OutputFile),
-                CreateParameterRow("Overwrite", parameters.Overwrite),
-                CreateParameterRow("Targets", Parameters.TargetsToJsonString(parameters.Targets)),
-                CreateParameterRow("Query", parameters.Query),
-                CreateParameterRow("ConnectionTimeout", parameters.ConnectionTimeout),
-                CreateParameterRow("CommandTimeout", parameters.CommandTimeout),
-                CreateParameterRow("Sequential", parameters.Sequential),
-                CreateParameterRow("Parallelism", parameters.Parallelism),
-                CreateParameterRow("ShowIpAddress", parameters.ShowIpAddress),
-                CreateParameterRow("StartKeyPress", parameters.StartKeyPress),
-                CreateParameterRow("StopKeyPress", parameters.StopKeyPress),
-                CreateParameterRow("ShowNulls", parameters.ShowNulls),
-                CreateParameterRow("Progress", parameters.Progress),
-                CreateParameterRow("NullsColor", parameters.NullsColor),
-                CreateParameterRow("ShowLogSheet", parameters.ShowLogSheet),
-                CreateParameterRow("ShowParameterSheet", parameters.ShowParameterSheet),
-                CreateParameterRow("ShowServerName", parameters.ShowServerName),
-                CreateParameterRow("ShowDatabaseName", parameters.ShowDatabaseName),
-                CreateParameterRow("ShowExtraColumns", parameters.ShowExtraColumns),
-                CreateParameterRow("ShowInformationMessages", parameters.ShowInformationMessages),
-                CreateParameterRow("SheetLabels", string.Join(", ", parameters.SheetLabels)),
-                CreateParameterRow("DiscardResults", parameters.DiscardResults),
-                CreateParameterRow("ApplicationName", parameters.ApplicationName)
-            };
-
-            var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);
-
-            return parameterTable;
-        }
-
-        private static TableRow CreateParameterRow(string parameter, object value)
-        {
-            if (string.IsNullOrWhiteSpace(parameter))
-            {
-                throw new ArgumentException("Value cannot be null or whitespace.", nameof(parameter));
-            }
-
-            if (value == null)
-            {
-                throw new ArgumentNullException(nameof(value));
-            }
-
-            var items = new object[2];
-            items[0] = parameter;
-            items[1] = value;
-            var tableRow = new TableRow(items);
-
-            return tableRow;
-        }
-        
         private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName = null)
         {
             if (spreadSheet == null)
@@ -425,9 +305,9 @@ namespace QueryMultiDb
 
             var headerRow = new Row();
 
-            var excelColumnSet = GetExcelColumnSet(table.Columns);
+            var columnSet = GenerateValidAndUniqueColumnNames(table.Columns);
 
-            foreach (var column in excelColumnSet)
+            foreach (var column in columnSet)
             {
                 var cell = new Cell
                 {
@@ -443,7 +323,7 @@ namespace QueryMultiDb
             {
                 var newRow = new Row();
 
-                for (var columnIndex = 0; columnIndex < excelColumnSet.Length; columnIndex++)
+                for (var columnIndex = 0; columnIndex < columnSet.Length; columnIndex++)
                 {
                     var cell = GetExcelCell(tableRow.ItemArray[columnIndex]);
                     newRow.AppendChild(cell);
@@ -455,64 +335,12 @@ namespace QueryMultiDb
             if (table.Rows.Count > 0)
             {
                 // The sheet cannot have a valid table definition if the table has no data rows at all.
-                AddTablePart(sheetPart, excelColumnSet, table.Rows.Count, spreadSheet.WorkbookPart);
+                AddTablePart(sheetPart, columnSet, table.Rows.Count, spreadSheet.WorkbookPart);
             }
         }
 
-        private static TableColumn[] GetExcelColumnSet(TableColumn[] tableColumns)
-        {
-            if (tableColumns == null)
-            {
-                throw new ArgumentNullException(nameof(tableColumns));
-            }
-
-            var columnNames = new string[tableColumns.Length];
-
-            for (var i = 0; i < tableColumns.Length; i++)
-            {
-                var columnName = string.IsNullOrEmpty(tableColumns[i].ColumnName) ? "Column" : tableColumns[i].ColumnName;
-                columnNames[i] = columnName;
-            }
-            
-            var nameCounts = new Dictionary<string, int>();
-
-            for (var i = 0; i < tableColumns.Length; i++)
-            {
-                var columnName = columnNames[i];
-
-                if (nameCounts.ContainsKey(columnName))
-                {
-                    nameCounts[columnName]++;
-                }
-                else
-                {
-                    nameCounts.Add(columnName, 1);
-                }
-
-                if (nameCounts[columnName] > 1)
-                {
-                    columnNames[i] += nameCounts[columnName];
-                }
-            }
-
-            var excelColumnSet = new TableColumn[tableColumns.Length];
-
-            for (var i = 0; i < tableColumns.Length; i++)
-            {
-                var trimmedColumnName = columnNames[i].Trim();
-
-                if (trimmedColumnName.Length != columnNames[i].Length)
-                {
-                    Logger.Warn($"Column name '{columnNames[i]}' contains white spaces. Name was trimmed to '{trimmedColumnName}'.");
-                }
-
-                excelColumnSet[i] = new TableColumn(trimmedColumnName, tableColumns[i].DataType);
-            }
-
-            return excelColumnSet;
-        }
-
-        private static void AddTablePart(WorksheetPart sheetPart, TableColumn[] columns, int rowCount, WorkbookPart workBookPart)
+        private static void AddTablePart(WorksheetPart sheetPart, TableColumn[] columns, int rowCount,
+            WorkbookPart workBookPart)
         {
             if (sheetPart == null)
             {
@@ -564,7 +392,8 @@ namespace QueryMultiDb
 
             var tableId = workBookPart.WorksheetParts
                               .Select(x => x.TableDefinitionParts.Where(y => y.Table != null)
-                                  .Select(y => (uint) y.Table.Id).DefaultIfEmpty(0U).Max()).DefaultIfEmpty(0U).Max() + 1;
+                                  .Select(y => (uint) y.Table.Id).DefaultIfEmpty(0U).Max()).DefaultIfEmpty(0U).Max() +
+                          1;
 
             var table =
                 new DocumentFormat.OpenXml.Spreadsheet.Table(autoFilter, tableColumns, styleInfo)
@@ -668,39 +497,25 @@ namespace QueryMultiDb
 
         private static Cell GetExcelCell(object item)
         {
-            if (item == null)
+            switch (item)
             {
-                throw new ArgumentNullException(nameof(item), "Parameter cannot be null.");
+                case null:
+                    throw new ArgumentNullException(nameof(item), "Parameter cannot be null.");
+                case bool _:
+                    return GetExcelCellAsBoolean(item);
+                case int _:
+                case long _:
+                case short _:
+                    return GetExcelCellAsInteger(item);
+                case DateTime _:
+                    return GetExcelCellAsDateTime(item);
+                case DBNull _:
+                    return GetExcelCellAsNull();
+                case byte[] _:
+                    return GetExcelCellAsByteArray(item);
+                default:
+                    return GetExcelCellAsDefault(item);
             }
-
-            var type = item.GetType();
-
-            if (type == typeof(bool))
-            {
-                return GetExcelCellAsBoolean(item);
-            }
-
-            if (type == typeof(int) || type == typeof(long) || type == typeof(short))
-            {
-                return GetExcelCellAsInteger(item);
-            }
-
-            if (type == typeof(DateTime))
-            {
-                return GetExcelCellAsDateTime(item);
-            }
-
-            if (type == typeof(DBNull))
-            {
-                return GetExcelCellAsNull();
-            }
-
-            if (type == typeof(byte[]))
-            {
-                return GetExcelCellAsByteArray(item);
-            }
-
-            return GetExcelCellAsDefault(item);
         }
 
         private static Cell GetExcelCellAsDefault(object item)
@@ -728,8 +543,8 @@ namespace QueryMultiDb
                 throw new ArgumentNullException(nameof(item));
             }
 
-            var base64String = Convert.ToBase64String((byte[])item, Base64FormattingOptions.None);
-            var truncatedText = TruncateTextForExcelCell(base64String);
+            var encodedBytes = ByteArrayToString((byte[]) item, false);
+            var truncatedText = TruncateTextForExcelCell(encodedBytes);
 
             var cell = new Cell
             {
@@ -809,7 +624,7 @@ namespace QueryMultiDb
 
             var cell = new Cell
             {
-                // XXX : CellValues.String and not CellValues.Boolean because we ouput the boolean as a string value.
+                // XXX : CellValues.String and not CellValues.Boolean because we output the boolean as a string value.
                 DataType = CellValues.String,
                 CellValue = new CellValue(item.ToString())
             };

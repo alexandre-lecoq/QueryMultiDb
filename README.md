@@ -46,10 +46,63 @@ showinformationmessages|Show parameter sheet in excel file.|true|
 sheetlabels|Defines the sheets' labels.||
 discardresults|Discard query results and display counts instead|false|
 applicationname|Defines the application name for the SQL server connection.||
+exporter|Selects the output file format.|excel|
+csvdelimiter|Defines the CSV delimiter used to separate fields.|;|
 
 ### Example
 
 `QueryMultiDb.exe --progress --parallelism 8 --overwrite --queryfile "set001.sql" --outputfile "set001.xlsx" --targetsfile "set001.targets" --shownulls false`
+
+### Binary data
+
+Binary data can be exported using different encoding :
+* external reference
+* base 64
+* base 16
+* base 10
+* No data
+
+The selected encoding depends on the data size.
+In excel files data might be truncated due to the maximum length of a cell which is 32000+ characters.
+External references are not supported in excel files.
+Content type is assumed to be `application/octet-stream`.
+
+#### External reference
+
+Up to : any size
+Format : `data:reference,<filepath>`
+`<filepath>` is the path relative to the root of the ZIP file.
+`<filepath>` has the format `<byte1>/<byte2>/<byte3>/<byte4>/<filename>` where `<byte1/2/3/4>` are the first 4 bytes of the filename.
+`<filename>` has a maximum length of 250 characters. The minimum length is 4 bytes. It has the format `<identifier>-<byte>`.
+`<filename>` has no extension as the content type is assumed to be the generic `application/octet-stream`.
+`<identifier>` has characters representing lowercase hexadecimal digits.
+`<identifier>` could be a GUID, or something else.
+`<byte>` is the first byte of the binary data in lowercase hexadecimal.
+Example : `data:reference,4d/13/c5/3b/4d13c53bcbab4cf0bf3693c21e39ae7c-3e`
+
+#### Base 64
+
+Up to : 262144 bytes
+Format : `data:base64,<base64_encoded_data>`
+Example : `data:base64,ZjYzYTJiYzA3NDBlYzlmZTk0ZjJkYzQ3NDNmOTEyNWRkZmY2NjA3N2E2NzA0ZTk5NWY4MDE0MGYyZGVkNDg3ZDExOA==`
+
+#### Base 16
+
+Up to : 64 bytes
+Format : `data:base16,<base16_endoded_data>`
+Example : `data:base16,3403d8842ceaa2415212771bd971a745808c27cc582`
+
+#### Base 10
+
+Up to : 4 bytes
+Format : `data:base10,<base10_endoded_data>`
+Example : `data:base10,1311216559`
+
+#### No data
+
+Up to : 0 bytes
+Format : `data:none`
+Example : `data:none`
 
 ## Targets
 

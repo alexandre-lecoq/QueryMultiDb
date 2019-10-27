@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QueryMultiDb.Exporter;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -55,6 +56,10 @@ namespace QueryMultiDb
         public bool DiscardResults { get; set; }
 
         public string ApplicationName { get; set; }
+
+        public ExporterType Exporter { get; set; }
+
+        public string CsvDelimiter { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
@@ -199,6 +204,8 @@ namespace QueryMultiDb
             SheetLabels = ParseSheetLabels(parsedResult.SheetLabels);
             DiscardResults = parsedResult.DiscardResults;
             ApplicationName = parsedResult.ApplicationName ?? string.Empty;
+            Exporter = parsedResult.Exporter;
+            CsvDelimiter = parsedResult.CsvDelimiter;
 
             ThrowIfInvalidParameter();
         }
@@ -396,6 +403,21 @@ namespace QueryMultiDb
             if (!string.IsNullOrEmpty(ApplicationName) && ApplicationName.Trim() == string.Empty)
             {
                 throw new ArgumentException("ApplicationName cannot be white spaces.");
+            }
+
+            if (Exporter != ExporterType.Excel && Exporter != ExporterType.Csv)
+            {
+                throw new ArgumentException("Exporter must be either \"csv\" or \"excel\".");
+            }
+
+            if (string.IsNullOrEmpty(CsvDelimiter))
+            {
+                throw new ArgumentException("CSV delimiter cannot be empty.");
+            }
+
+            if (CsvDelimiter.Length != 1)
+            {
+                throw new ArgumentException("CSV delimiter must be only one character.");
             }
         }
 

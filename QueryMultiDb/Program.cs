@@ -1,16 +1,17 @@
-﻿using System;
+﻿using CommandLineParser.Exceptions;
+using NLog;
+using NLog.Config;
+using NLog.Targets.Wrappers;
+using QueryMultiDb.Exporter;
+using System;
 using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
-using CommandLineParser.Exceptions;
-using NLog;
-using NLog.Config;
-using NLog.Targets.Wrappers;
 
 namespace QueryMultiDb
 {
-    internal class Program
+    internal static class Program
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -164,11 +165,12 @@ namespace QueryMultiDb
             mergeStopwatch.Stop();
             Logger.Info($"Merged results : {mergeStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
+            var exporter = ExporterFactory.GetExporter(Parameters.Instance.Exporter);
             var excelGenerationStopwatch = new Stopwatch();
             excelGenerationStopwatch.Start();
-            ExcelExporter.Generate(mergedResults);
+            exporter.Generate(mergedResults);
             excelGenerationStopwatch.Stop();
-            Logger.Info($"Excel generation : {excelGenerationStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Info($"{exporter.Name} generation : {excelGenerationStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
         }
     }
 }

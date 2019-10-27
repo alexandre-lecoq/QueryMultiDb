@@ -1,5 +1,6 @@
-﻿using System.IO;
-using CommandLineParser.Arguments;
+﻿using CommandLineParser.Arguments;
+using QueryMultiDb.Exporter;
+using System.IO;
 
 namespace QueryMultiDb
 {
@@ -248,5 +249,24 @@ namespace QueryMultiDb
             FullDescription = "You can use this to specify the name of the application running this tool. The name will be visible in SQL server's connection information.",
             Example = "MyApplication")]
         public string ApplicationName { get; set; }
+
+        [ValueArgument(
+            typeof(ExporterType),
+            "exporter",
+            DefaultValue = ExporterType.Excel,
+            ValueOptional = false,
+            Description = "Selects the output file format.",
+            FullDescription = "Indicates the output file format. The file format is excel.",
+            Example = "csv")]
+        public ExporterType Exporter { get; set; }
+
+        [ValueArgument(
+            typeof(string),
+            "csvdelimiter",
+            DefaultValue = ";",
+            Description = "Defines the CSV delimiter used to separate fields.",
+            FullDescription = "You can use this to define the CSV delimiter used to separate fields. Common delimiter are comma, semicolon and TAB. The default delimiter is semicolon.",
+            Example = ";")]
+        public string CsvDelimiter { get; set; }
     }
 }

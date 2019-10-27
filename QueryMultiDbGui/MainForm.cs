@@ -258,7 +258,9 @@ namespace QueryMultiDbGui
                 ShowExtraColumns = !hideLotCheckBox.Checked,
                 ShowLogSheet = !hideLotCheckBox.Checked,
                 ShowParameterSheet = !hideLotCheckBox.Checked,
-                ShowInformationMessages = !hideLotCheckBox.Checked
+                ShowInformationMessages = !hideLotCheckBox.Checked,
+                Exporter = "excel",
+                CsvDelimiter = ";"
             };
 
             var startInfo = new ProcessStartInfo

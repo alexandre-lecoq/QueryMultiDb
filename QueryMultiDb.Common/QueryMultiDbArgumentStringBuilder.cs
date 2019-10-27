@@ -42,6 +42,10 @@
 
         public bool? ShowInformationMessages { get; set; }
 
+        public string Exporter { get; set; }
+
+        public string CsvDelimiter { get; set; }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -148,6 +152,16 @@
             if (ShowInformationMessages.HasValue)
             {
                 sb.Append($@" --showinformationmessages {ShowInformationMessages.ToString().ToLowerInvariant()}");
+            }
+            
+            if (Exporter != null)
+            {
+                sb.Append($@" --exporter {Exporter}");
+            }
+
+            if (CsvDelimiter != null)
+            {
+                sb.Append($@" --csvdelimiter {CsvDelimiter}");
             }
 
             return sb.ToString();
