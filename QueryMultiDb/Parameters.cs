@@ -61,6 +61,12 @@ namespace QueryMultiDb
 
         public string CsvDelimiter { get; set; }
 
+        public int Base10Threshold { get; set; }
+
+        public int Base16Threshold { get; set; }
+
+        public int Base64Threshold { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
         {
@@ -206,6 +212,9 @@ namespace QueryMultiDb
             ApplicationName = parsedResult.ApplicationName ?? string.Empty;
             Exporter = parsedResult.Exporter;
             CsvDelimiter = parsedResult.CsvDelimiter;
+            Base10Threshold = parsedResult.Base10Threshold;
+            Base16Threshold = parsedResult.Base16Threshold;
+            Base64Threshold = parsedResult.Base64Threshold;
 
             ThrowIfInvalidParameter();
         }
@@ -418,6 +427,21 @@ namespace QueryMultiDb
             if (CsvDelimiter.Length != 1)
             {
                 throw new ArgumentException("CSV delimiter must be only one character.");
+            }
+
+            if (Base10Threshold < 0)
+            {
+                throw new ArgumentException("Base 10 threshold cannot be negative.");
+            }
+
+            if (Base16Threshold < 0)
+            {
+                throw new ArgumentException("Base 16 threshold cannot be negative.");
+            }
+
+            if (Base64Threshold < 0)
+            {
+                throw new ArgumentException("Base 64 threshold cannot be negative.");
             }
         }
 

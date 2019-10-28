@@ -46,6 +46,12 @@
 
         public string CsvDelimiter { get; set; }
 
+        public int? Base10Threshold { get; set; }
+
+        public int? Base16Threshold { get; set; }
+
+        public int? Base64Threshold { get; set; }
+
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -162,6 +168,21 @@
             if (CsvDelimiter != null)
             {
                 sb.Append($@" --csvdelimiter {CsvDelimiter}");
+            }
+
+            if (Base10Threshold.HasValue)
+            {
+                sb.Append($@" --base10threshold {Base10Threshold}");
+            }
+
+            if (Base16Threshold.HasValue)
+            {
+                sb.Append($@" --base16threshold {Base16Threshold}");
+            }
+
+            if (Base64Threshold.HasValue)
+            {
+                sb.Append($@" --base64threshold {Base64Threshold}");
             }
 
             return sb.ToString();

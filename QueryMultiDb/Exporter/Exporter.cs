@@ -202,7 +202,10 @@ namespace QueryMultiDb.Exporter
                 CreateParameterRow("DiscardResults", parameters.DiscardResults),
                 CreateParameterRow("ApplicationName", parameters.ApplicationName),
                 CreateParameterRow("Exporter", parameters.Exporter),
-                CreateParameterRow("CsvDelimiter", parameters.CsvDelimiter)
+                CreateParameterRow("CsvDelimiter", parameters.CsvDelimiter),
+                CreateParameterRow("Base10Threshold", parameters.Base10Threshold),
+                CreateParameterRow("Base16Threshold", parameters.Base16Threshold),
+                CreateParameterRow("Base64Threshold", parameters.Base64Threshold)
             };
 
             var parameterTable = new Table(parameterColumns, parameterRows, Table.CommandLineParametersId);
@@ -256,21 +259,21 @@ namespace QueryMultiDb.Exporter
                 return BinaryDataNoneString;
             }
 
-            if (item.Length <= 4)
+            if (item.Length <= Parameters.Instance.Base10Threshold)
             {
                 var base10String = ToDecimalString(item);
 
                 return BinaryDataBase10String + base10String;
             }
 
-            if (item.Length <= 64)
+            if (item.Length <= Parameters.Instance.Base16Threshold)
             {
                 var base16String = ToHexString(item);
 
                 return BinaryDataBase16String + base16String;
             }
 
-            if (item.Length <= 262144 || !useExternalReferences)
+            if (item.Length <= Parameters.Instance.Base64Threshold || !useExternalReferences)
             {
                 var base64String = Convert.ToBase64String(item, Base64FormattingOptions.None);
 

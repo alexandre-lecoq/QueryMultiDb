@@ -268,5 +268,32 @@ namespace QueryMultiDb
             FullDescription = "You can use this to define the CSV delimiter used to separate fields. Common delimiter are comma, semicolon and TAB. The default delimiter is semicolon.",
             Example = ";")]
         public string CsvDelimiter { get; set; }
+
+        [ValueArgument(
+            typeof(int),
+            "base10threshold",
+            DefaultValue = 4,
+            Description = "The inclusive maximum number of bytes for which to use decimal representation.",
+            FullDescription = "Use this to define the inclusive maximum number of bytes for which to use decimal representation of binary data.",
+            Example = "8")]
+        public int Base10Threshold { get; set; }
+
+        [ValueArgument(
+            typeof(int),
+            "base16threshold",
+            DefaultValue = 64,
+            Description = "The inclusive maximum number of bytes for which to use hexadecimal representation.",
+            FullDescription = "Use this to define the inclusive maximum number of bytes for which to use hexadecimal representation of binary data.",
+            Example = "128")]
+        public int Base16Threshold { get; set; }
+
+        [ValueArgument(
+            typeof(int),
+            "base64threshold",
+            DefaultValue = 262144,
+            Description = "The inclusive maximum number of bytes for which to use base 64 representation.",
+            FullDescription = "Use this to define the inclusive maximum number of bytes for which to use base 64 representation of binary data.",
+            Example = "524288")]
+        public int Base64Threshold { get; set; }
     }
 }

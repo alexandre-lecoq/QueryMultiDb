@@ -48,6 +48,9 @@ discardresults|Discard query results and display counts instead|false|
 applicationname|Defines the application name for the SQL server connection.||
 exporter|Selects the output file format.|excel|
 csvdelimiter|Defines the CSV delimiter used to separate fields.|;|
+base10threshold|The inclusive maximum number of bytes for which to use decimal representation.|4|
+base16threshold|The inclusive maximum number of bytes for which to use hexadecimal representation.|64|
+base64threshold|The inclusive maximum number of bytes for which to use base 64 representation.|262144|
 
 ### Example
 

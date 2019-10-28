@@ -260,7 +260,10 @@ namespace QueryMultiDbGui
                 ShowParameterSheet = !hideLotCheckBox.Checked,
                 ShowInformationMessages = !hideLotCheckBox.Checked,
                 Exporter = "excel",
-                CsvDelimiter = ";"
+                CsvDelimiter = ";",
+                Base10Threshold = 4,
+                Base16Threshold = 64,
+                Base64Threshold = 262144
             };
 
             var startInfo = new ProcessStartInfo
