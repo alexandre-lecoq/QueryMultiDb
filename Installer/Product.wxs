@@ -59,8 +59,14 @@
       <Component Id="DocumentFormat.OpenXml.dll">
         <File Id="DocumentFormat.OpenXml.dll" Source="$(var.QueryMultiDb.TargetDir)DocumentFormat.OpenXml.dll" Checksum="yes" />
       </Component>
+      <Component Id="CsvHelper.dll">
+        <File Id="CsvHelper.dll" Source="$(var.QueryMultiDb.TargetDir)CsvHelper.dll" Checksum="yes" />
+      </Component>
       <Component Id="CommandLineArgumentsParser.dll">
         <File Id="CommandLineArgumentsParser.dll" Source="$(var.QueryMultiDb.TargetDir)CommandLineArgumentsParser.dll" Checksum="yes" />
+      </Component>
+      <Component Id="System.ValueTuple.dll">
+        <File Id="System.ValueTuple.dll" Source="$(var.QueryMultiDb.TargetDir)System.ValueTuple.dll" Checksum="yes" />
       </Component>
 
       <Component Id="DbTargets.exe">
