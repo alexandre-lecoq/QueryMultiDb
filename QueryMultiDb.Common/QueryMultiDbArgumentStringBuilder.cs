@@ -167,7 +167,7 @@
 
             if (CsvDelimiter != null)
             {
-                sb.Append($@" --csvdelimiter {CsvDelimiter}");
+                sb.Append($@" --csvdelimiter '{CsvDelimiter}'");
             }
 
             if (Base10Threshold.HasValue)
