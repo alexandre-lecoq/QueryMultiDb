@@ -40,6 +40,14 @@ namespace QueryMultiDb
 
             WarnAboutMissingTableSets(result);
             var resultTemplate = GetFirstResultWithNonEmptyTableSet(result);
+
+            if (resultTemplate == null)
+            {
+                Logger.Warn("Execution did not yield any table sets.");
+                Logger.Error("No data will be exported.");
+                return new List<Table>(0);
+            }
+
             var tableCount = resultTemplate.TableSet.Count;
             var tableSet = new List<Table>(tableCount);
 
@@ -97,7 +105,7 @@ namespace QueryMultiDb
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
             }
 
-            var executionResultTemplate = result.First(r => r.TableSet.Count != 0);
+            var executionResultTemplate = result.FirstOrDefault(r => r.TableSet.Count != 0);
 
             return executionResultTemplate;
         }
