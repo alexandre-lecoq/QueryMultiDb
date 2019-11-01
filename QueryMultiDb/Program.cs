@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Reflection;
 using System.Threading;
+using QueryMultiDb.DataMerger;
 
 namespace QueryMultiDb
 {
@@ -158,12 +159,12 @@ namespace QueryMultiDb
             queryStopwatch.Stop();
             Logger.Info($"Query results : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
-            var dataMerger = DataMergerSelector.GetDataMerger(DataMergerType.Default);
+            var dataMerger = DataMergerFactory.GetDataMerger(DataMergerType.Conservative);
             var mergeStopwatch = new Stopwatch();
             mergeStopwatch.Start();
-            var mergedResults = dataMerger(result);
+            var mergedResults = dataMerger.MergeResults(result);
             mergeStopwatch.Stop();
-            Logger.Info($"Merged results : {mergeStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+            Logger.Info($"Merged results with {dataMerger.Name} : {mergeStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
             var exporter = ExporterFactory.GetExporter(Parameters.Instance.Exporter);
             var excelGenerationStopwatch = new Stopwatch();

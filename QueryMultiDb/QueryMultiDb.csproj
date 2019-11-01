@@ -95,11 +95,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandLineParameters.cs" />
+    <Compile Include="DataMerger\DataMerger.cs" />
+    <Compile Include="DataMerger\DataMergerFactory.cs" />
+    <Compile Include="DataMerger\DataMergerType.cs" />
+    <Compile Include="DataMerger\IDataMerger.cs" />
+    <Compile Include="DataMerger\NullDataMerger.cs" />
+    <Compile Include="DataMerger\OpportunistDataMerger.cs" />
+    <Compile Include="DataMerger\StrictDataMerger.cs" />
     <Compile Include="Exporter\CsvExporter.cs" />
     <Compile Include="Database.cs" />
-    <Compile Include="DataMerger.cs" />
-    <Compile Include="DataMergerSelector.cs" />
-    <Compile Include="DataMergerType.cs" />
+    <Compile Include="DataMerger\ConservativeDataMerger.cs" />
     <Compile Include="DataReader.cs" />
     <Compile Include="DnsResolverWithCache.cs" />
     <Compile Include="Exporter\ExcelExporter.cs" />
@@ -126,7 +131,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
-    <None Include="DataMerger.md" />
+    <None Include="DataMerger\DataMerger.md" />
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

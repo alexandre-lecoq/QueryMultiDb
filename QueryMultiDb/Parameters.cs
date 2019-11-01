@@ -248,7 +248,7 @@ namespace QueryMultiDb
 
             var databaseArray = jsonTargets.DatabaseList.ToArray();
 
-            // This is very important to shuffle this array because its processing will likely be parallelized.
+            // This is very important to shuffle this array because its processing will likely be paralleled.
             // It drastically reduces the probability two problematic databases are close to each other in the array in the average case.
             // Doing so, it reduces the chance of having several threads blocked at the same time.
             // You can see this shuffling as a performance optimization.

@@ -1,14 +1,16 @@
-﻿using System;
+﻿using NLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 
-namespace QueryMultiDb
+namespace QueryMultiDb.DataMerger
 {
-    public static class DataMerger
+    public class ConservativeDataMerger : DataMerger
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        public override string Name => "Conservative Data Merger";
+        
         /// <summary>
         /// Merges execution results into a collection of tables.
         /// </summary>
@@ -17,7 +19,7 @@ namespace QueryMultiDb
         /// <remarks>
         /// If the results cannot be merged, an empty collection of tables should be returned and every issue should be logged.
         /// </remarks>
-        public static ICollection<Table> MergeResults(ICollection<ExecutionResult> result)
+        public override ICollection<Table> MergeResults(ICollection<ExecutionResult> result)
         {
             if (result == null)
             {

@@ -39,14 +39,14 @@ Exemples de stratégies :
 		* Une liste de tableaux vide (dans un résultat d'exécution) peut toujours être fusionnée avec une liste de tableaux non vides
 		* Un tableau vide peut toujours être fusionné avec un tableau non vide
 	* Si les tableaux comportent des différences complexe qui ne peuvent être géré par ces règles, alors la fusion est abandonnées et des logs sont émis.
-* [ ] Fusion avec découpe
+* [ ] Fusion avec découpe (opportuniste)
 	* Fusionne tous les tableaux qui ont le même schéma de colonnes (nombre, nom, ordre et type)
 	* Si 2 tableaux issue d’une même requête ont deux schémas diffèrent, alors 2 tableaux sont générés en sortie
 		* Cela implique qu'on peut avoir plusieurs onglets pour un seul résultat de requêtes pour résoudre les conflits de fusion.
-* [ ] Fusion nulle
+* [x] Fusion nulle
 	* Aucune fusion n'est réalisée.
 	* Il y a autant de tableaux en entrée qu'en sortie.
-		* Attention, le fichier Excel généré peut comporter beaucoup d'onglets.
+		* Attention, le fichier généré peut comporter beaucoup de tableaux.
 	* Cette fusion n'échoue jamais.
 
 ## Stratégies incorrectes
