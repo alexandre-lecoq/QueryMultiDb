@@ -24,40 +24,35 @@ namespace QueryMultiDb
 
             var progressReporter = new ProgressReporter("DataReader.GetQueryResults", Parameters.Instance.Targets.Databases.Count(), s => Console.Error.WriteLine(s));
 
+            void AddDatabaseQueryResults(Database database)
+            {
+                var result = QueryDatabase(database);
+                progressReporter.Increment();
+
+                if (result == null)
+                {
+                    return;
+                }
+
+                // Lock is useless with foreach but useful with Parallel.ForEach.
+				// We also don't mind the performance impact.
+                lock (resultSets)
+                {
+                    resultSets.Add(result);
+                }
+            }
+
             if (Parameters.Instance.Sequential)
             {
                 foreach (var database in Parameters.Instance.Targets.Databases)
                 {
-                    var result = QueryDatabase(database);
-                    progressReporter.Increment();
-
-                    if (result == null)
-                    {
-                        continue;
-                    }
-
-                    resultSets.Add(result);
+                    AddDatabaseQueryResults(database);
                 }
             }
             else
             {
                 var options = new ParallelOptions { MaxDegreeOfParallelism = Parameters.Instance.Parallelism };
-
-                Parallel.ForEach(Parameters.Instance.Targets.Databases, options, (database) =>
-                {
-                    var result = QueryDatabase(database);
-                    progressReporter.Increment();
-
-                    if (result == null)
-                    {
-                        return;
-                    }
-
-                    lock (resultSets)
-                    {
-                        resultSets.Add(result);
-                    }
-                });
+                Parallel.ForEach(Parameters.Instance.Targets.Databases, options, AddDatabaseQueryResults);
             }
 
             progressReporter.Done();
