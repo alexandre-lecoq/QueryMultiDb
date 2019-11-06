@@ -33,7 +33,7 @@ namespace QueryMultiDb.Tests.System
             sb.AppendLine($"ExitCode : {ExitCode}");
             sb.AppendLine($"StandardOutput : {StandardOutput}");
             sb.AppendLine($"StandardError : {StandardError}");
-            sb.AppendLine($"OutputFileContent.Length : {OutputFileContent.Length}");
+            sb.AppendLine($"OutputFileContent.Length : {OutputFileContent?.Length}");
 
             return sb.ToString();
         }
