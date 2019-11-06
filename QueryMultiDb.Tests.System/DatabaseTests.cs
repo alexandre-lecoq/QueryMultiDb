@@ -47,7 +47,7 @@ namespace QueryMultiDb.Tests.System
             catch (XunitException)
             {
                 if (systemRunOutput != null)
-                    _output.WriteLine(systemRunOutput.ToString());
+                    _output.WriteLine(systemRunOutput.ToVerboseString());
 
                 throw;
             }

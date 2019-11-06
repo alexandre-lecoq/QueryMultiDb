@@ -1,4 +1,7 @@
-﻿namespace QueryMultiDb.Tests.System
+﻿using System.Text;
+using NotImplementedException = System.NotImplementedException;
+
+namespace QueryMultiDb.Tests.System
 {
     public class SystemExecutionOutput
     {
@@ -21,6 +24,18 @@
         public override string ToString()
         {
             return $"ExitCode = {ExitCode} ; OutputFileContent.Length = {OutputFileContent?.Length}";
+        }
+
+        public string ToVerboseString()
+        {
+            var sb = new StringBuilder();
+
+            sb.AppendLine($"ExitCode : {ExitCode}");
+            sb.AppendLine($"StandardOutput : {StandardOutput}");
+            sb.AppendLine($"StandardError : {StandardError}");
+            sb.AppendLine($"OutputFileContent.Length : {OutputFileContent.Length}");
+
+            return sb.ToString();
         }
     }
 }
