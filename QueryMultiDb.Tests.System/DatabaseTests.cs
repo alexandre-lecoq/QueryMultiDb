@@ -35,24 +35,16 @@ namespace QueryMultiDb.Tests.System
         [Fact]
         public void SimpleTestTableSelect()
         {
-            SystemExecutionOutput systemRunOutput = null;
+            var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(DatabaseFixture.TestTableSelectQuery, DatabaseFixture.OneTarget, argumentStringBuilder);
 
-            try
-            {
-                var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
-                systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(DatabaseFixture.TestTableSelectQuery, DatabaseFixture.OneTarget, argumentStringBuilder);
-                SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
-                var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
-            }
-            catch (XunitException)
-            {
-                if (systemRunOutput != null)
-                    _output.WriteLine(systemRunOutput.ToVerboseString());
+            if (systemRunOutput != null)
+                _output.WriteLine(systemRunOutput.ToVerboseString());
 
-                throw;
-            }
+            SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
+            var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
         }
-        
+
         [Fact]
         public void Test1()
         {
