@@ -56,15 +56,27 @@ namespace QueryMultiDb.Tests.System
         [Fact]
         public void Test1()
         {
-            var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
-            var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test1.sql");
-            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, DatabaseFixture.OneTarget, argumentStringBuilder);
-            SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
-            var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
-            
-            Assert.Equal(6, sheetCount);
-            Assert.True(systemRunOutput.OutputFileContent.Length > 10000);
-            Assert.True(systemRunOutput.OutputFileContent.Length < 20000);
+            SystemExecutionOutput systemRunOutput = null;
+
+            try
+            {
+                var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+                var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test1.sql");
+                systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, DatabaseFixture.OneTarget, argumentStringBuilder);
+                SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
+                var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
+
+                Assert.Equal(6, sheetCount);
+                Assert.True(systemRunOutput.OutputFileContent.Length > 10000);
+                Assert.True(systemRunOutput.OutputFileContent.Length < 20000);
+            }
+            catch (XunitException)
+            {
+                if (systemRunOutput != null)
+                    _output.WriteLine(systemRunOutput.ToVerboseString());
+
+                throw;
+            }
         }
 
         [Fact]
