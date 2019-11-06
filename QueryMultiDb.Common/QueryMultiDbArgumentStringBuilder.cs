@@ -78,7 +78,7 @@
 
             if (!string.IsNullOrWhiteSpace(Query))
             {
-                sb.Append($@" --query ""{Query.Replace("\"", "\"\"")}""");
+                sb.Append($@" --query ""{Query.Replace("\"", "\"\"").Replace("\\", "\\\\")}""");
             }
 
             if (!string.IsNullOrWhiteSpace(QueryFile))
@@ -88,7 +88,7 @@
 
             if (!string.IsNullOrWhiteSpace(Targets))
             {
-                sb.Append($@" --targets ""{Targets.Replace("\"", "\"\"")}""");
+                sb.Append($@" --targets ""{Targets.Replace("\"", "\"\"").Replace("\\", "\\\\")}""");
             }
 
             if (!string.IsNullOrWhiteSpace(TargetsFile))
