@@ -1,16 +1,20 @@
 ﻿using QueryMultiDb.Common;
 using System.Data.SqlClient;
 using Xunit;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace QueryMultiDb.Tests.System
 {
     public class DatabaseTests : IClassFixture<DatabaseFixture>
     {
         private readonly DatabaseFixture _fixture;
+        private readonly ITestOutputHelper _output;
 
-        public DatabaseTests(DatabaseFixture fixture)
+        public DatabaseTests(ITestOutputHelper output, DatabaseFixture fixture)
         {
             _fixture = fixture;
+            _output = output;
         }
 
         [Fact]
@@ -31,10 +35,22 @@ namespace QueryMultiDb.Tests.System
         [Fact]
         public void SimpleTestTableSelect()
         {
-            var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
-            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(DatabaseFixture.TestTableSelectQuery, DatabaseFixture.OneTarget, argumentStringBuilder);
-            SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
-            var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
+            SystemExecutionOutput systemRunOutput = null;
+
+            try
+            {
+                var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+                systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(DatabaseFixture.TestTableSelectQuery, DatabaseFixture.OneTarget, argumentStringBuilder);
+                SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
+                var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
+            }
+            catch (XunitException)
+            {
+                if (systemRunOutput != null)
+                    _output.WriteLine(systemRunOutput.ToString());
+
+                throw;
+            }
         }
         
         [Fact]

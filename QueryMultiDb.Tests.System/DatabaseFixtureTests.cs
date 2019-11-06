@@ -6,7 +6,7 @@ namespace QueryMultiDb.Tests.System
     public class DatabaseFixtureTests
     {
         [Fact]
-        public void WorkingIntegrateConnectionConnection()
+        public void WorkingIntegratedConnectionConnection()
         {
             using (var connection = new SqlConnection(DatabaseFixture.IntegratedSecurityConnectionString))
             {
