@@ -26,6 +26,8 @@ namespace QueryMultiDb.Tests.System
                 var command = connection.CreateCommand();
                 command.CommandText = DatabaseFixture.TestTableSelectQuery;
                 var reader = command.ExecuteReader();
+                _output.WriteLine($"HasRows : {reader.HasRows}");
+                _output.WriteLine($"FieldCount : {reader.FieldCount}");
                 reader.Close();
                 reader.Dispose();
                 connection.Close();
