@@ -91,9 +91,7 @@ namespace QueryMultiDb
                 ApplicationName = applicationName,
 
                 ApplicationIntent = ApplicationIntent.ReadWrite,
-                NetworkLibrary = "dbmssocn",
-                Pooling = false,
-                Authentication = SqlAuthenticationMethod.NotSpecified
+                Pooling = false
             };
 
             ExecutionResult result = null;
