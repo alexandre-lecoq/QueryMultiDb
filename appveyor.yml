@@ -6,6 +6,8 @@ environment:
   Appveyor: true
   COVERALLS_REPO_TOKEN:
     secure: D2UAgklYO9LG75FbrhhO43JKZSQ16xnxlyY/Y9SmR+1m8zAhuEcM02gN7GhPBevj
+  CODECOV_TOKEN:
+    secure: 231c53a0-46d7-429e-9de6-0a86d1ecb98a
 
 services:
   - mssql2017
