@@ -10,19 +10,19 @@ namespace QueryMultiDb.Tests.System
         public static readonly string DefaultConnectionString = IntegratedSecurityConnectionString;
 
         public static string SaConnectionString => IsAppVeyor
-            ? @"Data Source=(local)\SQL2017;Database=tempdb;User ID=sa;Password=Password12!"
+            ? @"Data Source=.\SQL2017;Database=tempdb;User ID=sa;Password=Password12!"
             : "Data Source=.;Initial Catalog=tempdb;User ID=sa;Password=xxxxxxxxx";
 
         public static string IntegratedSecurityConnectionString => IsAppVeyor
-            ? @"Data Source=(local)\SQL2017;Database=tempdb;Integrated Security=True"
+            ? @"Data Source=.\SQL2017;Database=tempdb;Integrated Security=True"
             : "Data Source=.;Initial Catalog=tempdb;Integrated Security=True";
 
         public static string OneTarget => IsAppVeyor
-            ? @"{ ""DatabaseList"": [ { ""ServerName"": ""(local)\SQL2017"", ""DatabaseName"": ""tempdb"" } ]}"
+            ? @"{ ""DatabaseList"": [ { ""ServerName"": "".\SQL2017"", ""DatabaseName"": ""tempdb"" } ]}"
             : @"{ ""DatabaseList"": [ { ""ServerName"": ""localhost"", ""DatabaseName"": ""tempdb"" } ]}";
         
         public static string TwoTargets => IsAppVeyor
-            ? @"{ ""DatabaseList"": [ { ""ServerName"": ""(local)\SQL2017"", ""DatabaseName"": ""tempdb"" }, { ""ServerName"": ""(local)\SQL2017"", ""DatabaseName"": ""tempdb"" } ]}"
+            ? @"{ ""DatabaseList"": [ { ""ServerName"": "".\SQL2017"", ""DatabaseName"": ""tempdb"" }, { ""ServerName"": "".\SQL2017"", ""DatabaseName"": ""tempdb"" } ]}"
             : @"{ ""DatabaseList"": [ { ""ServerName"": ""localhost"", ""DatabaseName"": ""tempdb"" }, { ""ServerName"": ""localhost"", ""DatabaseName"": ""tempdb"" } ]}";
 
         public static string TestTableSelectQuery = "SELECT * FROM TestTableOne;";
