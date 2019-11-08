@@ -11,11 +11,11 @@ namespace QueryMultiDb.Tests.System
 
         public static string SaConnectionString => IsAppVeyor
             ? @"Data Source=.\SQL2017;Database=tempdb;User ID=sa;Password=Password12!"
-            : "Data Source=.;Initial Catalog=tempdb;User ID=sa;Password=xxxxxxxxx";
+            : @"Data Source=.;Initial Catalog=tempdb;User ID=sa;Password=xxxxxxxxx";
 
         public static string IntegratedSecurityConnectionString => IsAppVeyor
-            ? @"DataData Source=.\SQL2017;Database=tempdb;Integrated Security=True"
-            : "Data Source=.;Initial Catalog=tempdb;Integrated Security=True";
+            ? @"Data Source=.\SQL2017;Database=tempdb;Integrated Security=True"
+            : @"Data Source=.;Initial Catalog=tempdb;Integrated Security=True";
 
         public static string OneTarget => IsAppVeyor
             ? @"{ ""DatabaseList"": [ { ""ServerName"": "".\SQL2017"", ""DatabaseName"": ""tempdb"" } ]}"
