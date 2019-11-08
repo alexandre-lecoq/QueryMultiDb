@@ -113,7 +113,10 @@ namespace QueryMultiDb
                     }
                 }
 
-                using (var connection = new SqlConnection(connectionStringBuilder.ToString()))
+                var connectionString = connectionStringBuilder.ToString();
+                Logger.Debug($"Connection string : '{connectionString}'");
+
+                using (var connection = new SqlConnection(connectionString))
                 {
                     openStopwatch.Start();
                     connection.Open();
