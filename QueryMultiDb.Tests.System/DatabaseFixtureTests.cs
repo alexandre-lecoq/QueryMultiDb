@@ -8,17 +8,7 @@ namespace QueryMultiDb.Tests.System
         [Fact]
         public void WorkingIntegratedConnectionConnection()
         {
-            using (var connection = new SqlConnection(DatabaseFixture.IntegratedSecurityConnectionString))
-            {
-                connection.Open();
-                connection.Close();
-            }
-        }
-
-        [Fact]
-        public void WorkingSaConnection()
-        {
-            using (var connection = new SqlConnection(DatabaseFixture.SaConnectionString))
+            using (var connection = new SqlConnection(DatabaseFixture.ConnectionString))
             {
                 connection.Open();
                 connection.Close();

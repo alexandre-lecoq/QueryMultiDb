@@ -85,11 +85,9 @@ namespace QueryMultiDb
                 DataSource = database.ServerName,
                 InitialCatalog = database.DatabaseName,
                 ConnectTimeout = Parameters.Instance.ConnectionTimeout,
-
                 IntegratedSecurity = true,
                 WorkstationID = Environment.MachineName,
                 ApplicationName = applicationName,
-
                 ApplicationIntent = ApplicationIntent.ReadWrite,
                 Pooling = false
             };
@@ -112,7 +110,7 @@ namespace QueryMultiDb
                 }
 
                 var connectionString = connectionStringBuilder.ToString();
-                Logger.Debug($"Connection string : '{connectionString}'");
+                Logger.Trace($"Connection string : '{connectionString}'");
 
                 using (var connection = new SqlConnection(connectionString))
                 {

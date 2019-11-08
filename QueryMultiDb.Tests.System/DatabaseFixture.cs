@@ -7,13 +7,7 @@ namespace QueryMultiDb.Tests.System
     {
         private static readonly bool IsAppVeyor = Environment.GetEnvironmentVariable("Appveyor")?.ToUpperInvariant() == "TRUE";
 
-        public static readonly string DefaultConnectionString = IntegratedSecurityConnectionString;
-
-        public static string SaConnectionString => IsAppVeyor
-            ? @"Data Source=.\SQL2017;Database=tempdb;User ID=sa;Password=Password12!"
-            : @"Data Source=.;Initial Catalog=tempdb;User ID=sa;Password=xxxxxxxxx";
-
-        public static string IntegratedSecurityConnectionString => IsAppVeyor
+        public static string ConnectionString => IsAppVeyor
             ? @"Data Source=.\SQL2017;Database=tempdb;Integrated Security=True"
             : @"Data Source=.;Initial Catalog=tempdb;Integrated Security=True";
 
@@ -30,9 +24,9 @@ namespace QueryMultiDb.Tests.System
         
         public DatabaseFixture()
         {
-            lock (DefaultConnectionString)
+            lock (ConnectionString)
             {
-                using (var connection = new SqlConnection(DefaultConnectionString))
+                using (var connection = new SqlConnection(ConnectionString))
                 {
                     connection.Open();
                     var command = connection.CreateCommand();
@@ -46,9 +40,9 @@ namespace QueryMultiDb.Tests.System
 
         public void Dispose()
         {
-            lock (DefaultConnectionString)
+            lock (ConnectionString)
             {
-                using (var connection = new SqlConnection(DefaultConnectionString))
+                using (var connection = new SqlConnection(ConnectionString))
                 {
                     connection.Open();
                     var command = connection.CreateCommand();

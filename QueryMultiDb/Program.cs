@@ -39,7 +39,7 @@ namespace QueryMultiDb
 
                 foreach (var s in args)
                 {
-                    Logger.Debug($"Argument : '{s}'");
+                    Logger.Trace($"Argument : '{s}'");
                 }
 
                 commandLineParser.ParseCommandLine(args);
