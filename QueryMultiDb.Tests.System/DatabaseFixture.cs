@@ -14,7 +14,7 @@ namespace QueryMultiDb.Tests.System
             : "Data Source=.;Initial Catalog=tempdb;User ID=sa;Password=xxxxxxxxx";
 
         public static string IntegratedSecurityConnectionString => IsAppVeyor
-            ? @"Data Source=.\SQL2017;Initial Catalog=tempdb;Integrated Security=True;Pooling=False;Connect Timeout=5;Application Name=QueryMultiDb;Workstation ID=APPVEYOR-VM;ApplicationIntent=ReadWrite"
+            ? @"DataData Source=.\SQL2017;Database=tempdb;Integrated Security=True"
             : "Data Source=.;Initial Catalog=tempdb;Integrated Security=True";
 
         public static string OneTarget => IsAppVeyor
