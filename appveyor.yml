@@ -37,7 +37,7 @@ build:
 
 test_script:
 - cmd: >-
-    OpenCover.Console.exe -register:user -target:"%xunit20%\xunit.console.exe" -targetargs:"\"C:\projects\querymultidb\QueryMultiDb.Tests.Unit\bin\Release\QueryMultiDb.Tests.Unit.dll\" \"C:\projects\querymultidb\QueryMultiDb.Common.Tests.Unit\bin\Release\QueryMultiDb.Common.Tests.Unit.dll\" \"C:\projects\querymultidb\QueryMultiDb.Tests.System\bin\Release\QueryMultiDb.Tests.System.dll\" -noshadow -appveyor -xml C:\projects\querymultidb\QueryMultiDb.Tests.Unit.report.xml" -output:"QueryMultiDb.Tests.Unit.coverage.xml" -filter:"+[QueryMultiDb*]*"
+    OpenCover.Console.exe -register -target:"%xunit20%\xunit.console.exe" -targetargs:"\"C:\projects\querymultidb\QueryMultiDb.Tests.Unit\bin\Release\QueryMultiDb.Tests.Unit.dll\" \"C:\projects\querymultidb\QueryMultiDb.Common.Tests.Unit\bin\Release\QueryMultiDb.Common.Tests.Unit.dll\" \"C:\projects\querymultidb\QueryMultiDb.Tests.System\bin\Release\QueryMultiDb.Tests.System.dll\" -noshadow -appveyor -xml C:\projects\querymultidb\QueryMultiDb.Tests.Unit.report.xml" -output:"QueryMultiDb.Tests.Unit.coverage.xml" -filter:"+[QueryMultiDb*]*"
 
     codecov -f "QueryMultiDb.Tests.Unit.coverage.xml"
 
