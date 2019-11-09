@@ -96,16 +96,17 @@ namespace QueryMultiDb.Tests.System
         public void Test4()
         {
             var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+            argumentStringBuilder.Exporter = "csv";
             var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test4.sql");
             var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, DatabaseFixture.TwoTargets, argumentStringBuilder);
             _output.WriteLine(systemRunOutput.ToVerboseString());
             SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
-            var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
+            //var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
 
             Assert.DoesNotMatch("ERROR", systemRunOutput.StandardOutput);
-            Assert.Equal(4, sheetCount);
-            Assert.True(systemRunOutput.OutputFileContent.Length > 8000);
-            Assert.True(systemRunOutput.OutputFileContent.Length < 12000);
+            //Assert.Equal(4, sheetCount);
+            Assert.True(systemRunOutput.OutputFileContent.Length > 2000);
+            Assert.True(systemRunOutput.OutputFileContent.Length < 3000);
         }
 
         [Fact]
