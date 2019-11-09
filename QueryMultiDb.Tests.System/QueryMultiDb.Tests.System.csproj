@@ -75,6 +75,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <EmbeddedResource Include="Targets\targets.01.json" />
+    <EmbeddedResource Include="Targets\targets.03.json" />
+    <EmbeddedResource Include="Targets\targets.02.json" />
   </ItemGroup>
   <ItemGroup>
     <Analyzer Include="..\packages\xunit.analyzers.0.10.0\analyzers\dotnet\cs\xunit.analyzers.dll" />

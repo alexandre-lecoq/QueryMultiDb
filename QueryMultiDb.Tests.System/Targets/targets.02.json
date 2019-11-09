@@ -1,0 +1,40 @@
+﻿{
+  "ExtraValue1Title": "Application",
+  "ExtraValue2Title": "Environement",
+  "ExtraValue3Title": " Type ",
+  "ExtraValue5Title": "   ",
+  "ExtraValue6Title": "lol",
+  "DatabaseList": [
+    {
+      "ServerName": "<{ServerName}>",
+      "DatabaseName": "<{DatabaseName}>",
+      "ExtraValue1": "😸😹😺",
+      "ExtraValue2": "🙈 🙉 🙊",
+      "ExtraValue3": "😇😈😉",
+      "ExtraValue5": "🙍 🙎 🙏",
+      "ExtraValue6": "😀 😁 😂"
+    },
+    {
+      "ServerName": "<{ServerName}>",
+      "DatabaseName": "<{DatabaseName}>",
+      "ExtraValue1": "Recruiting",
+      "ExtraValue2": "Production",
+      "ExtraValue3": " Linked "
+    },
+    {
+      "ServerName": "<{ServerName}>",
+      "DatabaseName": "<{DatabaseName}>",
+      "ExtraValue6": "test 6"
+    },
+    {
+      "ServerName": "<{ServerName}>",
+      "DatabaseName": "<{DatabaseName}>"
+    },
+    {
+      "ServerName": "<{ServerName}>",
+      "DatabaseName": "<{DatabaseName}>",
+      "ExtraValue2": "test 2",
+      "ExtraValue3": "test-4"
+    }
+  ]
+}

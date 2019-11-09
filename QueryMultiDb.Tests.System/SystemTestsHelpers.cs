@@ -171,6 +171,14 @@ namespace QueryMultiDb.Tests.System
             }
         }
 
+        public static string GetFormattedResource(string resourceName)
+        {
+            var resource = GetResource(resourceName);
+            var formattedResource = DatabaseFixture.FormatTargets(resource);
+
+            return formattedResource;
+        }
+
         public static string GetResource(string resourceName)
         {
             var assembly = Assembly.GetExecutingAssembly();

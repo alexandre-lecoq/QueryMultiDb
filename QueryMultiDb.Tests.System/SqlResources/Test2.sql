@@ -2,5 +2,7 @@
 FROM TestTableOne
 GROUP BY Boolean;
 
+PRINT 'print test';
+
 SELECT *
 FROM TestTableOne;
