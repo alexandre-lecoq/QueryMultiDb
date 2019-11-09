@@ -39,6 +39,8 @@ test_script:
 - cmd: >-
     OpenCover.Console.exe -register -target:"%xunit20%\xunit.console.exe" -targetargs:"\"C:\projects\querymultidb\QueryMultiDb.Tests.Unit\bin\Release\QueryMultiDb.Tests.Unit.dll\" \"C:\projects\querymultidb\QueryMultiDb.Common.Tests.Unit\bin\Release\QueryMultiDb.Common.Tests.Unit.dll\" \"C:\projects\querymultidb\QueryMultiDb.Tests.System\bin\Release\QueryMultiDb.Tests.System.dll\" -noshadow -appveyor -xml C:\projects\querymultidb\QueryMultiDb.Tests.Unit.report.xml" -output:"QueryMultiDb.Tests.Unit.coverage.xml" -filter:"+[QueryMultiDb*]*"
 
+after_test:
+- cmd: >-
     codecov -f "QueryMultiDb.Tests.Unit.coverage.xml" -t 231c53a0-46d7-429e-9de6-0a86d1ecb98a
 
 # csmacnz.coveralls.exe --opencover -i "QueryMultiDb.Tests.Unit.coverage.xml" --repoToken %COVERALLS_REPO_TOKEN%
