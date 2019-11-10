@@ -154,7 +154,7 @@ namespace QueryMultiDb.DataMerger
             }
 
             var executionResultTemplate = result.First();
-            var allTablesFormatsAreIdentical = result.All(executionResult => executionResultTemplate.CanBeMerged(executionResult));
+            var allTablesFormatsAreIdentical = result.All(executionResult => CanBeMerged(executionResultTemplate, executionResult));
 
             return allTablesFormatsAreIdentical;
         }
@@ -320,6 +320,59 @@ namespace QueryMultiDb.DataMerger
             builtInColumnSet.CopyTo(destinationColumnSet, 0);
             computedColumns.CopyTo(destinationColumnSet, builtInColumnSet.Count);
             return destinationColumnSet;
+        }
+
+        private static bool CanBeMerged(ExecutionResult left, ExecutionResult right)
+        {
+            if (right == null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            if (left.TableSet == null && right.TableSet == null)
+            {
+                return true;
+            }
+
+            if (left.TableSet == null || right.TableSet == null)
+            {
+                LogTableComparisonWarning(left, right, "One of them does not contain any tables");
+                return false;
+            }
+ 
+            if (left.TableSet.Count != right.TableSet.Count)
+            {
+                if (left.TableSet.Count == 0 || right.TableSet.Count == 0)
+                {
+                    LogTableComparisonWarning(left, right, $"Results can be merged although they have different number of tables because one of them has no table : {left.TableSet.Count} vs {right.TableSet.Count}");
+                    return true;
+                }
+
+                LogTableComparisonWarning(left, right, $"Results have different number of tables : {left.TableSet.Count} vs {right.TableSet.Count}");
+                return false;
+            }
+
+            for (var i = 0; i < left.TableSet.Count; i++)
+            {
+                var thisTable = left.TableSet[i];
+                var otherTable = right.TableSet[i];
+
+                var isIdentical = thisTable.HasIdenticalColumns(otherTable);
+
+                if (!isIdentical)
+                {
+                    LogTableComparisonWarning(left, right, $"Tables at index #{i} have different column set");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private static void LogTableComparisonWarning(ExecutionResult left, ExecutionResult right, string specificMessage)
+        {
+            var message = $"Tables are not identical. In {left.Database.ServerName} {left.Database.DatabaseName} and {right.Database.ServerName} {right.Database.DatabaseName}. {specificMessage}.";
+            Logger.Warn(message);
         }
     }
 }
