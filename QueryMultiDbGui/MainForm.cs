@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -124,7 +125,7 @@ namespace QueryMultiDbGui
             {
                 SetTargetsValueLabels(
                     targetEntry.Length.ToSuffixedSizeString(),
-                    targetEntry.LastWriteTime.ToString("s"));
+                    targetEntry.LastWriteTime.ToString("s", CultureInfo.InvariantCulture));
             }
             else
             {
@@ -151,7 +152,7 @@ namespace QueryMultiDbGui
 
         private void browseSqlFileButton_Click(object sender, EventArgs e)
         {
-            var openFileDialog = new OpenFileDialog
+            using (var openFileDialog = new OpenFileDialog
             {
                 Filter = "SQL Script Files|*.sql",
                 Title = "Select a SQL Script File",
@@ -161,15 +162,16 @@ namespace QueryMultiDbGui
                 DereferenceLinks = true,
                 Multiselect = false,
                 SupportMultiDottedExtensions = true
-            };
-
-            if (openFileDialog.ShowDialog() != DialogResult.OK)
+            })
             {
-                return;
-            }
+                if (openFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
 
-            sqlFileDisplayControl.AbsoluteFilePathChanged += SqlFileDisplayControl_AbsoluteFilePathChanged;
-            sqlFileDisplayControl.AbsoluteFilePath = openFileDialog.FileName;
+                sqlFileDisplayControl.AbsoluteFilePathChanged += SqlFileDisplayControl_AbsoluteFilePathChanged;
+                sqlFileDisplayControl.AbsoluteFilePath = openFileDialog.FileName;
+            }
         }
 
         private void SqlFileDisplayControl_AbsoluteFilePathChanged(object sender, AbsoluteFilePathChangedEventArgs e)
@@ -199,7 +201,7 @@ namespace QueryMultiDbGui
 
         private void browseOutputFileButton_Click(object sender, EventArgs e)
         {
-            var saveFileDialog = new SaveFileDialog
+            using (var saveFileDialog = new SaveFileDialog
             {
                 AddExtension = true,
                 AutoUpgradeEnabled = true,
@@ -208,14 +210,16 @@ namespace QueryMultiDbGui
                 Filter = "Excel files|*.xlsx",
                 Title = "Select an excel file",
                 SupportMultiDottedExtensions = true
-            };
-
-            if (saveFileDialog.ShowDialog() != DialogResult.OK)
+            })
             {
-                return;
-            }
 
-            outputFileDisplayControl.AbsoluteFilePath = saveFileDialog.FileName;
+                if (saveFileDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                outputFileDisplayControl.AbsoluteFilePath = saveFileDialog.FileName;
+            }
         }
 
         private static string ToHex(Color c)
@@ -344,7 +348,7 @@ namespace QueryMultiDbGui
 
             var groups = matches[0].Groups;
             var status = groups[1].Value;
-            var progress = int.Parse(groups[2].Value);
+            var progress = int.Parse(groups[2].Value, NumberStyles.None, CultureInfo.InvariantCulture);
 
             this.InvokeEx(() => progressStateValueLabel.Text = status);
             this.InvokeEx(() => progressBar.Value = progress);
@@ -372,14 +376,16 @@ namespace QueryMultiDbGui
 
         private void nullColorPictureBox_Click(object sender, EventArgs e)
         {
-            var colorDialog = new ColorDialog {FullOpen = false};
-
-            if (colorDialog.ShowDialog() != DialogResult.OK)
+            using (var colorDialog = new ColorDialog {FullOpen = false})
             {
-                return;
-            }
 
-            nullColorPictureBox.BackColor = colorDialog.Color;
+                if (colorDialog.ShowDialog() != DialogResult.OK)
+                {
+                    return;
+                }
+
+                nullColorPictureBox.BackColor = colorDialog.Color;
+            }
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

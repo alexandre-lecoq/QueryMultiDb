@@ -50,9 +50,11 @@ namespace DbTargets
                 var filteredDatabaseNames = FilterDatabases(databaseNames, regexp);
                 var content = GenerateJsonTargets(serverName, filteredDatabaseNames);
 
-                var sw = new StreamWriter(Console.OpenStandardOutput()) { AutoFlush = true };
-                Console.SetOut(sw);
-                sw.Write(content);
+                using (var sw = new StreamWriter(Console.OpenStandardOutput()) {AutoFlush = true})
+                {
+                    Console.SetOut(sw);
+                    sw.Write(content);
+                }
 
                 return 0;
             }
@@ -76,8 +78,7 @@ namespace DbTargets
         {
             try
             {
-                // ReSharper disable once ObjectCreationAsStatement
-                new Regex(regexp, RegexOptions.IgnoreCase);
+                var regex = new Regex(regexp, RegexOptions.IgnoreCase);
             }
             catch
             {

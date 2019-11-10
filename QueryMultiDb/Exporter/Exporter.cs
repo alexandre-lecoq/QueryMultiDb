@@ -294,7 +294,7 @@ namespace QueryMultiDb.Exporter
 
         protected static string ExtractReferencePath(string text)
         {
-            if (!text.StartsWith(BinaryDataReferenceString))
+            if (!text.StartsWith(BinaryDataReferenceString, StringComparison.InvariantCulture))
                 return null;
 
             var referencePath = text.Substring(BinaryDataReferenceString.Length, text.Length - BinaryDataReferenceString.Length);

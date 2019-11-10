@@ -226,7 +226,7 @@ namespace QueryMultiDb
                 return new List<string>();
             }
 
-            if (parsedResultSheetLabels.Trim() == string.Empty)
+            if (parsedResultSheetLabels.Trim().Length == 0)
             {
                 throw new ArgumentException("Value cannot be empty or whitespace.", nameof(parsedResultSheetLabels));
             }
@@ -407,7 +407,7 @@ namespace QueryMultiDb
                 }
             }
 
-            if (!string.IsNullOrEmpty(ApplicationName) && ApplicationName.Trim() == string.Empty)
+            if (!string.IsNullOrEmpty(ApplicationName) && ApplicationName.Trim().Length == 0)
             {
                 throw new ArgumentException("ApplicationName cannot be white spaces.");
             }

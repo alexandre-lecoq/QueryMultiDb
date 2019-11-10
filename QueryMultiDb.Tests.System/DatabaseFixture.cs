@@ -3,7 +3,7 @@ using System.Data.SqlClient;
 
 namespace QueryMultiDb.Tests.System
 {
-    public class DatabaseFixture : IDisposable
+    public sealed class DatabaseFixture : IDisposable
     {
         private static readonly bool IsAppVeyor = Environment.GetEnvironmentVariable("Appveyor")?.ToUpperInvariant() == "TRUE";
         private static readonly string ServerName = IsAppVeyor ? @".\SQL2017" : @"localhost";
@@ -11,7 +11,7 @@ namespace QueryMultiDb.Tests.System
         private const string ServerNameTag = "<{ServerName}>";
         private const string DatabaseNameTag = "<{DatabaseName}>";
 
-        public static string ConnectionString => $@"Data Source={ServerName};Database={DatabaseName};Integrated Security=True";
+        public static readonly string ConnectionString = $@"Data Source={ServerName};Database={DatabaseName};Integrated Security=True";
 
         public static string OneTarget =>
             $@"{{ ""DatabaseList"": [ {{ ""ServerName"": ""{EscapeJsonString(ServerName)}"", ""DatabaseName"": ""{DatabaseName}"" }} ]}}";
@@ -19,8 +19,9 @@ namespace QueryMultiDb.Tests.System
         public static string TwoTargets =>
             $@"{{ ""DatabaseList"": [ {{ ""ServerName"": ""{EscapeJsonString(ServerName)}"", ""DatabaseName"": ""{DatabaseName}"" }}, {{ ""ServerName"": ""{EscapeJsonString(ServerName)}"", ""DatabaseName"": ""{DatabaseName}"" }} ]}}";
 
-        public static string TestTableSelectQuery = "SELECT * FROM TestTableOne;";
-        private static string TestTableDropQuery = "DROP TABLE IF EXISTS TestTableOne;";
+        public const string TestTableSelectQuery = "SELECT * FROM TestTableOne;";
+
+        private const string TestTableDropQuery = "DROP TABLE IF EXISTS TestTableOne;";
 
         public static string FormatTargets(string format)
         {

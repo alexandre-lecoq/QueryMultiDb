@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 using QueryMultiDb.Common;
@@ -73,7 +74,7 @@ namespace QueryMultiDbGui
             {
                 this.InvokeEx(() => filePathValueLinkLabel.Enabled = true);
                 this.InvokeEx(() => fileSizeValueLabel.Text = fileInfo.Length.ToSuffixedSizeString());
-                this.InvokeEx(() => fileModificationDateValueLabel.Text = fileInfo.LastWriteTime.ToString("s"));
+                this.InvokeEx(() => fileModificationDateValueLabel.Text = fileInfo.LastWriteTime.ToString("s", CultureInfo.InvariantCulture));
             }
             else
             {
