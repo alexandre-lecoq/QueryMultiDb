@@ -194,7 +194,7 @@ namespace QueryMultiDb.Tests.System
         {
             var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
             var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test2.sql");
-            var targets = SystemTestsHelpers.GetFormattedResource("QueryMultiDb.Tests.System.Targets.targets.01.json");
+            var targets = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.Targets.targets.01.json", true);
             var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, targets, argumentStringBuilder);
             _output.WriteLine(systemRunOutput.ToVerboseString());
             SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
@@ -211,7 +211,7 @@ namespace QueryMultiDb.Tests.System
         {
             var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
             var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test3.sql");
-            var targets = SystemTestsHelpers.GetFormattedResource("QueryMultiDb.Tests.System.Targets.targets.02.json");
+            var targets = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.Targets.targets.02.json", true);
             var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, targets, argumentStringBuilder);
             _output.WriteLine(systemRunOutput.ToVerboseString());
             SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
@@ -227,9 +227,10 @@ namespace QueryMultiDb.Tests.System
         public void Test12()
         {
             var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
-            var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test9.sql");
-            var targets = SystemTestsHelpers.GetFormattedResource("QueryMultiDb.Tests.System.Targets.targets.03.json");
-            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, targets, argumentStringBuilder);
+            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromResource(
+                "QueryMultiDb.Tests.System.SqlResources.Test9.sql",
+                "QueryMultiDb.Tests.System.Targets.targets.03.json",
+                true, argumentStringBuilder);
             _output.WriteLine(systemRunOutput.ToVerboseString());
             SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
             var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);

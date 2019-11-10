@@ -20,11 +20,11 @@ namespace QueryMultiDb.Tests.System
             return systemExecutionOutput;
         }
 
-        public static SystemExecutionOutput RunQueryMultiDbExecutionFromResource(string resourceNameSql, string resourceNameJson, QueryMultiDbArgumentStringBuilder argumentStringBuilder)
+        public static SystemExecutionOutput RunQueryMultiDbExecutionFromResource(string resourceNameSql, string resourceNameJson, bool formatResource, QueryMultiDbArgumentStringBuilder argumentStringBuilder)
         {
             var temporaryDirectory = GetTemporaryDirectory();
-            CopyResourceToDirectory(resourceNameSql, temporaryDirectory);
-            CopyResourceToDirectory(resourceNameJson, temporaryDirectory);
+            CopyResourceToDirectory(resourceNameSql, temporaryDirectory, formatResource);
+            CopyResourceToDirectory(resourceNameJson, temporaryDirectory, formatResource);
             argumentStringBuilder.QueryFile = Path.Combine(temporaryDirectory, resourceNameSql);
             argumentStringBuilder.TargetsFile = Path.Combine(temporaryDirectory, resourceNameJson);
             var systemExecutionOutput = RunQueryMultiDbExecution(argumentStringBuilder);
@@ -150,36 +150,20 @@ namespace QueryMultiDb.Tests.System
 
             return tempDirectory;
         }
-        
-        private static void CopyResourceToDirectory(string resourceName, string directory)
+
+        private static void CopyResourceToDirectory(string resourceName, string directory, bool format = false)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var resourceText = GetResource(resourceName, format);
+            var path = Path.Combine(directory, resourceName);
 
-            using (var stream = assembly.GetManifestResourceStream(resourceName))
+            using (var fileStream = File.Create(path))
+            using (var writer = new StreamWriter(fileStream))
             {
-                if (stream == null)
-                {
-                    throw new Exception($"Resource '{resourceName}' likely does not exist.");
-                }
-
-                var path = Path.Combine(directory, resourceName);
-
-                using (var fileStream = File.Create(path))
-                {
-                    stream.CopyTo(fileStream);
-                }
+                writer.Write(resourceText);
             }
         }
 
-        public static string GetFormattedResource(string resourceName)
-        {
-            var resource = GetResource(resourceName);
-            var formattedResource = DatabaseFixture.FormatTargets(resource);
-
-            return formattedResource;
-        }
-
-        public static string GetResource(string resourceName)
+        public static string GetResource(string resourceName, bool format = false)
         {
             var assembly = Assembly.GetExecutingAssembly();
 
@@ -194,7 +178,9 @@ namespace QueryMultiDb.Tests.System
                 {
                     var text = streamReader.ReadToEnd();
 
-                    return text;
+                    var resourceText = format ? DatabaseFixture.FormatTargets(text) : text;
+
+                    return resourceText;
                 }
             }
         }
