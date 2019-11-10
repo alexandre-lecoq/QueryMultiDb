@@ -24,16 +24,6 @@ namespace QueryMultiDb
             DataType = dataType;
         }
 
-        public static bool operator ==(TableColumn left, TableColumn right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(TableColumn left, TableColumn right)
-        {
-            return !left.Equals(right);
-        }
-
         public override bool Equals(object obj)
         {
             if (!(obj is TableColumn))

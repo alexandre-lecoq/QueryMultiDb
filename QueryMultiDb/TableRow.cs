@@ -36,15 +36,5 @@ namespace QueryMultiDb
         {
             return ItemArray.GetHashCode();
         }
-
-        public static bool operator ==(TableRow left, TableRow right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(TableRow left, TableRow right)
-        {
-            return !left.Equals(right);
-        }
     }
 }

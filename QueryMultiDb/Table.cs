@@ -75,16 +75,6 @@ namespace QueryMultiDb
             }
         }
 
-        public static bool operator ==(Table left, Table right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(Table left, Table right)
-        {
-            return !left.Equals(right);
-        }
-
         public bool HasIdenticalColumns(Table otherTable)
         {
             var thisColumns = Columns;
@@ -99,8 +89,8 @@ namespace QueryMultiDb
             {
                 var thisColumn = thisColumns[i];
                 var otherColumn = otherColumns[i];
-
-                if (thisColumn != otherColumn)
+                
+                if (!thisColumn.Equals(otherColumn))
                 {
                     return false;
                 }
