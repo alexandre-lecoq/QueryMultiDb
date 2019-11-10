@@ -384,9 +384,7 @@ namespace QueryMultiDb
                 throw new ArgumentException("Parallelism cannot be more than 32.");
             }
 
-            uint nullsColorValue;
-
-            if (!uint.TryParse(NullsColor, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out nullsColorValue))
+            if (!uint.TryParse(NullsColor, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out var nullsColorValue))
             {
                 throw new ArgumentException("NullsColor is not a valid hexadecimal value.");
             }

@@ -85,6 +85,7 @@ namespace QueryMultiDb
                     Console.ReadKey();
                 }
 
+                commandLineParser.Dispose();
                 LogManager.Flush();
                 LogManager.ConfigurationReloaded -= LogManager_ConfigurationReloaded;
                 LogManager.ConfigurationChanged -= LogManager_ConfigurationChanged;
@@ -142,9 +143,7 @@ namespace QueryMultiDb
                 throw new NLogRuntimeException("Target wrapper 'flushedTableTarget' does not contain a wrapped target.");
             }
 
-            var retrievedTableTarget = targetByName.WrappedTarget as TableTarget;
-
-            if (retrievedTableTarget == null)
+            if (!(targetByName.WrappedTarget is TableTarget))
             {
                 throw new NLogRuntimeException("Target 'flushedTableTarget' wrapped target is not of type 'TableTarget'.");
             }

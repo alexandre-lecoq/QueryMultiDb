@@ -164,15 +164,15 @@ namespace QueryMultiDb
 
             var infoMessageRows = new List<TableRow>();
 
-            SqlInfoMessageEventHandler sqlInfoMessageEventHandler = (sender, arg) =>
+            void SqlInfoMessageEventHandler(object sender, SqlInfoMessageEventArgs arg)
             {
                 ConnectionOnInfoMessage(infoMessageRows, arg);
-            };
+            }
 
             if (Parameters.Instance.ShowInformationMessages)
             {
                 connection.FireInfoMessageEventOnUserErrors = true;
-                connection.InfoMessage += sqlInfoMessageEventHandler;
+                connection.InfoMessage += SqlInfoMessageEventHandler;
             }
 
             using (var command = connection.CreateCommand())
@@ -214,7 +214,7 @@ namespace QueryMultiDb
 
                     if (Parameters.Instance.ShowInformationMessages)
                     {
-                        connection.InfoMessage -= sqlInfoMessageEventHandler;
+                        connection.InfoMessage -= SqlInfoMessageEventHandler;
                     }
 
                     return result;
