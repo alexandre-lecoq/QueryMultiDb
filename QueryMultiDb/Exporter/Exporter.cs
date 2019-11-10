@@ -294,6 +294,9 @@ namespace QueryMultiDb.Exporter
 
         protected static string ExtractReferencePath(string text)
         {
+            if (text == null)
+                throw new ArgumentNullException(nameof(text), "Reference path cannot be null.");
+
             if (!text.StartsWith(BinaryDataReferenceString, StringComparison.InvariantCulture))
                 return null;
 

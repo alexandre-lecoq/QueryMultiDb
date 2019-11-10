@@ -13,6 +13,9 @@ namespace QueryMultiDb.Tests.System
     {
         public static SystemExecutionOutput RunQueryMultiDbExecutionFromData(string query, string targets, QueryMultiDbArgumentStringBuilder argumentStringBuilder)
         {
+            if (argumentStringBuilder == null)
+                throw new ArgumentNullException(nameof(argumentStringBuilder));
+
             argumentStringBuilder.Query = query;
             argumentStringBuilder.Targets = targets;
             var systemExecutionOutput = RunQueryMultiDbExecution(argumentStringBuilder);
@@ -101,6 +104,9 @@ namespace QueryMultiDb.Tests.System
 
         public static void AssertStandardSuccessConditions(SystemExecutionOutput systemExecutionOutput)
         {
+            if (systemExecutionOutput == null)
+                throw new ArgumentNullException(nameof(systemExecutionOutput));
+
             Assert.Equal(0, systemExecutionOutput.ExitCode);
 
             Assert.Matches("Query results :", systemExecutionOutput.StandardOutput);
