@@ -14,21 +14,36 @@ namespace QueryMultiDb.Tests.System
         public static string ConnectionString => $@"Data Source={ServerName};Database={DatabaseName};Integrated Security=True";
 
         public static string OneTarget =>
-            $@"{{ ""DatabaseList"": [ {{ ""ServerName"": ""{ServerName}"", ""DatabaseName"": ""{DatabaseName}"" }} ]}}";
+            $@"{{ ""DatabaseList"": [ {{ ""ServerName"": ""{EscapeJsonString(ServerName)}"", ""DatabaseName"": ""{DatabaseName}"" }} ]}}";
 
         public static string TwoTargets =>
-            $@"{{ ""DatabaseList"": [ {{ ""ServerName"": ""{ServerName}"", ""DatabaseName"": ""{DatabaseName}"" }}, {{ ""ServerName"": ""{ServerName}"", ""DatabaseName"": ""{DatabaseName}"" }} ]}}";
+            $@"{{ ""DatabaseList"": [ {{ ""ServerName"": ""{EscapeJsonString(ServerName)}"", ""DatabaseName"": ""{DatabaseName}"" }}, {{ ""ServerName"": ""{EscapeJsonString(ServerName)}"", ""DatabaseName"": ""{DatabaseName}"" }} ]}}";
 
         public static string TestTableSelectQuery = "SELECT * FROM TestTableOne;";
         private static string TestTableDropQuery = "DROP TABLE IF EXISTS TestTableOne;";
 
         public static string FormatTargets(string format)
         {
-            var serverName = ServerName.Replace("\"", "\"\"").Replace("\\", "\\\\");
-            var databaseName = DatabaseName.Replace("\"", "\"\"").Replace("\\", "\\\\");
+            var serverName = Escape(ServerName);
+            var databaseName = Escape(DatabaseName);
             var formatted = format.Replace(ServerNameTag, serverName).Replace(DatabaseNameTag, databaseName);
 
             return formatted;
+        }
+        
+        private static string Escape(string str)
+        {
+            return EscapeJsonString(EscapeDoubleQuotes(str));
+        }
+
+        private static string EscapeDoubleQuotes(string str)
+        {
+            return str.Replace("\"", "\"\"");
+        }
+
+        private static string EscapeJsonString(string str)
+        {
+            return str.Replace("\\", "\\\\");
         }
 
         public DatabaseFixture()

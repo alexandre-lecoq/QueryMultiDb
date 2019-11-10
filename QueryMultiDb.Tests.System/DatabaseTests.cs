@@ -240,5 +240,21 @@ namespace QueryMultiDb.Tests.System
             Assert.True(systemRunOutput.OutputFileContent.Length > 10000);
             Assert.True(systemRunOutput.OutputFileContent.Length < 20000);
         }
+
+        [Fact]
+        public void Test13()
+        {
+            var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+            var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test10.sql");
+            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecutionFromData(query, DatabaseFixture.OneTarget, argumentStringBuilder);
+            _output.WriteLine(systemRunOutput.ToVerboseString());
+            SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
+            var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
+
+            Assert.DoesNotMatch("ERROR", systemRunOutput.StandardOutput);
+            Assert.Equal(9, sheetCount);
+            Assert.True(systemRunOutput.OutputFileContent.Length > 10000);
+            Assert.True(systemRunOutput.OutputFileContent.Length < 20000);
+        }
     }
 }

@@ -88,7 +88,9 @@
       <Name>QueryMultiDb.Common</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="SqlResources\Test10.sql" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="SqlResources\DatabaseFixture.sql" />
   </ItemGroup>
