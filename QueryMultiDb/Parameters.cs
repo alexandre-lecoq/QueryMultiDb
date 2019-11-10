@@ -9,63 +9,63 @@ namespace QueryMultiDb
 {
     public class Parameters
     {
-        public string OutputDirectory { get; set; }
+        public string OutputDirectory { get; }
 
-        public string OutputFile { get; set; }
+        public string OutputFile { get; }
 
-        public bool Overwrite { get; set; }
+        public bool Overwrite { get; }
 
-        public TargetSet Targets { get; set; }
+        public TargetSet Targets { get; }
 
-        public string Query { get; set; }
+        public string Query { get; }
 
-        public int ConnectionTimeout { get; set; }
+        public int ConnectionTimeout { get; }
 
-        public int CommandTimeout { get; set; }
+        public int CommandTimeout { get; }
 
-        public bool Sequential { get; set; }
+        public bool Sequential { get; }
 
-        public int Parallelism { get; set; }
+        public int Parallelism { get; }
 
-        public bool ShowIpAddress { get; set; }
+        public bool ShowIpAddress { get; }
 
-        public bool ShowServerName { get; set; }
+        public bool ShowServerName { get; }
 
-        public bool ShowDatabaseName { get; set; }
+        public bool ShowDatabaseName { get; }
 
-        public bool ShowExtraColumns { get; set; }
+        public bool ShowExtraColumns { get; }
         
-        public bool StartKeyPress { get; set; }
+        public bool StartKeyPress { get; }
 
-        public bool StopKeyPress { get; set; }
+        public bool StopKeyPress { get; }
 
-        public bool ShowNulls { get; set; }
+        public bool ShowNulls { get; }
 
-        public bool Progress { get; set; }
+        public bool Progress { get; }
 
-        public string NullsColor { get; set; }
+        public string NullsColor { get; }
 
-        public bool ShowLogSheet { get; set; }
+        public bool ShowLogSheet { get; }
 
-        public bool ShowParameterSheet { get; set; }
+        public bool ShowParameterSheet { get; }
 
-        public bool ShowInformationMessages { get; set; }
+        public bool ShowInformationMessages { get; }
 
-        public ICollection<string> SheetLabels { get; set; }
+        public ICollection<string> SheetLabels { get; }
 
-        public bool DiscardResults { get; set; }
+        public bool DiscardResults { get; }
 
-        public string ApplicationName { get; set; }
+        public string ApplicationName { get; }
 
-        public ExporterType Exporter { get; set; }
+        public ExporterType Exporter { get; }
 
-        public string CsvDelimiter { get; set; }
+        public string CsvDelimiter { get; }
 
-        public int Base10Threshold { get; set; }
+        public int Base10Threshold { get; }
 
-        public int Base16Threshold { get; set; }
+        public int Base16Threshold { get; }
 
-        public int Base64Threshold { get; set; }
+        public int Base64Threshold { get; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1812:AvoidUninstantiatedInternalClasses", Justification = "Used by JsonConvert")]
         private class JsonTargets
