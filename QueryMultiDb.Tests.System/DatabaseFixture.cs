@@ -24,7 +24,9 @@ namespace QueryMultiDb.Tests.System
 
         public static string FormatTargets(string format)
         {
-            var formatted = format.Replace(ServerNameTag, ServerName).Replace(DatabaseNameTag, DatabaseName);
+            var serverName = ServerName.Replace("\"", "\"\"").Replace("\\", "\\\\");
+            var databaseName = DatabaseName.Replace("\"", "\"\"").Replace("\\", "\\\\");
+            var formatted = format.Replace(ServerNameTag, serverName).Replace(DatabaseNameTag, databaseName);
 
             return formatted;
         }
