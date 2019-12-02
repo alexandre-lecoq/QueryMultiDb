@@ -42,7 +42,7 @@ namespace QueryMultiDb
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(hostName));
             }
 
-            Logger.Debug($"Resolving host '{hostName}' not in cache.");
+            Logger.Trace($"Resolving host '{hostName}' not in cache.");
 
             IPAddress address;
 
