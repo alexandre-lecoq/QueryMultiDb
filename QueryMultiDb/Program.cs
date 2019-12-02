@@ -14,6 +14,7 @@ namespace QueryMultiDb
 {
     internal static class Program
     {
+        private const string HomeUrl = @"https://github.com/alexandre-lecoq/QueryMultiDb";
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public static int Main(string[] args)
@@ -35,6 +36,7 @@ namespace QueryMultiDb
             try
             {
                 Logger.Info($"Initialized QueryMultiDb {version}");
+                Logger.Info($"Home : {HomeUrl}");
                 Logger.Info($"Argument count : {args.Length}");
 
                 foreach (var s in args)
