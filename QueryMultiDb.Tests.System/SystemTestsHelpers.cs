@@ -94,7 +94,7 @@ namespace QueryMultiDb.Tests.System
                     var path = Path.Combine(temporaryDirectory, outputFilename);
                     fileContent = File.ReadAllBytes(path);
                     SafeCreateDirectory(RelativeTestResultsDirectory);
-                    var extension = argumentStringBuilder.Exporter == "csv" ? ".csv" : ".xlsx";
+                    var extension = argumentStringBuilder.Exporter == "csv" ? ".zip" : ".xlsx";
                     File.Move(path, RelativeTestResultsDirectory + outputFilename + extension);
                 }
                 catch
