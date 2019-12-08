@@ -11,6 +11,8 @@ namespace QueryMultiDb.Tests.System
 {
     public static class SystemTestsHelpers
     {
+        private const string RelativeTestResultsDirectory = "../../../TestResults/";
+
         public static SystemExecutionOutput RunQueryMultiDbExecutionFromData(string query, string targets, QueryMultiDbArgumentStringBuilder argumentStringBuilder)
         {
             if (argumentStringBuilder == null)
@@ -25,6 +27,9 @@ namespace QueryMultiDb.Tests.System
 
         public static SystemExecutionOutput RunQueryMultiDbExecutionFromResource(string resourceNameSql, string resourceNameJson, bool formatResource, QueryMultiDbArgumentStringBuilder argumentStringBuilder)
         {
+            if (argumentStringBuilder == null)
+                throw new ArgumentNullException(nameof(argumentStringBuilder));
+
             var temporaryDirectory = GetTemporaryDirectory();
             CopyResourceToDirectory(resourceNameSql, temporaryDirectory, formatResource);
             CopyResourceToDirectory(resourceNameJson, temporaryDirectory, formatResource);
@@ -88,10 +93,14 @@ namespace QueryMultiDb.Tests.System
                 {
                     var path = Path.Combine(temporaryDirectory, outputFilename);
                     fileContent = File.ReadAllBytes(path);
+                    SafeCreateDirectory(RelativeTestResultsDirectory);
+                    var extension = argumentStringBuilder.Exporter == "csv" ? ".csv" : ".xlsx";
+                    File.Move(path, RelativeTestResultsDirectory + outputFilename + extension);
                 }
                 catch
                 {
                     // Ignored because fileContent being null is fine in this case. It will be asserted later.
+                    throw;
                 }
 
                 systemExecutionOutput = new SystemExecutionOutput(exitCode, standardOutput, standardError, fileContent);
@@ -100,6 +109,23 @@ namespace QueryMultiDb.Tests.System
             DeleteDirectory(temporaryDirectory);
 
             return systemExecutionOutput;
+        }
+
+        private static void SafeCreateDirectory(string relativeTestResultsDirectory)
+        {
+            if (Directory.Exists(relativeTestResultsDirectory))
+            {
+                return;
+            }
+
+            try
+            {
+                Directory.CreateDirectory(relativeTestResultsDirectory);
+            }
+            catch
+            {
+                // Probably a race condition. Let's ignore it.
+            }
         }
 
         public static void AssertStandardSuccessConditions(SystemExecutionOutput systemExecutionOutput)

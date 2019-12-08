@@ -50,5 +50,5 @@ artifacts:
   name: Installer
 - path: Installer\bin\Release\QueryMultiDb.*.nupkg
   name: Chocolatey package
-- path: C:\Users\appveyor\AppData\Local\Temp\*
-  name: Temp files
+- path: TestResults\*
+  name: Test Results
