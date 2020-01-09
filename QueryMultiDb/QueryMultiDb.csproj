@@ -109,6 +109,7 @@
     <Compile Include="DataMerger\NullDataMerger.cs" />
     <Compile Include="DataMerger\OpportunistDataMerger.cs" />
     <Compile Include="DataMerger\StrictDataMerger.cs" />
+    <Compile Include="ExecutionResultExpander.cs" />
     <Compile Include="Exporter\CsvExporter.cs" />
     <Compile Include="Database.cs" />
     <Compile Include="DataMerger\ConservativeDataMerger.cs" />

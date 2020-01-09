@@ -167,10 +167,16 @@ namespace QueryMultiDb
             queryStopwatch.Stop();
             Logger.Info($"Query results : {queryStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 
+            var expandingStopwatch = new Stopwatch();
+            expandingStopwatch.Start();
+            var expandedResults = ExecutionResultExpander.ComputeBuildInColumns(result);
+            expandingStopwatch.Stop();
+            Logger.Info($"Columns expanding : {expandingStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
+
             var dataMerger = DataMergerFactory.GetDataMerger(DataMergerType.Conservative);
             var mergeStopwatch = new Stopwatch();
             mergeStopwatch.Start();
-            var mergedResults = dataMerger.MergeResults(result);
+            var mergedResults = dataMerger.MergeResults(expandedResults);
             mergeStopwatch.Stop();
             Logger.Info($"Merged results with {dataMerger.Name} : {mergeStopwatch.Elapsed.TotalMilliseconds.ToString(CultureInfo.InvariantCulture)} milliseconds.");
 

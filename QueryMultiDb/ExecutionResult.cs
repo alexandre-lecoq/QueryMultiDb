@@ -11,23 +11,10 @@ namespace QueryMultiDb
 
         public IList<Table> TableSet { get; }
 
-        public Table InformationMessagesTable { get; }
-
-        public ExecutionResult(Database database, IList<Table> tableSet, Table informationMessages)
+        public ExecutionResult(Database database, IList<Table> tableSet)
         {
-            if (database == null)
-            {
-                throw new ArgumentNullException(nameof(database));
-            }
-            
-            if (tableSet == null)
-            {
-                throw new ArgumentNullException(nameof(tableSet));
-            }
-
-            Database = database;
-            TableSet = tableSet;
-            InformationMessagesTable = informationMessages;
+            Database = database ?? throw new ArgumentNullException(nameof(database));
+            TableSet = tableSet ?? throw new ArgumentNullException(nameof(tableSet));
         }
 
         public override string ToString()

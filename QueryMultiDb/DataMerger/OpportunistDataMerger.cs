@@ -6,7 +6,7 @@ namespace QueryMultiDb.DataMerger
     {
         public override string Name => this.GetType().Name;
 
-        public override ICollection<Table> MergeResults(ICollection<ExecutionResult> result)
+        public override ICollection<Table> MergeResults(ICollection<ExecutionResult> executionResults)
         {
             throw new System.NotImplementedException();
         }

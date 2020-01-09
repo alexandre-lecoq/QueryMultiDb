@@ -6,6 +6,6 @@ namespace QueryMultiDb.DataMerger
     {
         string Name { get; }
 
-        ICollection<Table> MergeResults(ICollection<ExecutionResult> result);
+        ICollection<Table> MergeResults(ICollection<ExecutionResult> executionResults);
     }
 }

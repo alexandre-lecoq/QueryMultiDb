@@ -30,9 +30,9 @@ namespace QueryMultiDb
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(hostName));
             }
 
-            var ipAdress = _ipAddressCache.GetOrAdd(hostName, InternalResolve);
+            var ipAddress = _ipAddressCache.GetOrAdd(hostName, InternalResolve);
             
-            return ipAdress;
+            return ipAddress;
         }
         
         private static IPAddress InternalResolve(string hostName)
@@ -44,9 +44,7 @@ namespace QueryMultiDb
 
             Logger.Trace($"Resolving host '{hostName}' not in cache.");
 
-            IPAddress address;
-
-            if (IPAddress.TryParse(hostName, out address))
+            if (IPAddress.TryParse(hostName, out var address))
             {
                 return address;
             }

@@ -42,13 +42,20 @@ namespace QueryMultiDb
             }
             else
             {
-                var columnSetHash = columns.Select(tableColumn => tableColumn.GetHashCode())
-                    .Aggregate(0, (current, columnHash) => current ^ columnHash);
+                var columnSetHash = ComputeColumnSetHash(columns);
                 Id = columnSetHash.ToString("x8");
             }
 
             Columns = columns;
             Rows = rows;
+        }
+
+        private static int ComputeColumnSetHash(IEnumerable<TableColumn> columns)
+        {
+            var columnSetHash = columns.Select(tableColumn => tableColumn.GetHashCode())
+                .Aggregate(0, (current, columnHash) => current ^ columnHash);
+            
+            return columnSetHash;
         }
 
         public override string ToString()

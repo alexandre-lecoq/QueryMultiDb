@@ -9,6 +9,6 @@ namespace QueryMultiDb.DataMerger
 
         public abstract string Name { get; }
 
-        public abstract ICollection<Table> MergeResults(ICollection<ExecutionResult> result);
+        public abstract ICollection<Table> MergeResults(ICollection<ExecutionResult> executionResults);
     }
 }
