@@ -3,6 +3,7 @@ using CsvHelper.Configuration;
 using NLog;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
@@ -91,7 +92,7 @@ namespace QueryMultiDb.Exporter
             var archiveEntry = zipArchive.CreateEntry(truncatedPartName + CsvFileExtension);
             var stream = archiveEntry.Open();
 
-            var configuration = new Configuration
+            var configuration = new CsvConfiguration(CultureInfo.InvariantCulture)
             {
                 Encoding = Encoding.UTF8,
                 Delimiter = Parameters.Instance.CsvDelimiter
