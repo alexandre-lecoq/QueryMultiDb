@@ -61,13 +61,14 @@ namespace QueryMultiDbGui
             this.sqlScriptGroupBox = new System.Windows.Forms.GroupBox();
             this.sqlScriptPreviewTextBox = new System.Windows.Forms.TextBox();
             this.outputFileGroupBox = new System.Windows.Forms.GroupBox();
+            this.outputFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
             this.browseOutputFileButton = new System.Windows.Forms.Button();
             this.overwriteOutputFileCheckBox = new System.Windows.Forms.CheckBox();
             this.cancelButton = new System.Windows.Forms.Button();
             this.sqlFileGroupBox = new System.Windows.Forms.GroupBox();
             this.browseSqlFileButton = new System.Windows.Forms.Button();
             this.sqlFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
-            this.outputFileDisplayControl = new QueryMultiDbGui.FileDisplayControl();
+            this.aboutButton = new System.Windows.Forms.Button();
             this.outputGroupBox.SuspendLayout();
             this.optionGroupBox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.parallelismNumericUpDown)).BeginInit();
@@ -83,7 +84,7 @@ namespace QueryMultiDbGui
             // 
             this.executeButton.Location = new System.Drawing.Point(897, 12);
             this.executeButton.Name = "executeButton";
-            this.executeButton.Size = new System.Drawing.Size(75, 36);
+            this.executeButton.Size = new System.Drawing.Size(75, 23);
             this.executeButton.TabIndex = 0;
             this.executeButton.Text = "Execute";
             this.executeButton.UseVisualStyleBackColor = true;
@@ -414,6 +415,14 @@ namespace QueryMultiDbGui
             this.outputFileGroupBox.TabStop = false;
             this.outputFileGroupBox.Text = "Output file";
             // 
+            // outputFileDisplayControl
+            // 
+            this.outputFileDisplayControl.AbsoluteFilePath = null;
+            this.outputFileDisplayControl.Location = new System.Drawing.Point(6, 15);
+            this.outputFileDisplayControl.Name = "outputFileDisplayControl";
+            this.outputFileDisplayControl.Size = new System.Drawing.Size(218, 47);
+            this.outputFileDisplayControl.TabIndex = 14;
+            // 
             // browseOutputFileButton
             // 
             this.browseOutputFileButton.Location = new System.Drawing.Point(230, 15);
@@ -436,9 +445,9 @@ namespace QueryMultiDbGui
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(897, 54);
+            this.cancelButton.Location = new System.Drawing.Point(897, 41);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 36);
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 6;
             this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
@@ -473,19 +482,22 @@ namespace QueryMultiDbGui
             this.sqlFileDisplayControl.Size = new System.Drawing.Size(218, 47);
             this.sqlFileDisplayControl.TabIndex = 0;
             // 
-            // outputFileDisplayControl
+            // aboutButton
             // 
-            this.outputFileDisplayControl.AbsoluteFilePath = null;
-            this.outputFileDisplayControl.Location = new System.Drawing.Point(6, 15);
-            this.outputFileDisplayControl.Name = "outputFileDisplayControl";
-            this.outputFileDisplayControl.Size = new System.Drawing.Size(218, 47);
-            this.outputFileDisplayControl.TabIndex = 14;
+            this.aboutButton.Location = new System.Drawing.Point(897, 70);
+            this.aboutButton.Name = "aboutButton";
+            this.aboutButton.Size = new System.Drawing.Size(75, 23);
+            this.aboutButton.TabIndex = 8;
+            this.aboutButton.Text = "About...";
+            this.aboutButton.UseVisualStyleBackColor = true;
+            this.aboutButton.Click += new System.EventHandler(this.aboutButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(984, 861);
+            this.Controls.Add(this.aboutButton);
             this.Controls.Add(this.sqlFileGroupBox);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.outputFileGroupBox);
@@ -559,6 +571,7 @@ namespace QueryMultiDbGui
         private System.Windows.Forms.Label targetsFileModificationDateValueLabel;
         private System.Windows.Forms.Label targetsFileSizeLabel;
         private System.Windows.Forms.Label targetsFileModificationDateLabel;
+        private System.Windows.Forms.Button aboutButton;
     }
 }
 

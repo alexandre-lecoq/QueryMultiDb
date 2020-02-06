@@ -15,7 +15,7 @@ namespace QueryMultiDbGui
 {
     public partial class MainForm : Form
     {
-        private static readonly string QueryMultiDbExecutableFilename = ConfigurationManager.AppSettings["QueryMultiDbExecutableFilename"];
+        public static readonly string QueryMultiDbExecutableFilename = ConfigurationManager.AppSettings["QueryMultiDbExecutableFilename"];
         private static readonly string QueryMultiDbDocumentsRootDirectoryName = ConfigurationManager.AppSettings["QueryMultiDbDocumentsRootDirectoryName"];
         private static readonly string DocumentsTargetsDirectoryName = ConfigurationManager.AppSettings["DocumentsTargetsDirectoryName"];
         private static readonly string DocumentsExtractionsDirectoryName = ConfigurationManager.AppSettings["DocumentsExtractionsDirectoryName"];
@@ -65,6 +65,7 @@ namespace QueryMultiDbGui
                 NotifyFilter = AllNotifyFilters,
                 EnableRaisingEvents = true
             };
+
             targetsDirectoryWatcher.Created += targetsDirectoryWatcher_Changed;
             targetsDirectoryWatcher.Deleted += targetsDirectoryWatcher_Changed;
             targetsDirectoryWatcher.Changed += targetsDirectoryWatcher_Changed;
@@ -419,6 +420,14 @@ namespace QueryMultiDbGui
                 executeButton.Enabled = true;
                 cancelButton.Enabled = false;
             });
+        }
+
+        private void aboutButton_Click(object sender, EventArgs e)
+        {
+            using (var aboutForm = new AboutForm())
+            {
+                aboutForm.ShowDialog();
+            }
         }
     }
 }
