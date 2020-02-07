@@ -95,6 +95,14 @@ namespace QueryMultiDb.Exporter
             }
         }
 
+        private new static string GetPartName(Table table, int tableIndex)
+        {
+            var basePartName = Exporter.GetPartName(table, tableIndex);
+            var sheetPartName = $"Sheet{tableIndex + 1}";
+
+            return basePartName ?? sheetPartName;
+        }
+
         private static Stylesheet CreateStylesheet()
         {
             var stylesheet = new Stylesheet();
@@ -259,11 +267,16 @@ namespace QueryMultiDb.Exporter
             return stylesheet;
         }
 
-        private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName = null)
+        private static void AddSheet(SpreadsheetDocument spreadSheet, Table table, string sheetName)
         {
             if (spreadSheet == null)
             {
                 throw new ArgumentNullException(nameof(spreadSheet));
+            }
+
+            if (sheetName == null)
+            {
+                throw new ArgumentNullException(nameof(sheetName));
             }
 
             var sheetPart = spreadSheet.WorkbookPart.AddNewPart<WorksheetPart>();
@@ -273,25 +286,23 @@ namespace QueryMultiDb.Exporter
             var sheets = spreadSheet.WorkbookPart.Workbook.GetFirstChild<Sheets>();
             var relationshipId = spreadSheet.WorkbookPart.GetIdOfPart(sheetPart);
 
+            string truncatedSheetName;
+
+            if (sheetName.Length > MaximumExcelSheetNameLength)
+            {
+                truncatedSheetName = sheetName.Substring(0, MaximumExcelSheetNameLength);
+                Logger.Warn($"Sheet name was truncated. Full name was '{sheetName}', truncated name is '{truncatedSheetName}'.");
+            }
+            else
+            {
+                truncatedSheetName = sheetName;
+            }
+
             uint sheetId = 1;
 
             if (sheets.Elements<Sheet>().Any())
             {
                 sheetId = sheets.Elements<Sheet>().Select(s => s.SheetId.Value).Max() + 1;
-            }
-
-            var realSheetName = sheetName ?? "Sheet" + sheetId;
-
-            string truncatedSheetName;
-
-            if (realSheetName.Length > MaximumExcelSheetNameLength)
-            {
-                truncatedSheetName = realSheetName.Substring(0, MaximumExcelSheetNameLength);
-                Logger.Warn($"Sheet name was truncated. Full name was '{realSheetName}', truncated name is '{truncatedSheetName}'.");
-            }
-            else
-            {
-                truncatedSheetName = realSheetName;
             }
 
             var sheet = new Sheet()

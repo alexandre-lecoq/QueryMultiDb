@@ -68,25 +68,36 @@ namespace QueryMultiDb.Exporter
             }
         }
 
-        private static void AddCsv(ZipArchive zipArchive, Table table, string partName = null)
+        private new static string GetPartName(Table table, int tableIndex)
+        {
+            var basePartName = Exporter.GetPartName(table, tableIndex);
+            var csvPartName = $"Part.{tableIndex + 1}.{table.Id}";
+
+            return basePartName ?? csvPartName;
+        }
+
+        private static void AddCsv(ZipArchive zipArchive, Table table, string partName)
         {
             if (zipArchive == null)
             {
                 throw new ArgumentNullException(nameof(zipArchive));
             }
 
-            var realPartName = partName ?? "Part." + table.Id;
+            if (string.IsNullOrEmpty(partName))
+            {
+                throw new ArgumentNullException(nameof(partName));
+            }
 
             string truncatedPartName;
 
-            if (realPartName.Length > MaximumFileNameLength)
+            if (partName.Length > MaximumFileNameLength)
             {
-                truncatedPartName = realPartName.Substring(0, MaximumFileNameLength);
-                Logger.Warn($"Part name was truncated. Full name was '{realPartName}', truncated name is '{truncatedPartName}'.");
+                truncatedPartName = partName.Substring(0, MaximumFileNameLength);
+                Logger.Warn($"Part name was truncated. Full name was '{partName}', truncated name is '{truncatedPartName}'.");
             }
             else
             {
-                truncatedPartName = realPartName;
+                truncatedPartName = partName;
             }
 
             var archiveEntry = zipArchive.CreateEntry(truncatedPartName + CsvFileExtension);
