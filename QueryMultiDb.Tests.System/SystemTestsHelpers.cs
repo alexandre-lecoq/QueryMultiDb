@@ -12,6 +12,8 @@ namespace QueryMultiDb.Tests.System
     public static class SystemTestsHelpers
     {
         private const string RelativeTestResultsDirectory = "../../../TestResults/";
+        private const string QueryMultiDbFilename = "QueryMultiDb.exe";
+        private const string RelativeExecutablePath = @"\..\..\..\QueryMultiDb\bin\";
 
         public static SystemExecutionOutput RunQueryMultiDbExecutionFromData(string query, string targets, QueryMultiDbArgumentStringBuilder argumentStringBuilder)
         {
@@ -56,7 +58,7 @@ namespace QueryMultiDb.Tests.System
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                FileName = ExecutableResolver.GetQueryMultiDbExecutablePath(),
+                FileName = ExecutableResolver.GetQueryMultiDbExecutablePath(QueryMultiDbFilename, RelativeExecutablePath),
                 Arguments = arguments
             };
 

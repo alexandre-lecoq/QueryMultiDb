@@ -23,9 +23,9 @@ namespace QueryMultiDbGui
             guiPathTextBox.Text = Path.GetDirectoryName(Application.ExecutablePath);
             guiVersionTextBox.Text = AssemblyVersion;
 
-            cliFilenameTextBox.Text = Path.GetFileName(MainForm.QueryMultiDbExecutableFilename);
-            cliPathTextBox.Text = Path.GetDirectoryName(MainForm.QueryMultiDbExecutableFilename);
-            cliVersionTextBox.Text = "Not Implemented";
+            cliFilenameTextBox.Text = Path.GetFileName(MainForm.QueryMultiDbExecutableFullPath);
+            cliPathTextBox.Text = Path.GetDirectoryName(MainForm.QueryMultiDbExecutableFullPath);
+            cliVersionTextBox.Text = GetExternalAssemblyVersion(MainForm.QueryMultiDbExecutableFullPath);
         }
 
         private static string GetExternalAssemblyVersion(string fileName)

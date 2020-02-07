@@ -15,16 +15,23 @@ namespace QueryMultiDbGui
 {
     public partial class MainForm : Form
     {
-        public static readonly string QueryMultiDbExecutableFilename = ConfigurationManager.AppSettings["QueryMultiDbExecutableFilename"];
+        private static readonly string QueryMultiDbExecutableFilename = ConfigurationManager.AppSettings["QueryMultiDbExecutableFilename"];
         private static readonly string QueryMultiDbDocumentsRootDirectoryName = ConfigurationManager.AppSettings["QueryMultiDbDocumentsRootDirectoryName"];
         private static readonly string DocumentsTargetsDirectoryName = ConfigurationManager.AppSettings["DocumentsTargetsDirectoryName"];
         private static readonly string DocumentsExtractionsDirectoryName = ConfigurationManager.AppSettings["DocumentsExtractionsDirectoryName"];
+        private const string RelativeExecutablePath = @"\..\..\..\QueryMultiDb\bin\";
 
         private Process _runningProcess;
         private StringBuilder _consoleBuffer;
 
         // Sample line : "DataReader.GetQueryResults : 0% (0/1)"
         private static readonly Regex ProgressLineRegex = new Regex("^([^ ]+) : (\\d+)%.*$", RegexOptions.Compiled);
+
+        public static string QueryMultiDbExecutableFullPath =>
+            ExecutableResolver.GetQueryMultiDbExecutablePath(
+                QueryMultiDbExecutableFilename,
+                RelativeExecutablePath,
+                true);
 
         private static string TargetsFullPath
         {
@@ -278,7 +285,7 @@ namespace QueryMultiDbGui
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 RedirectStandardInput = true,
-                FileName = QueryMultiDbExecutableFilename,
+                FileName = QueryMultiDbExecutableFullPath,
                 Arguments = argumentStringBuilder.ToString()
             };
 
@@ -291,7 +298,7 @@ namespace QueryMultiDbGui
                 process.EnableRaisingEvents = true;
 
                 this.InvokeEx(() => consoleOutputTextBox.Text = string.Empty);
-                this.InvokeEx(() => commandLineTextBox.Text = QueryMultiDbExecutableFilename + argumentStringBuilder);
+                this.InvokeEx(() => commandLineTextBox.Text = QueryMultiDbExecutableFullPath + argumentStringBuilder);
 
                 _consoleBuffer = new StringBuilder(1 * 1024 * 1024);
 
