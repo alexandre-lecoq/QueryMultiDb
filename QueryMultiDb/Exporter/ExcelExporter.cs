@@ -73,11 +73,16 @@ namespace QueryMultiDb.Exporter
 
                 var target = GetLogTableTarget();
 
-                Logger.Info("Excel file logging horizon. Check console output to see beyond horizon.");
-
                 // If no data sheets were added, we must force adding built-in sheets because an excel file without sheet would be invalid.
                 // Showing built-in sheets also helps with the diagnostic.
                 var forceBuiltInSheets = tableIndex == 0;
+
+                if (forceBuiltInSheets)
+                {
+                    Logger.Warn("No data sets to export. Forcing built-in sheets.");
+                }
+
+                Logger.Info("Excel file logging horizon. Check console output to see beyond horizon.");
 
                 if (Parameters.Instance.ShowLogSheet || forceBuiltInSheets)
                 {

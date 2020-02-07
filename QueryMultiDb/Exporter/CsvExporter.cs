@@ -46,10 +46,15 @@ namespace QueryMultiDb.Exporter
 
                 var target = GetLogTableTarget();
 
-                Logger.Info("CSV file logging horizon. Check console output to see beyond horizon.");
-
                 // Showing built-in parts with the diagnostic.
                 var forceBuiltInSheets = tableIndex == 0;
+
+                if (forceBuiltInSheets)
+                {
+                    Logger.Warn("No data sets to export. Forcing built-in parts.");
+                }
+
+                Logger.Info("CSV file logging horizon. Check console output to see beyond horizon.");
 
                 if (Parameters.Instance.ShowLogSheet || forceBuiltInSheets)
                 {
