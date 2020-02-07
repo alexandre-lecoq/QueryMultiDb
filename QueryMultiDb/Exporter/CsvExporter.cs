@@ -48,14 +48,17 @@ namespace QueryMultiDb.Exporter
 
                 Logger.Info("CSV file logging horizon. Check console output to see beyond horizon.");
 
-                if (Parameters.Instance.ShowLogSheet)
+                // Showing built-in parts with the diagnostic.
+                var forceBuiltInSheets = tableIndex == 0;
+
+                if (Parameters.Instance.ShowLogSheet || forceBuiltInSheets)
                 {
                     var logTable = target.Logs;
                     var partName = GetPartName(logTable, tableIndex++);
                     AddCsv(zipArchive, logTable, partName);
                 }
 
-                if (Parameters.Instance.ShowParameterSheet)
+                if (Parameters.Instance.ShowParameterSheet || forceBuiltInSheets)
                 {
                     var parameterTable = ParametersToTable(Parameters.Instance);
                     var partName = GetPartName(parameterTable, tableIndex++);

@@ -75,14 +75,18 @@ namespace QueryMultiDb.Exporter
 
                 Logger.Info("Excel file logging horizon. Check console output to see beyond horizon.");
 
-                if (Parameters.Instance.ShowLogSheet)
+                // If no data sheets were added, we must force adding built-in sheets because an excel file without sheet would be invalid.
+                // Showing built-in sheets also helps with the diagnostic.
+                var forceBuiltInSheets = tableIndex == 0;
+
+                if (Parameters.Instance.ShowLogSheet || forceBuiltInSheets)
                 {
                     var logTable = target.Logs;
                     var partName = GetPartName(logTable, tableIndex++);
                     AddSheet(spreadSheet, logTable, partName);
                 }
 
-                if (Parameters.Instance.ShowParameterSheet)
+                if (Parameters.Instance.ShowParameterSheet || forceBuiltInSheets)
                 {
                     var parameterTable = ParametersToTable(Parameters.Instance);
                     var partName = GetPartName(parameterTable, tableIndex++);
