@@ -4,7 +4,7 @@
 
     public static class Extensions
     {
-        public static readonly string[] SizeSuffixes =
+        private static readonly string[] SizeSuffixes =
         {
             "bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"
         };
