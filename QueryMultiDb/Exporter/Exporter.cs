@@ -28,9 +28,7 @@ namespace QueryMultiDb.Exporter
                 throw new ArgumentNullException(nameof(inputTables), "Parameter cannot be null.");
             }
 
-            var destination = Path.IsPathRooted(Parameters.Instance.OutputFile)
-                ? Parameters.Instance.OutputFile
-                : Path.Combine(Parameters.Instance.OutputDirectory, Parameters.Instance.OutputFile);
+            var destination = Path.Combine(Parameters.Instance.OutputDirectory, Parameters.Instance.OutputFile);
 
             Logger.Info($"Creating {Name} file '{destination}'");
             MemoryManager.Clean();
