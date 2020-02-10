@@ -343,9 +343,10 @@ namespace QueryMultiDb
                 throw new ArgumentException("OutputDirectory does not exist.");
             }
 
-            if (!Overwrite && File.Exists(OutputDirectory + "\\" + OutputFile))
-            {
+            var outputFilePath = Path.Combine(OutputDirectory, OutputFile);
 
+            if (!Overwrite && File.Exists(outputFilePath))
+            {
                 throw new ArgumentException("OutputFile already exists in directory.");
             }
 

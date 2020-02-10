@@ -35,7 +35,7 @@ namespace QueryMultiDb.Exporter
             Logger.Info($"Creating {Name} file '{destination}'");
             MemoryManager.Clean();
 
-            using (var fileStream = new FileStream(destination, FileMode.CreateNew))
+            using (var fileStream = new FileStream(destination, FileMode.Create))
             {
                 Generate(inputTables, fileStream);
             }

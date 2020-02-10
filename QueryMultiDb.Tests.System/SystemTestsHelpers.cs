@@ -43,11 +43,20 @@ namespace QueryMultiDb.Tests.System
             return systemExecutionOutput;
         }
 
-        private static SystemExecutionOutput RunQueryMultiDbExecution(QueryMultiDbArgumentStringBuilder argumentStringBuilder)
+        public static SystemExecutionOutput RunQueryMultiDbExecution(QueryMultiDbArgumentStringBuilder argumentStringBuilder, bool createOutputFileBeforeExecution = false)
         {
             var temporaryDirectory = GetTemporaryDirectory();
             var outputFilename = Guid.NewGuid().ToString();
-            argumentStringBuilder.OutputFile = Path.Combine(temporaryDirectory, outputFilename);
+            var outputFile = Path.Combine(temporaryDirectory, outputFilename);
+            argumentStringBuilder.OutputFile = outputFile;
+
+            if (createOutputFileBeforeExecution)
+            {
+                using (var sw = File.CreateText(outputFile))  
+                {
+                    sw.WriteLine("Test file created before execution.");
+                }
+            }
 
             var arguments = argumentStringBuilder.ToString();
 
@@ -93,7 +102,7 @@ namespace QueryMultiDb.Tests.System
 
                 try
                 {
-                    var path = Path.Combine(temporaryDirectory, outputFilename);
+                    var path = outputFile;
                     fileContent = File.ReadAllBytes(path);
                     SafeCreateDirectory(RelativeTestResultsDirectory);
                     var extension = argumentStringBuilder.Exporter == "csv" ? ".zip" : ".xlsx";

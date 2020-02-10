@@ -256,5 +256,43 @@ namespace QueryMultiDb.Tests.System
             Assert.True(systemRunOutput.OutputFileContent.Length > 10000);
             Assert.True(systemRunOutput.OutputFileContent.Length < 20000);
         }
+
+        [Fact]
+        public void Test14()
+        {
+            var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+            argumentStringBuilder.Progress = true;
+            argumentStringBuilder.Overwrite = true;
+            var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test1.sql");
+            argumentStringBuilder.Query = query;
+            argumentStringBuilder.Targets = DatabaseFixture.TwoTargets;
+
+            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecution(argumentStringBuilder, true);
+            _output.WriteLine(systemRunOutput.ToVerboseString());
+            SystemTestsHelpers.AssertStandardSuccessConditions(systemRunOutput);
+            var sheetCount = SystemTestsHelpers.AssertStandardExcelSuccessConditions(systemRunOutput);
+
+            Assert.DoesNotMatch("ERROR", systemRunOutput.StandardOutput);
+            Assert.Equal(6, sheetCount);
+            Assert.True(systemRunOutput.OutputFileContent.Length > 10000);
+            Assert.True(systemRunOutput.OutputFileContent.Length < 20000);
+        }
+
+        [Fact]
+        public void Test15()
+        {
+            var argumentStringBuilder = new QueryMultiDbArgumentStringBuilder();
+            argumentStringBuilder.Progress = true;
+            argumentStringBuilder.Overwrite = false;
+            var query = SystemTestsHelpers.GetResource("QueryMultiDb.Tests.System.SqlResources.Test8.sql");
+            argumentStringBuilder.Query = query;
+            argumentStringBuilder.Targets = DatabaseFixture.TwoTargets;
+
+            var systemRunOutput = SystemTestsHelpers.RunQueryMultiDbExecution(argumentStringBuilder, true);
+            _output.WriteLine(systemRunOutput.ToVerboseString());
+
+            Assert.NotEqual(0, systemRunOutput.ExitCode);
+            Assert.Matches("FATAL", systemRunOutput.StandardOutput);
+        }
     }
 }
