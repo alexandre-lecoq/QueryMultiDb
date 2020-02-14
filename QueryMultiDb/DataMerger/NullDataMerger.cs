@@ -28,6 +28,8 @@ namespace QueryMultiDb.DataMerger
             var tableCount = executionResults.Sum(r => r.TableSet.Count);
             var tableSet = new List<Table>(tableCount);
             tableSet.AddRange(executionResults.SelectMany(executionResult => executionResult.TableSet));
+            var informationMessagesTables = executionResults.Select(executionResult => executionResult.InformationMessages).Where(t => t.HasValue).Select(t => t.Value);
+            tableSet.AddRange(informationMessagesTables);
 
             return tableSet;
         }
