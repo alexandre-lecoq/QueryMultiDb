@@ -10,7 +10,7 @@ namespace QueryMultiDb.DataMerger
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public override string Name => "Conservative Data Merger";
-        
+
         /// <summary>
         /// Merges execution results into a collection of tables.
         /// </summary>
@@ -32,81 +32,32 @@ namespace QueryMultiDb.DataMerger
                 Logger.Error("No data will be exported.");
                 return new List<Table>(0);
             }
-            
-            if (!AllResultsCanBeMerged(executionResults))
+
+            WarnAboutMissingTableSets(executionResults);
+
+            var buckets = MapToBuckets(executionResults);
+
+            if (buckets == null)
             {
                 Logger.Warn("Not all execution results can me merged. It is likely table sets aren't all identical.");
                 Logger.Error("No data will be exported.");
                 return new List<Table>(0);
             }
 
-            WarnAboutMissingTableSets(executionResults);
-            var resultTemplate = GetFirstResultWithNonEmptyTableSet(executionResults);
+            var maxTablesInBuckets = buckets.Select(b => b.Count).Max();
 
-            if (resultTemplate == null)
+            if (maxTablesInBuckets == 0)
             {
                 Logger.Warn("Execution did not yield any table sets.");
                 Logger.Error("No data will be exported.");
                 return new List<Table>(0);
             }
 
-            var tableCount = resultTemplate.TableSet.Count;
-            var tableSet = new List<Table>(tableCount);
-
-            for (var tableIndex = 0; tableIndex < tableCount; tableIndex++)
-            {
-                var index = tableIndex;
-
-                Table? TableSelector(ExecutionResult r)
-                {
-                    if (r.TableSet.Count > index)
-                    {
-                        return r.TableSet[index];
-                    }
-
-                    return null;
-                }
-
-                MergeTables(executionResults, resultTemplate, TableSelector, tableSet);
-            }
+            var tableSet = MergeBuckets(buckets);
 
             return tableSet;
         }
-
-        private static void MergeTables(ICollection<ExecutionResult> result, ExecutionResult resultTemplate, Func<ExecutionResult, Table?> tableSelector, List<Table> tableSet)
-        {
-            var columns = ComputeColumnSet(resultTemplate, tableSelector);
-            var rows = ComputeRowSet(result, tableSelector);
-            var tableId = ComputeTableId(resultTemplate, tableSelector);
-            var destinationTable = new Table(columns, rows, tableId);
-
-            if (destinationTable.Rows.Count > 0)
-            {
-                tableSet.Add(destinationTable);
-            }
-            else
-            {
-                Logger.Info($"Merged table '{destinationTable.Id}' was dropped because it was empty.");
-            }
-        }
         
-        private static ExecutionResult GetFirstResultWithNonEmptyTableSet(ICollection<ExecutionResult> result)
-        {
-            if (result == null)
-            {
-                throw new ArgumentNullException(nameof(result));
-            }
-
-            if (result.Count == 0)
-            {
-                throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
-            }
-
-            var executionResultTemplate = result.FirstOrDefault(r => r.TableSet.Count != 0);
-
-            return executionResultTemplate;
-        }
-
         private static void WarnAboutMissingTableSets(ICollection<ExecutionResult> result)
         {
             if (result == null)
@@ -119,167 +70,131 @@ namespace QueryMultiDb.DataMerger
                 throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
             }
 
-            var nullTableSetsResults = result.Where(executionResult => executionResult.TableSet == null).ToList();
-
-            foreach (var executionResult in nullTableSetsResults)
-            {
-                Logger.Warn(
-                    $"Execution result for {executionResult.Database.DatabaseName} in {executionResult.Database.ServerName} contains a null table set.");
-            }
-
-            var emptyTableSetsResults = result.Where(executionResult => executionResult.TableSet.Count == 0).ToList();
+            var emptyTableSetsResults = result.Where(executionResult => executionResult.TableSet.Count == 0);
 
             foreach (var executionResult in emptyTableSetsResults)
             {
-                Logger.Warn(
-                    $"Execution result for {executionResult.Database.DatabaseName} in {executionResult.Database.ServerName} contains an empty table set.");
+                var message =
+                    $"Execution result for {executionResult.Database.DatabaseName} in {executionResult.Database.ServerName} contains an empty table set.";
+                Logger.Warn(message);
             }
         }
 
-        private static bool AllResultsCanBeMerged(ICollection<ExecutionResult> result)
+        private static ICollection<Table>[] MapToBuckets(ICollection<ExecutionResult> executionResults)
         {
-            if (result == null)
+            var maxTableCount = executionResults.Select(e => e.TableSet.Count).Max();
+            var executionResultsCount = executionResults.Count;
+
+            var queryTables = new ICollection<Table>[maxTableCount];
+
+            for (var i = 0; i < queryTables.Length; i++)
             {
-                throw new ArgumentNullException(nameof(result));
+                queryTables[i] = new List<Table>(executionResultsCount);
             }
 
-            if (result.Count == 0)
+            var messageTables = new List<Table>(executionResultsCount);
+
+            if (!DoMap(queryTables, messageTables, executionResults))
+                return null;
+
+            var buckets = queryTables.Concat(new[] {messageTables}).ToArray();
+
+            if (!BucketsHaveIdenticalTableColumns(buckets))
             {
-                throw new ArgumentException("Value cannot be an empty collection.", nameof(result));
+                return null;
             }
 
-            var executionResultTemplate = result.First();
-            var allTablesFormatsAreIdentical = result.All(executionResult => CanBeMerged(executionResultTemplate, executionResult));
-
-            return allTablesFormatsAreIdentical;
+            return buckets;
         }
 
-        private static ICollection<TableRow> ComputeRowSet(ICollection<ExecutionResult> result, Func<ExecutionResult, Table?> tableSelector)
+        private static bool DoMap(ICollection<Table>[] queryTables, ICollection<Table> messageTables, ICollection<ExecutionResult> executionResults)
         {
-            if (result == null)
+            foreach (var executionResult in executionResults)
             {
-                throw new ArgumentNullException(nameof(result));
-            }
+                var i = 0;
 
-            if (tableSelector == null)
-            {
-                throw new ArgumentNullException(nameof(tableSelector));
-            }
-
-            var tableRows = new List<TableRow>();
-
-            var minColumnCount = 0;
-            var maxColumnCount = 0;
-
-            foreach (var executionResult in result)
-            {
-                var table = tableSelector(executionResult);
-
-                if (!table.HasValue)
+                foreach (var table in executionResult.TableSet)
                 {
-                    var message = $"Execution result {executionResult} does not contain expected table.";
-                    Logger.Warn(message);
-                    continue;
+                    queryTables[i++].Add(table);
                 }
 
-                var sourceTable = table.Value;
-
-                foreach (var tableRow in sourceTable.Rows)
+                if (i == 0)
                 {
-                    var columnCount = tableRow.ItemArray.Length;
-                    minColumnCount = Math.Min(minColumnCount, columnCount);
-                    maxColumnCount = Math.Max(maxColumnCount, columnCount);
-                    var newRow = new TableRow(tableRow.ItemArray);
-                    tableRows.Add(newRow);
+                    // warn
+                    LogTableComparisonWarning(executionResult, "Results can be merged although one of them has no table.");
                 }
-            }
-
-            if (minColumnCount != 0 && minColumnCount != maxColumnCount)
-            {
-                var message = $"Unexpected inconsistent number of columns in row set. Found {minColumnCount} to {maxColumnCount} columns in table's rows. Tables cannot be merged.";
-                throw new Exception(message);
-            }
-
-            return tableRows;
-        }
-
-        private static string ComputeTableId(ExecutionResult resultTemplate, Func<ExecutionResult, Table?> tableSelector)
-        {
-            var table = tableSelector(resultTemplate);
-            
-            if (!table.HasValue)
-            {
-                throw new Exception("Selected execution template table does not contain expected table");
-            }
-
-            var tableId = table.Value.Id.StartsWith("__", StringComparison.InvariantCulture) ? table.Value.Id : null;
-
-            return tableId;
-        }
-
-        private static TableColumn[] ComputeColumnSet(ExecutionResult resultTemplate, Func<ExecutionResult, Table?> tableSelector)
-        {
-            var table = tableSelector(resultTemplate);
-
-            if (!table.HasValue)
-            {
-                throw new Exception("Selected execution template table does not contain expected table");
-            }
-
-            return table.Value.Columns;
-        }
-
-        private static bool CanBeMerged(ExecutionResult left, ExecutionResult right)
-        {
-            if (right == null)
-            {
-                throw new ArgumentNullException(nameof(right));
-            }
-
-            if (left.TableSet == null && right.TableSet == null)
-            {
-                return true;
-            }
-
-            if (left.TableSet == null || right.TableSet == null)
-            {
-                LogTableComparisonWarning(left, right, "One of them does not contain any tables");
-                return false;
-            }
- 
-            if (left.TableSet.Count != right.TableSet.Count)
-            {
-                if (left.TableSet.Count == 0 || right.TableSet.Count == 0)
+                else if (i != queryTables.Length)
                 {
-                    LogTableComparisonWarning(left, right, $"Results can be merged although they have different number of tables because one of them has no table : {left.TableSet.Count} vs {right.TableSet.Count}");
-                    return true;
-                }
-
-                LogTableComparisonWarning(left, right, $"Results have different number of tables : {left.TableSet.Count} vs {right.TableSet.Count}");
-                return false;
-            }
-
-            for (var i = 0; i < left.TableSet.Count; i++)
-            {
-                var thisTable = left.TableSet[i];
-                var otherTable = right.TableSet[i];
-
-                var isIdentical = thisTable.HasIdenticalColumns(otherTable);
-
-                if (!isIdentical)
-                {
-                    LogTableComparisonWarning(left, right, $"Tables at index #{i} have different column set");
+                    // abort
+                    LogTableComparisonWarning(executionResult,
+                        $"Results cannot be merged. They have different number of tables : {i} (should be {queryTables.Length}).");
                     return false;
+                }
+
+                if (executionResult.InformationMessages.HasValue)
+                {
+                    messageTables.Add(executionResult.InformationMessages.Value);
                 }
             }
 
             return true;
         }
-
-        private static void LogTableComparisonWarning(ExecutionResult left, ExecutionResult right, string specificMessage)
+        
+        private static bool BucketsHaveIdenticalTableColumns(ICollection<Table>[] buckets)
         {
-            var message = $"Tables are not identical. In {left.Database.ServerName} {left.Database.DatabaseName} and {right.Database.ServerName} {right.Database.DatabaseName}. {specificMessage}.";
-            Logger.Warn(message);
+            for (var i = 0; i < buckets.Length; i++)
+            {
+                var firstTable = buckets[i].First();
+                var allTablesAreIdentical = buckets[i].All(x => firstTable.HasIdenticalColumns(x));
+
+                if (allTablesAreIdentical)
+                {
+                    continue;
+                }
+
+                Logger.Warn($"Tables are not identical. Tables at index #{i} have different column sets.");
+
+                return false;
+            }
+
+            return true;
+        }
+        
+        private static List<Table> MergeBuckets(ICollection<Table>[] buckets)
+        {
+            var tableSet = new List<Table>(buckets.Length);
+
+            foreach (var bucket in buckets)
+            {
+                if (bucket.Count == 0)
+                {
+                    Logger.Trace("Bucket is empty.");
+                    continue;
+                }
+
+                Logger.Trace($"Bucket contains {bucket.Count} tables.");
+                var firstTable = bucket.First();
+                var columns = firstTable.Columns;
+                var tableId = firstTable.Id.StartsWith("__", StringComparison.InvariantCulture) ? firstTable.Id : null;
+                var rows = bucket.SelectMany(table => table.Rows).ToList();
+                var destinationTable = new Table(columns, rows, tableId);
+
+                if (destinationTable.Rows.Count > 0)
+                {
+                    tableSet.Add(destinationTable);
+                }
+                else
+                {
+                    Logger.Info($"Merged table '{destinationTable.Id}' was dropped because it was empty.");
+                }
+            }
+
+            return tableSet;
+        }
+        
+        private static void LogTableComparisonWarning(ExecutionResult result, string specificMessage)
+        {
+            Logger.Warn($"Tables are not all identical. See {result.Database.DatabaseName} in {result.Database.ServerName}. {specificMessage}");
         }
     }
 }

@@ -26,7 +26,14 @@ namespace QueryMultiDb
             foreach (var result in results)
             {
                 var tableSet = result.TableSet.Select(inputTable => ComputeExpandedTable(result.Database, inputTable)).ToList();
-                var executionResult = new ExecutionResult(result.Database, tableSet);
+                Table? informationMessageTable = null;
+
+                if (result.InformationMessages.HasValue)
+                {
+                    informationMessageTable = ComputeExpandedTable(result.Database, result.InformationMessages.Value);
+                }
+
+                var executionResult = new ExecutionResult(result.Database, tableSet, informationMessageTable);
                 processedResults.Add(executionResult);
             }
 

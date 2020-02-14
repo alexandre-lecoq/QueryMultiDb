@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using NLog;
 
 namespace QueryMultiDb
 {
@@ -11,10 +10,13 @@ namespace QueryMultiDb
 
         public IList<Table> TableSet { get; }
 
-        public ExecutionResult(Database database, IList<Table> tableSet)
+        public Table? InformationMessages { get; }
+
+        public ExecutionResult(Database database, IList<Table> tableSet, Table? informationMessages)
         {
             Database = database ?? throw new ArgumentNullException(nameof(database));
             TableSet = tableSet ?? throw new ArgumentNullException(nameof(tableSet));
+            InformationMessages = informationMessages;
         }
 
         public override string ToString()
