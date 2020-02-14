@@ -180,7 +180,7 @@ namespace QueryMultiDb
                 command.CommandText = Parameters.Instance.Query;
                 command.CommandTimeout = Parameters.Instance.CommandTimeout;
 
-                using (var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader(CommandBehavior.SequentialAccess))
                 {
                     var tableSet = new List<Table>();
 
