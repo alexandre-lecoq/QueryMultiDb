@@ -169,11 +169,8 @@ namespace QueryMultiDb
                 ConnectionOnInfoMessage(infoMessageRows, arg);
             }
 
-            if (Parameters.Instance.ShowInformationMessages)
-            {
-                connection.FireInfoMessageEventOnUserErrors = true;
-                connection.InfoMessage += SqlInfoMessageEventHandler;
-            }
+            connection.FireInfoMessageEventOnUserErrors = true;
+            connection.InfoMessage += SqlInfoMessageEventHandler;
 
             using (var command = connection.CreateCommand())
             {
@@ -201,26 +198,16 @@ namespace QueryMultiDb
                         Logger.Info($"{database.ToLogPrefix()} Records affected by query : {reader.RecordsAffected}");
                     }
 
-                    Table? informationMessageTable = null;
-
-                    if (Parameters.Instance.ShowInformationMessages)
-                    {
-                        var infoMessageColumns = new TableColumn[6];
-                        infoMessageColumns[0] = new TableColumn("Class", typeof(string));
-                        infoMessageColumns[1] = new TableColumn("Number", typeof(string));
-                        infoMessageColumns[2] = new TableColumn("State", typeof(string));
-                        infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
-                        infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
-                        infoMessageColumns[5] = new TableColumn("Message", typeof(string));
-                        informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
-                    }
-
+                    var infoMessageColumns = new TableColumn[6];
+                    infoMessageColumns[0] = new TableColumn("Class", typeof(string));
+                    infoMessageColumns[1] = new TableColumn("Number", typeof(string));
+                    infoMessageColumns[2] = new TableColumn("State", typeof(string));
+                    infoMessageColumns[3] = new TableColumn("Procedure", typeof(string));
+                    infoMessageColumns[4] = new TableColumn("LineNumber", typeof(string));
+                    infoMessageColumns[5] = new TableColumn("Message", typeof(string));
+                    var informationMessageTable = new Table(infoMessageColumns, infoMessageRows, Table.InformationMessagesId);
                     var result = new ExecutionResult(database, tableSet, informationMessageTable);
-
-                    if (Parameters.Instance.ShowInformationMessages)
-                    {
-                        connection.InfoMessage -= SqlInfoMessageEventHandler;
-                    }
+                    connection.InfoMessage -= SqlInfoMessageEventHandler;
 
                     return result;
                 }
@@ -292,7 +279,7 @@ namespace QueryMultiDb
 
                 if (fieldCount == 0)
                 {
-                    Logger.Info($"{database.ToLogPrefix()} Table was skipped because it contained 0 column.");
+                    Logger.Warn($"{database.ToLogPrefix()} Table was skipped because it contained 0 column.");
                     continue;
                 }
 
@@ -337,6 +324,11 @@ namespace QueryMultiDb
 
             foreach (SqlError error in sqlInfoMessageEventArgs.Errors)
             {
+                if (error.Class >= 11)
+                {
+                    Logger.Error($"Class {error.Class} message type {error.Number} from line {error.LineNumber}. See information messages.");
+                }
+
                 var items = new object[6];
                 items[0] = error.Class;
                 items[1] = error.Number;

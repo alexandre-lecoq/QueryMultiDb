@@ -53,6 +53,11 @@ namespace QueryMultiDb.Exporter
                 var tableIndex = 0;
                 foreach (var table in inputTables)
                 {
+                    if (!Parameters.Instance.ShowInformationMessages && table.Id == Table.InformationMessagesId && inputTables.Count > 1)
+                    {
+                        continue;
+                    }
+
                     Logger.Info("Adding new excel sheet.");
 
                     if (table.Rows.Count > ExcelTotalNumberRowsMaximumLimit - 1)

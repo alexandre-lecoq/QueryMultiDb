@@ -3,6 +3,7 @@ using QueryMultiDb.Common;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Reflection;
 using Xunit;
@@ -182,6 +183,29 @@ namespace QueryMultiDb.Tests.System
             }
 
             return sheetCount;
+        }
+
+        public static int AssertStandardCsvSuccessConditions(SystemExecutionOutput systemExecutionOutput)
+        {
+            Assert.Matches("CSV generation :", systemExecutionOutput.StandardOutput);
+            var fileCount = ReadCsvFileCountFromZipArchive(systemExecutionOutput.OutputFileContent);
+            Assert.True(fileCount > 0);
+
+            return fileCount;
+        }
+
+        private static int ReadCsvFileCountFromZipArchive(byte[] spreadsheetBinaryContent)
+        {
+            var stream = new MemoryStream(spreadsheetBinaryContent, false);
+
+            int fileCount;
+
+            using (var zipArchive = new ZipArchive(stream, ZipArchiveMode.Read))
+            {
+                fileCount = zipArchive.Entries.Count;
+            }
+
+            return fileCount;
         }
 
         private static string GetTemporaryDirectory()

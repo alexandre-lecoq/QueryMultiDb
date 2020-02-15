@@ -75,7 +75,7 @@ namespace QueryMultiDb.DataMerger
             foreach (var executionResult in emptyTableSetsResults)
             {
                 var message =
-                    $"Execution result for {executionResult.Database.DatabaseName} in {executionResult.Database.ServerName} contains an empty table set.";
+                    $"Execution result for '{executionResult.Database.DatabaseName}' in '{executionResult.Database.ServerName}' contains an empty table set.";
                 Logger.Warn(message);
             }
         }
@@ -120,12 +120,10 @@ namespace QueryMultiDb.DataMerger
 
                 if (i == 0)
                 {
-                    // warn
                     LogTableComparisonWarning(executionResult, "Results can be merged although one of them has no table.");
                 }
                 else if (i != queryTables.Length)
                 {
-                    // abort
                     LogTableComparisonWarning(executionResult,
                         $"Results cannot be merged. They have different number of tables : {i} (should be {queryTables.Length}).");
                     return false;
@@ -194,7 +192,7 @@ namespace QueryMultiDb.DataMerger
         
         private static void LogTableComparisonWarning(ExecutionResult result, string specificMessage)
         {
-            Logger.Warn($"Tables are not all identical. See {result.Database.DatabaseName} in {result.Database.ServerName}. {specificMessage}");
+            Logger.Warn($"Tables are not all identical. See '{result.Database.DatabaseName}' in '{result.Database.ServerName}'. {specificMessage}");
         }
     }
 }

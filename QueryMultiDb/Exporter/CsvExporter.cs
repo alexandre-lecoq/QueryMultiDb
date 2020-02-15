@@ -32,6 +32,11 @@ namespace QueryMultiDb.Exporter
 
                 foreach (var table in inputTables)
                 {
+                    if (!Parameters.Instance.ShowInformationMessages && table.Id == Table.InformationMessagesId && inputTables.Count > 1)
+                    {
+                        continue;
+                    }
+
                     Logger.Info("Adding new CSV file.");
 
                     var partName = GetPartName(table, tableIndex);
