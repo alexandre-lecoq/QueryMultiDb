@@ -234,9 +234,8 @@ namespace QueryMultiDb.Exporter
         protected static TableTarget GetLogTableTarget()
         {
             var flushedTableTarget = LogManager.Configuration.FindTargetByName<AutoFlushTargetWrapper>("flushedTableTarget");
-            var target = flushedTableTarget.WrappedTarget as TableTarget;
 
-            if (target == null)
+            if (!(flushedTableTarget.WrappedTarget is TableTarget target))
             {
                 throw new InvalidOperationException(
                     "Logger's wrapped table target could not be recovered. It should never happens as this target should be added very early in Program.Main().");

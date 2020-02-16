@@ -46,6 +46,9 @@ namespace QueryMultiDb.Tests.System
 
         public static SystemExecutionOutput RunQueryMultiDbExecution(QueryMultiDbArgumentStringBuilder argumentStringBuilder, bool createOutputFileBeforeExecution = false)
         {
+            if (argumentStringBuilder == null)
+                throw new ArgumentNullException(nameof(argumentStringBuilder));
+
             var temporaryDirectory = GetTemporaryDirectory();
             var outputFilename = Guid.NewGuid().ToString();
             var outputFile = Path.Combine(temporaryDirectory, outputFilename);
@@ -162,6 +165,9 @@ namespace QueryMultiDb.Tests.System
 
         public static int AssertStandardExcelSuccessConditions(SystemExecutionOutput systemExecutionOutput)
         {
+            if (systemExecutionOutput == null)
+                throw new ArgumentNullException(nameof(systemExecutionOutput));
+
             Assert.Matches("Excel generation :", systemExecutionOutput.StandardOutput);
             var sheetCount = ReadSheetCountFromSpreadsheet(systemExecutionOutput.OutputFileContent);
             Assert.True(sheetCount > 0);
@@ -187,6 +193,11 @@ namespace QueryMultiDb.Tests.System
 
         public static int AssertStandardCsvSuccessConditions(SystemExecutionOutput systemExecutionOutput)
         {
+            if (systemExecutionOutput == null)
+            {
+                throw new ArgumentNullException(nameof(systemExecutionOutput));
+            }
+
             Assert.Matches("CSV generation :", systemExecutionOutput.StandardOutput);
             var fileCount = ReadCsvFileCountFromZipArchive(systemExecutionOutput.OutputFileContent);
             Assert.True(fileCount > 0);

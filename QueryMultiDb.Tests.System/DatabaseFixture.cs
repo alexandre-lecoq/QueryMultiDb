@@ -25,6 +25,9 @@ namespace QueryMultiDb.Tests.System
 
         public static string FormatTargets(string format)
         {
+            if (format == null)
+                throw new ArgumentNullException(nameof(format));
+
             var serverName = Escape(ServerName);
             var databaseName = Escape(DatabaseName);
             var formatted = format.Replace(ServerNameTag, serverName).Replace(DatabaseNameTag, databaseName);

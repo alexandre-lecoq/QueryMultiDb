@@ -8,12 +8,7 @@ namespace QueryMultiDb
 
         public TableRow(object[] itemArray)
         {
-            if (itemArray == null)
-            {
-                throw new ArgumentNullException(nameof(itemArray), "Parameter cannot be null.");
-            }
-
-            ItemArray = itemArray;
+            ItemArray = itemArray ?? throw new ArgumentNullException(nameof(itemArray), "Parameter cannot be null.");
         }
 
         public override string ToString()

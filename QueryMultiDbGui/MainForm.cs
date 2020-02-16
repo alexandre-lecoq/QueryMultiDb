@@ -102,8 +102,6 @@ namespace QueryMultiDbGui
 
         private void SetTargetsComboBox()
         {
-            var oldSelectedValue = targetsComboBox.SelectedValue as string;
-
             targetsComboBox.SelectedIndexChanged -= TargetsComboBox_SelectedIndexChanged;
             targetsComboBox.SelectedIndex = -1;
             targetsComboBox.DataSource = null;
@@ -113,7 +111,7 @@ namespace QueryMultiDbGui
             targetsComboBox.SelectedIndexChanged += TargetsComboBox_SelectedIndexChanged;
             targetsComboBox.DataSource = targetEntries;
 
-            if (oldSelectedValue != null)
+            if (targetsComboBox.SelectedValue is string oldSelectedValue)
             {
                 targetsComboBox.SelectedValue = oldSelectedValue;
             }
