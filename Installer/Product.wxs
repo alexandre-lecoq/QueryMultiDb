@@ -68,6 +68,15 @@
       <Component Id="System.ValueTuple.dll">
         <File Id="System.ValueTuple.dll" Source="$(var.QueryMultiDb.TargetDir)System.ValueTuple.dll" Checksum="yes" />
       </Component>
+      <Component Id="Microsoft.Bcl.AsyncInterfaces.dll">
+        <File Id="Microsoft.Bcl.AsyncInterfaces.dll" Source="$(var.QueryMultiDb.TargetDir)Microsoft.Bcl.AsyncInterfaces.dll" Checksum="yes" />
+      </Component>
+      <Component Id="System.Runtime.CompilerServices.Unsafe.dll">
+        <File Id="System.Runtime.CompilerServices.Unsafe.dll" Source="$(var.QueryMultiDb.TargetDir)System.Runtime.CompilerServices.Unsafe.dll" Checksum="yes" />
+      </Component>
+      <Component Id="System.Threading.Tasks.Extensions.dll">
+        <File Id="System.Threading.Tasks.Extensions.dll" Source="$(var.QueryMultiDb.TargetDir)System.Threading.Tasks.Extensions.dll" Checksum="yes" />
+      </Component>
 
       <Component Id="DbTargets.exe">
         <File Id="DbTargets.exe" Source="$(var.DbTargets.TargetPath)" KeyPath="yes" Checksum="yes" />
