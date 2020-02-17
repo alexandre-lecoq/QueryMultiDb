@@ -162,15 +162,18 @@ namespace QueryMultiDb.DataMerger
         {
             var tableSet = new List<Table>(buckets.Length);
 
-            foreach (var bucket in buckets)
+            for (var i = 0; i < buckets.Length;i++)
             {
+                var bucket = buckets[i];
+                var rowCount = bucket.Sum(t => t.Rows.Count);
+                Logger.Debug($"Bucket #{i} contains {bucket.Count} tables and {rowCount} rows.");
+
                 if (bucket.Count == 0)
                 {
-                    Logger.Trace("Bucket is empty.");
+                    Logger.Warn("Bucket is empty. (No tables)");
                     continue;
                 }
 
-                Logger.Trace($"Bucket contains {bucket.Count} tables.");
                 var firstTable = bucket.First();
                 var columns = firstTable.Columns;
                 var tableId = firstTable.Id.StartsWith("__", StringComparison.InvariantCulture) ? firstTable.Id : null;
@@ -183,7 +186,7 @@ namespace QueryMultiDb.DataMerger
                 }
                 else
                 {
-                    Logger.Info($"Merged table '{destinationTable.Id}' was dropped because it was empty.");
+                    Logger.Info($"Merged table '{destinationTable.Id}' (bucket #{i}) was dropped because it was empty. (No rows)");
                 }
             }
 
