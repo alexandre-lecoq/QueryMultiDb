@@ -25,7 +25,6 @@ namespace QueryMultiDb
             var logTable = new Table(logColumns, _logRows, Table.LogsId);
 
             Logs = logTable;
-            OptimizeBufferReuse = true;
         }
 
         public TableTarget(string name) : this()

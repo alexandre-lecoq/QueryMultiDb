@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -93,7 +94,7 @@ namespace DbTargets
             var titleAttribute = (AssemblyTitleAttribute) Assembly.GetExecutingAssembly()
                 .GetCustomAttribute(typeof(AssemblyTitleAttribute));
 
-            var connectionStringBuilder = new SqlConnectionStringBuilder
+            var connectionStringBuilder = new Microsoft.Data.SqlClient.SqlConnectionStringBuilder
             {
                 DataSource = serverName,
                 InitialCatalog = "master",
@@ -103,15 +104,15 @@ namespace DbTargets
                 WorkstationID = Environment.MachineName,
                 ApplicationName = titleAttribute.Title,
 
-                ApplicationIntent = ApplicationIntent.ReadWrite,
-                NetworkLibrary = "dbmssocn",
+                ApplicationIntent = Microsoft.Data.SqlClient.ApplicationIntent.ReadWrite,
+                //NetworkLibrary = "dbmssocn",
                 Pooling = false,
                 Authentication = SqlAuthenticationMethod.NotSpecified
             };
 
             var databaseNames = new List<string>(500);
 
-            using (var connection = new SqlConnection(connectionStringBuilder.ToString()))
+            using (var connection = new System.Data.SqlClient.SqlConnection(connectionStringBuilder.ToString()))
             {
                 connection.Open();
 
