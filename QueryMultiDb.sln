@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbTargets", "DbTargets\DbTa
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDb.Tests.Unit", "QueryMultiDb.Tests.Unit\QueryMultiDb.Tests.Unit.csproj", "{C9D06460-FAA9-4DD8-A5A8-3C0C56395F0A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDbGui", "QueryMultiDbGui\QueryMultiDbGui.csproj", "{67CF094E-3025-4055-BB1C-8351231F7EB9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDbGui.Windows", "QueryMultiDbGui.Windows\QueryMultiDbGui.csproj", "{67CF094E-3025-4055-BB1C-8351231F7EB9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueryMultiDb.Common", "QueryMultiDb.Common\QueryMultiDb.Common.csproj", "{6B7D3EB8-A8CF-4B0D-9577-4F5C424CDFCB}"
 EndProject

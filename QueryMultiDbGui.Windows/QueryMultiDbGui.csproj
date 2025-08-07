@@ -1,23 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Library</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <LangVersion>latest</LangVersion>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <IsPackable>false</IsPackable>
-    <IsTestProject>true</IsTestProject>
-    <Deterministic>false</Deterministic>
+    <!-- Note: This project requires Windows to build as WinExe due to Windows Forms dependency -->
+    <!-- When running on Windows, change OutputType to WinExe and TargetFramework to net8.0-windows -->
+    <!-- <UseWindowsForms>true</UseWindowsForms> -->
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="DocumentFormat.OpenXml" Version="3.0.2" />
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.4" PrivateAssets="all" />
     <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="8.0.0" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.0" />
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.8.0" />
-    <PackageReference Include="xunit" Version="2.6.4" />
-    <PackageReference Include="xunit.runner.visualstudio" Version="2.5.3" PrivateAssets="all" />
+    <PackageReference Include="System.Resources.Extensions" Version="8.0.0" />
+    <PackageReference Include="System.Windows.Forms" Version="8.0.0" Condition="'$(OS)' == 'Windows_NT'" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,8 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Targets\*.json" />
-    <EmbeddedResource Include="SqlResources\*.sql" />
+    <Content Include="Icon\**" />
   </ItemGroup>
 
 </Project>

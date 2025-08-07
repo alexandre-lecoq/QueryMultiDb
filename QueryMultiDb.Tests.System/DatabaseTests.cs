@@ -1,5 +1,5 @@
 ﻿using QueryMultiDb.Common;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Xunit;
 using Xunit.Abstractions;
 
